@@ -3,6 +3,9 @@
 A web app that gives the student 25-question practice sets for NC Math 1, adapts each new set to the skills they struggle with, and records how long every set takes.
 
 ## Use it
+Public test link: https://shafiqmubashera.github.io/Math_1/ (anyone can open it; it updates on every push to `main`).
+Testers need an up-to-date browser and internet only, with nothing to install and no account. Progress saves in that browser on that device.
+
 App link: https://claude.ai/artifact/CQNe1v8uGDqnB2UkTvKwHE (private until shared).
 
 - Share it with the student from the page's **Share** menu as **Contributor** (can use the page). Then progress saves to their account and the owner sees it under **Progress** → "Showing progress for".
