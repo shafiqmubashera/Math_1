@@ -218,8 +218,7 @@
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
       ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> Sequence A <span class="lg-s"></span> Sequence B</div>` : ""}` : ""}
-      ${input}
-      <div class="hint-row">${cur.hints[cur.idx] ? `<div class="hint"><strong>Hint:</strong> ${R(q.hint)}</div>` : `<button type="button" class="btn-link" data-act="hint">Show a hint</button>`}</div>`;
+      ${input}`;
 
     if (q.graph) M1.tools.GraphGrid($("#qgraph"), { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
     if (q.type === "plot") {
@@ -349,7 +348,6 @@
             <div><dt>Active time</dt><dd>${dur(rec.activeSec)}</dd></div>
             <div><dt>Per question</dt><dd>${dur(rec.activeSec / rec.total)}</dd></div>
             <div><dt>Start to finish</dt><dd>${dur(rec.wallSec)}</dd></div>
-            <div><dt>Hints used</dt><dd>${rec.hintsUsed || 0}</dd></div>
           </dl>
         </section>
         ${mastered ? `<section class="mastered-panel"><h2>Unit mastered</h2><p>Every question right. You can restart this unit with brand-new questions. The assessment starts again from a fresh first check.</p>
@@ -377,7 +375,7 @@
     const why = !ok && (q.type === "mcq" || q.type === "graph-mcq") && a != null && q.why && q.why[a] ? `<div class="why"><strong>Why ${LETTERS[a]} is wrong:</strong> ${R(q.why[a])}</div>` : "";
     return `<li class="ritem ${ok ? "ok" : "bad"}" data-ok="${ok}">
       <div class="rhead"><span class="mark" aria-label="${ok ? "Correct" : "Incorrect"}">${ok ? "✓" : "✗"}</span><span>Question ${i + 1}</span>
-        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span><span class="muted">${esc(skillName(rec.unitId, q.skill))} · ${dur(rec.qTimes ? rec.qTimes[i] : 0)}${rec.hints && rec.hints[i] ? " · hint used" : ""}</span></div>
+        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span><span class="muted">${esc(skillName(rec.unitId, q.skill))} · ${dur(rec.qTimes ? rec.qTimes[i] : 0)}</span></div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
       ${q.graph || q.type === "plot" ? `<div class="qgraph small" id="rg-${i}"></div>${q.type === "plot" ? `<div class="legend"><span class="lg-c"></span> Your points <span class="lg-ring"></span> Correct points</div>` : ""}` : ""}

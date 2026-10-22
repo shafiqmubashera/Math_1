@@ -39,3 +39,4 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
 ## Keeping GitHub current
 - The code lives at github.com/shafiqmubashera/Math_1 (branch `main`). After every change: run the tests, build, commit and push to `origin main`.
 - Every push to `main` republishes the app to GitHub Pages (`.github/workflows/pages.yml`): https://shafiqmubashera.github.io/Math_1/
+- The app is for testing the student, so it never shows hints. Questions may still carry a `hint` field, but the app doesn't display it.
