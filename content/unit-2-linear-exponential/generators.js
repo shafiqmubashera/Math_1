@@ -11,7 +11,8 @@
 
   // Decimals as typed (1.05 stays 1.05, not 21/20).
   const dec = (x) => String(+(+x).toFixed(6));
-  const money = (x) => "\\$" + (Number.isInteger(x) ? String(x) : x.toFixed(2));
+  const commas = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const money = (x) => "\\$" + (Number.isInteger(x) ? commas(String(x)) : x.toFixed(2));
   // Linear expression mx + b in KaTeX: handles m = ±1, b = 0 and fractions.
   function lin(m, b, v = "x") {
     if (m === 0) return tex(b);
@@ -21,14 +22,14 @@
   // a·b^x with the base always in parentheses.
   // Unit fractions (1/2, 1/3, 1/4) show as fractions; other bases as decimals.
   const base = (b) => ([1 / 2, 1 / 3, 1 / 4].some((f) => Math.abs(f - b) < 1e-12) ? tex(b) : dec(b));
-  const expo = (a, b, v = "x") => `${a === 1 ? "" : tex(a)}\\left(${base(b)}\\right)^{${v}}`;
+  const expo = (a, b, v = "x") => (a === 1 && Number.isInteger(b) ? `${b}^{${v}}` : `${a === 1 ? "" : tex(a)}\\left(${base(b)}\\right)^{${v}}`);
   const frac = (n, d) => { // n/d reduced, as KaTeX
     const g = gcd(n, d), s = (n < 0) !== (d < 0) ? "-" : "";
     const N = Math.abs(n) / g, D = Math.abs(d) / g;
     return D === 1 ? `${s}${N}` : `${s}\\frac{${N}}{${D}}`;
   };
   const pt = (p) => `(${fmt(p[0])}, ${fmt(p[1])})`;
-  const setTex = (lo, hi) => `\\{${lo}, ${lo + 1}, ${lo + 2}, \\ldots, ${hi}\\}`;
+  const setTex = (lo, hi) => (hi - lo <= 5 ? `\\{${Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).join(", ")}\\}` : `\\{${lo}, ${lo + 1}, ${lo + 2}, \\ldots, ${hi}\\}`);
 
   // ───────────────────────── Discrete vs continuous, domain ─────────────────────────
   const DISCRETE = [
@@ -115,7 +116,7 @@
         prompt: `${who} has ${money(B)} to spend on comic books that cost ${money(p)} each. $C(n) = ${p}n$ is the cost of buying $n$ comic books. ${who} could also buy none. How many values are in the domain of $C$?`,
         answer: k + 1,
         hint: `Find the greatest number of books ${who} can afford. Do not forget 0.`,
-        solution: `$${B} \\div ${p} \\approx ${dec(+(B / p).toFixed(2))}$, so the most books is ${k}. The domain is $${setTex(0, k)}$, which has $${k} + 1 = \\mathbf{${k + 1}}$ values.` };
+        solution: `$${B} \\div ${p} ${B % p ? "\\approx" : "="} ${dec(+(B / p).toFixed(2))}$, so the most books is ${k}. The domain is $${setTex(0, k)}$, which has $${k} + 1 = \\mathbf{${k + 1}}$ values.` };
     } });
 
   add({ id: "u2.di.domain-discrete", skill: "u2.discrete", level: L.H, type: "mcq", calc: false,
@@ -187,7 +188,7 @@
       const why = ["Linear functions add the same amount each time x goes up by 1.", "Exponential functions multiply by the same factor each time x goes up by 1.",
         "Check both the differences and the ratios.", "Only a constant function changes by the same amount and the same factor."];
       const diffs = t.y.slice(1).map((v, i) => v - t.y[i]);
-      const ratios = t.y.slice(1).map((v, i) => (t.y[i] === 0 ? "undefined" : fmt(v / t.y[i])));
+      const ratios = t.y.slice(1).map((v, i) => (t.y[i] === 0 ? "none (cannot divide by 0)" : `$${frac(v, t.y[i])}$`));
       return { key: t.key, choices: TYPE3, answer: kind, why: why.map((w, i) => (i === kind ? "Correct." : w)),
         prompt: "Is the function in the table linear, exponential, or neither?",
         table: { headers: ["$x$", "0", "1", "2", "3"], rows: [["$y$", ...t.y.map(fmt)]] },
@@ -242,7 +243,7 @@
       const exp = r.chance(0.5);
       let pts, key;
       if (exp) { const a = r.int(1, 3), g = r.pick([2, 3]), n = g === 3 ? 3 : 4; pts = Array.from({ length: n + 1 }, (_, x) => [x, a * g ** x]); key = [1, a, g]; }
-      else { const b = r.int(0, 6), m = r.int(2, 6); pts = Array.from({ length: 5 }, (_, x) => [x, b + m * x]); key = [0, b, m]; }
+      else { const b = r.int(1, 6), m = r.int(2, 6); pts = Array.from({ length: 5 }, (_, x) => [x, b + m * x]); key = [0, b, m]; }
       const Lt = "Linear: the y-values go up by the same amount each step.", Et = "Exponential: the y-values are multiplied by the same factor each step.";
       const m = mcq(exp ? Et : Lt, [
         { text: exp ? Lt : Et, why: exp ? "Check the differences: they grow, so it is not linear." : "Check the ratios: they are not the same, so it is not exponential." },
@@ -254,7 +255,7 @@
         prompt: "The graph shows points of a function. Which describes the function?",
         graph: { points: pts, window: windowFor(pts) },
         hint: "Read the y-values. Find the differences and the ratios.",
-        solution: `y-values: ${ys.join(", ")}. Differences: ${ys.slice(1).map((v, i) => v - ys[i]).join(", ")}. Ratios: ${ys.slice(1).map((v, i) => fmt(v / ys[i])).join(", ")}.<br>**${exp ? "Exponential" : "Linear"}**.` };
+        solution: `y-values: ${ys.join(", ")}. Differences: ${ys.slice(1).map((v, i) => v - ys[i]).join(", ")}. Ratios: ${ys.slice(1).map((v, i) => `$${frac(v, ys[i])}$`).join(", ")}.<br>**${exp ? "Exponential" : "Linear"}**.` };
     } });
 
   add({ id: "u2.le.overtake", skill: "u2.linexp", level: L.H, type: "numeric", calc: true,
@@ -280,7 +281,8 @@
         { text: String(g * g), why: "That is the factor for 2 steps of x, not 1." },
         { text: String((y[1] - y[0]) / 2), why: "That divides a difference by 2, which is linear thinking." },
         { text: fmt((g * g) / 2), why: "Dividing the 2-step factor by 2 does not undo multiplying twice. Take the square root." },
-      ], r, [{ text: String(g + 1), why: "Check: multiplying by this twice does not give the 2-step factor." }]);
+      ], r, [{ text: String(g + 1), why: "Check: multiplying by this twice does not give the 2-step factor." },
+        { text: String(2 * g * g), why: "That is more than the factor for 2 steps. Take the square root of the 2-step factor." }]);
       return { key: [a, g], ...m,
         prompt: "The table shows an exponential function. By what factor does $y$ change each time $x$ goes up by **1**?",
         table: { headers: ["$x$", "0", "2", "4", "6"], rows: [["$y$", ...y.map(fmt)]] },
@@ -292,7 +294,8 @@
     make(r) {
       const m1 = r.int(5, 20) * 100, b1 = r.int(1, 9) * 1000, m2 = r.int(30, 90) * 100, c = r.pick([0.01, 0.1, 0.5, 1]), g = r.pick([1.02, 1.05, 1.1, 2]);
       const sq = r.int(10, 50);
-      const m = mcq(`$k(x) = ${dec(c)}\\left(${dec(g)}\\right)^{x}$`, [
+      const kx = c === 1 ? (Number.isInteger(g) ? `${g}^{x}` : `\\left(${dec(g)}\\right)^{x}`) : `${dec(c)}\\left(${dec(g)}\\right)^{x}`;
+      const m = mcq(`$k(x) = ${kx}$`, [
         { text: `$f(x) = ${m1}x + ${b1}$`, why: "A linear function adds the same amount forever. An exponential with factor above 1 passes it." },
         { text: `$g(x) = ${m2}x$`, why: "A big slope still only adds the same amount each step." },
         { text: `$h(x) = ${sq}x + ${b1 * 10}$`, why: "A large starting value does not matter for very large $x$." },
@@ -300,7 +303,7 @@
       return { key: [m1, b1, m2, c, g, sq], ...m,
         prompt: "Which function has the greatest value when $x$ is very large?",
         hint: "Compare adding a fixed amount with multiplying by a factor above 1.",
-        solution: `The exponential function multiplies by ${dec(g)} each step. Its increases keep getting bigger, so it passes every linear function eventually: **$k(x) = ${dec(c)}(${dec(g)})^x$**.` };
+        solution: `The exponential function multiplies by ${dec(g)} each step. Its increases keep getting bigger, so it passes every linear function eventually: **$k(x) = ${kx}$**.` };
     } });
 
   add({ id: "u2.le.match-two", skill: "u2.linexp", level: L.C, type: "numeric", calc: false,
@@ -319,7 +322,7 @@
 
   add({ id: "u2.ex.negative", skill: "u2.exponents", level: L.B, type: "numeric", calc: false,
     make(r) {
-      const [b, n] = r.pick([[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2], [3, 3], [4, 2], [4, 3], [5, 2], [5, 3], [10, 2], [10, 3], [6, 2], [8, 2]]);
+      const [b, n] = r.pick([[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2], [3, 3], [4, 2], [4, 3], [5, 2], [5, 3], [10, 2], [10, 3], [8, 2]]);
       const flip = r.chance(0.3);
       const val = flip ? b ** n : 1 / b ** n;
       return { key: [b, n, flip],
@@ -394,17 +397,17 @@
       const c = r.pick([2, 3]), k = r.pick([2, 3]), a = r.int(1, 4), b = r.intNot(-3, 4, [0]), e = r.int(1, 5);
       const ck = c ** k, d = r.pick([1, c, ck].filter((v, i, arr) => arr.indexOf(v) === i));
       const C = ck / d, mE = a * k + b - e;
-      const term = (coef, ex) => `$${coef === 1 ? "" : fmt(coef)}${coef === 1 && ex === 0 ? "1" : ex === 0 ? "" : xp("x", ex)}$`;
+      const term = (coef, ex) => `$${coef === 1 ? "" : tex(coef)}${coef === 1 && ex === 0 ? "1" : ex === 0 ? "" : xp("x", ex)}$`;
       const m = mcq(term(C, mE), [
         { text: term((c * k) / d, mE), why: `$${c}^{${k}}$ means ${c} multiplied by itself ${k} times, not $${c} \\cdot ${k}$.` },
         { text: term(C, a + k + b - e), why: "For a power of a power, multiply the exponents, not add." },
         { text: term(C, a * k + b + e), why: "Dividing means subtracting the bottom exponent." },
       ], r, [{ text: term(c / d === Math.floor(c / d) ? c / d : ck * d, mE), why: "The coefficient must also be raised to the power." }, { text: term(C + 1, mE), why: "Check the coefficient." }]);
-      const expr = `\\dfrac{\\left(${c}x^{${a}}\\right)^{${k}} \\cdot ${xp("x", b)}}{${d === 1 ? "" : d}${xp("x", e)}}`;
+      const expr = `\\dfrac{\\left(${c}${xp("x", a)}\\right)^{${k}} \\cdot ${xp("x", b)}}{${d === 1 ? "" : d}${xp("x", e)}}`;
       return { key: [c, k, a, b, e, d], ...m,
         prompt: `For $x \\ne 0$, which expression is equivalent to $${expr}$?`,
         hint: "Raise both the number and the power of $x$ to the outside exponent first.",
-        solution: `$\\left(${c}x^{${a}}\\right)^{${k}} = ${ck}x^{${a * k}}$. Multiply by $${xp("x", b)}$: $${ck}x^{${a * k + b}}$. Divide by $${d === 1 ? "" : d}${xp("x", e)}$: ${term(C, mE).replace(/^\$/, "$\\mathbf{").replace(/\$$/, "}$")}` };
+        solution: `$\\left(${c}${xp("x", a)}\\right)^{${k}} = ${ck}${xp("x", a * k)}$. Multiply by $${xp("x", b)}$: $${ck}x^{${a * k + b}}$. Divide by $${d === 1 ? "" : d}${xp("x", e)}$: ${term(C, mE).replace(/^\$/, "$\\mathbf{").replace(/\$$/, "}$")}` };
     } });
 
   add({ id: "u2.ex.equal-to", skill: "u2.exponents", level: L.H, type: "multi", calc: false,
@@ -442,7 +445,7 @@
           prompt: `What value of $x$ makes $${b}^{${p === 1 ? "" : p}x} = ${b ** q}^{x ${signed(-c, false)}}$ true?`,
           answer: x,
           hint: `Write ${b ** q} as a power of ${b}.`,
-          solution: `$${b ** q} = ${b}^{${q}}$, so the right side is $${b}^{${q}(x ${signed(-c, false)})}$.<br>Set exponents equal: $${p === 1 ? "" : p}x = ${q}x ${signed(-q * c, false)}$ → $${p - q}x = ${-q * c}$ → $x = \\mathbf{${x}}$` };
+          solution: `$${b ** q} = ${b}^{${q}}$, so the right side is $${b}^{${q}(x ${signed(-c, false)})}$.<br>Set exponents equal: $${p === 1 ? "" : p}x = ${q}x ${signed(-q * c, false)}$ → $${p - q === 1 ? "" : p - q === -1 ? "-" : p - q}x = ${-q * c}$ → $x = \\mathbf{${x}}$` };
       }
     } });
 
@@ -488,12 +491,12 @@
 
   add({ id: "u2.rc.units", skill: "u2.roc", level: L.B, type: "mcq", calc: false,
     make(r) {
-      const t1 = r.int(1, 3), dt = r.int(2, 4), v = r.int(4, 13) * 5, d1 = v * t1 + r.int(0, 3) * 10, d2 = d1 + v * dt, t2 = t1 + dt;
-      const m = mcq(`${v} miles per hour`, [
-        { text: `${fmt(d2 / t2)} miles per hour`, why: "That divides one distance by one time. Use the change in distance over the change in time." },
-        { text: `${d2 - d1} miles per hour`, why: `That is the change in distance. Divide it by the ${dt} hours.` },
+      const t1 = r.int(1, 3), dt = r.int(2, 4), v = r.int(4, 13) * 5, d1 = v * t1 + r.int(1, 3) * 10, d2 = d1 + v * dt, t2 = t1 + dt;
+      const m = mcq(`$${v}$ miles per hour`, [
+        { text: `$${tex(d2 / t2)}$ miles per hour`, why: "That divides one distance by one time. Use the change in distance over the change in time." },
+        { text: `$${d2 - d1}$ miles per hour`, why: `That is the change in distance. Divide it by the ${dt} hours.` },
         { text: `$${frac(dt, d2 - d1)}$ hour per mile`, why: "This divides time by distance. Put the change in distance on top." },
-      ], r, [{ text: `${v + 5} miles per hour`, why: "Check the subtraction." }]);
+      ], r, [{ text: `$${v + 5}$ miles per hour`, why: "Check the subtraction." }]);
       return { key: [t1, dt, v, d1], ...m,
         prompt: `A car has traveled ${d1} miles after ${t1} hour${t1 > 1 ? "s" : ""} and ${d2} miles after ${t2} hours. What is its average rate of change over that time?`,
         hint: "Divide the change in distance by the change in time.",
@@ -528,10 +531,11 @@
       const i = r.int(0, 2), j = r.int(i + 1, 4);
       const dy = pts[j][1] - pts[i][1], dx = j - i, ans = dy / dx;
       const m = mcq(`$${tex(ans)}$`, [
-        { text: `$${tex(dx / dy)}$`, why: "This divides the change in $x$ by the change in $y$. Put the change in $y$ on top." },
+        { text: `$${frac(dx, dy)}$`, why: "This divides the change in $x$ by the change in $y$. Put the change in $y$ on top." },
         { text: `$${tex(dy)}$`, why: `That is the change in $y$. Divide it by the change in $x$, ${dx}.` },
         { text: `$${tex(pts[j][1] / j)}$`, why: "This divides one y-value by one x-value. Use the changes." },
-      ], r, [{ text: `$${tex(-ans)}$`, why: "The function goes up, so the rate is positive." }, { text: `$${tex(ans + 1)}$`, why: "Check the subtraction." }]);
+      ], r, [{ text: `$${tex(-ans)}$`, why: "The function goes up, so the rate is positive." }, { text: `$${tex(ans + 1)}$`, why: "Check the subtraction." },
+        { text: `$${tex(ans + 2)}$`, why: "Check the y-values you read from the graph." }, { text: `$${tex(2 * ans + 3)}$`, why: "Check the y-values you read from the graph." }]);
       return { key: [a, i, j], ...m,
         prompt: `The graph shows points of an exponential function $f$. What is the average rate of change of $f$ from $x = ${i}$ to $x = ${j}$?`,
         graph: { points: pts, window: windowFor(pts) },
@@ -541,7 +545,7 @@
 
   add({ id: "u2.rc.context-exp", skill: "u2.roc", level: L.H, type: "numeric", calc: true,
     make(r) {
-      const a = r.int(2, 12) * 50, lo = r.int(0, 3), hi = lo + r.pick([2, 3, 4]);
+      const a = r.int(1, 12) * 100, lo = r.int(0, 3), hi = lo + r.pick([1, 2, 4]);
       const f = (t) => a * 2 ** t;
       const ans = (f(hi) - f(lo)) / (hi - lo);
       return { key: [a, lo, hi],
@@ -587,7 +591,7 @@
       const f = (x) => a * g ** x;
       const ans = (f(3) - f(1)) / 2;
       const m = mcq(fmt(ans), [
-        { text: fmt(f(3) - f(1)), why: "Divide the change in $f$ by the change in $x$, which is 2." },
+        { text: fmt(f(3) - f(1)), why: "Divide the change in $g$ by the change in $x$, which is 2." },
         { text: fmt(f(1) - f(0)), why: "That is the rate from $x = 0$ to $x = 1$." },
         { text: fmt((f(3) - f(2))), why: "That is the rate from $x = 2$ to $x = 3$ only." },
       ], r, [{ text: fmt(ans + a), why: "Check the arithmetic." }, { text: fmt(f(3) / 3), why: "This divides one value by one x-value." }]);
@@ -652,7 +656,7 @@
       const mm = mcq(ps(k, h), [
         { text: ps(-k, -h), why: "In $y - y_1 = m(x - x_1)$ you subtract the coordinates. The signs are flipped here." },
         { text: ps(h, k), why: "This swaps the $x$- and $y$-coordinates of the point." },
-        { text: `$y = ${m}x ${signed(k, false)}$`, why: `This line has y-intercept ${k}; it does not pass through $${pt([h, k])}$.` },
+        { text: `$y = ${lin(m, k)}$`, why: `This line has y-intercept ${k}; it does not pass through $${pt([h, k])}$.` },
       ], r);
       return { key: [h, k, m], ...mm,
         prompt: `Which equation describes the line with slope ${m} through the point $${pt([h, k])}$?`,
@@ -706,7 +710,7 @@
           prompt: `A line passes through $${pt([x1, y1])}$ and $${pt([x2, y2])}$. At what $x$-value does it cross the $x$-axis?`,
           answer: root,
           hint: "Find the slope, write the equation, then set $y = 0$.",
-          solution: `Slope: $\\dfrac{${y2} - ${y1 < 0 ? "(" + y1 + ")" : y1}}{${x2} - ${x1 < 0 ? "(" + x1 + ")" : x1}} = ${tex(m)}$. Equation: $y - ${y1 < 0 ? "(" + y1 + ")" : y1} = ${tex(m)}(x - ${x1 < 0 ? "(" + x1 + ")" : x1})$.<br>Set $y = 0$: $${-y1} = ${tex(m)}(x ${signed(-x1, false)})$ → $x ${signed(-x1, false)} = ${tex(-y1 / m)}$ → $x = \\mathbf{${root}}$` };
+          solution: `Slope: $\\dfrac{${y2} - ${y1 < 0 ? "(" + y1 + ")" : y1}}{${x2} - ${x1 < 0 ? "(" + x1 + ")" : x1}} = ${tex(m)}$. Equation: $y ${signed(-y1, false)} = ${m === 1 ? "" : m === -1 ? "-" : tex(m)}(x ${signed(-x1, false)})$.<br>Set $y = 0$: $${-y1} = ${m === 1 ? "" : m === -1 ? "-" : tex(m)}(x ${signed(-x1, false)})$ → $x ${signed(-x1, false)} = ${tex(-y1 / m)}$ → $x = \\mathbf{${root}}$` };
       }
     } });
 
@@ -740,7 +744,7 @@
       const mm = mcq(right, [
         { text: askStart ? dec(g) : String(a), why: askStart ? "That is the growth or decay factor." : "That is the starting value." },
         { text: dec(+(a * g).toFixed(4)), why: "That is $f(1)$, the value after one step." },
-        { text: dec(+(g - 1).toFixed(4)), why: "That is the rate of change as a decimal, not the factor." },
+        { text: dec(+(g - 1).toFixed(4)), why: "That is the percent change as a decimal, not the factor." },
       ], r, [{ text: "0", why: "The input when you start is 0, not the value." }, { text: String(a + 1), why: "Read the number in front of the base." }]);
       return { key: [a, g, askStart], ...mm,
         prompt: `$f(x) = ${a}\\left(${dec(g)}\\right)^{x}$. What is the ${askStart ? "starting value (the value when $x = 0$)" : "growth or decay factor"}?`,
@@ -765,7 +769,7 @@
       const mm = mcq(`$y = ${expo(a, g)}$`, [
         { text: `$y = ${expo(g, a)}$`, why: "This swaps the starting value and the factor." },
         { text: `$y = ${lin(ys[1] - ys[0], a)}$`, why: "This is linear: it adds the same amount each time. The table multiplies by the same factor." },
-        { text: `$y = ${expo(a, g, "x - 1")}$`, why: `Check $x = 0$: this gives ${fmt(a / g)}, not ${a}.` },
+        { text: `$y = ${expo(a, g, "x - 1")}$`, why: `Check $x = 0$: this gives $${tex(a / g)}$, not ${a}.` },
       ], r, [{ text: `$y = ${expo(ys[1], g)}$`, why: `$y = ${fmt(ys[1])}$ when $x = 1$, not when $x = 0$.` }]);
       return { key: [a, g], ...mm,
         prompt: "Which equation describes the exponential function in the table?",
@@ -778,7 +782,7 @@
     make(r) {
       const grow = r.chance(0.5), p = grow ? r.pick([2, 3, 4, 5, 6, 8, 10, 12, 15]) : r.pick([5, 8, 10, 12, 15, 20, 25]), A = r.int(5, 60) * 100;
       const fac = grow ? 1 + p / 100 : 1 - p / 100, other = grow ? 1 - p / 100 : 1 + p / 100;
-      const thing = grow ? r.pick(["A town's population is", "An investment is worth", "A video has"]) : r.pick(["A car is worth", "A lake's fish population is", "A laptop is worth"]);
+      const thing = grow ? r.pick(["A town's population is", "An investment is worth", "A video's view count is"]) : r.pick(["A car is worth", "A lake's fish population is", "A laptop is worth"]);
       const v = (b) => `$f(t) = ${A}\\left(${dec(b)}\\right)^{t}$`;
       const mm = mcq(v(fac), [
         { text: v(p / 100), why: `Multiplying by ${dec(p / 100)} keeps only ${p}% each year.` },
@@ -786,7 +790,7 @@
         { text: `$f(t) = ${A} ${grow ? "+" : "-"} ${dec(p / 100)}t$`, why: "Changing by a percent each year multiplies; it does not add a fixed amount." },
       ], r);
       return { key: [grow, p, A, thing], ...mm,
-        prompt: `${thing} ${A} now. It ${grow ? "grows" : "goes down"} by ${p}% each year. Which function gives the amount after $t$ years?`,
+        prompt: `${thing} ${commas(String(A))} now. It ${grow ? "grows" : "goes down"} by ${p}% each year. Which function gives the amount after $t$ years?`,
         hint: grow ? "Growing by p% means keeping 100% and adding p%." : "Losing p% means keeping (100 − p)%.",
         solution: `The factor is $1 ${grow ? "+" : "-"} ${dec(p / 100)} = ${dec(fac)}$, so **$f(t) = ${A}(${dec(fac)})^t$**.` };
     } });
@@ -842,7 +846,7 @@
         prompt: `An exponential function $f$ has $f(${p}) = ${fmt(yp)}$ and $f(${q}) = ${fmt(yq)}$. What is $f(0)$?`,
         answer: a,
         hint: `From $x = ${p}$ to $x = ${q}$ you multiply by the factor ${q - p} times.`,
-        solution: `$b^{${q - p}} = ${fmt(yq)} \\div ${fmt(yp)} = ${tex(g ** (q - p))}$, so $b = ${tex(g)}$.<br>$f(0) = ${fmt(yp)} \\div ${tex(g)}^{${p}} = \\mathbf{${a}}$` };
+        solution: `$b^{${q - p}} = ${fmt(yq)} \\div ${fmt(yp)} = ${tex(g ** (q - p))}$, so $b = ${tex(g)}$.<br>$f(0) = ${fmt(yp)} \\div ${Number.isInteger(g) ? g : `\\left(${tex(g)}\\right)`}^{${p}} = \\mathbf{${a}}$` };
     } });
 
   add({ id: "u2.we.interpret", skill: "u2.writeexp", level: L.C, type: "mcq", calc: false,

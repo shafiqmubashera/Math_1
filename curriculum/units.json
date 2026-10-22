@@ -173,7 +173,7 @@
    "book": 2,
    "order": 2,
    "title": "Linear & Exponential Functions",
-   "status": "planned",
+   "status": "live",
    "lessons": [
     {
      "n": 1,
@@ -216,6 +216,10 @@
     {
      "id": "u2.discrete",
      "name": "Discrete vs continuous, domain",
+     "lessons": [
+      2,
+      3
+     ],
      "standards": [
       "NC.M1.F-IF.5",
       "NC.M1.F-IF.3"
@@ -224,6 +228,11 @@
     {
      "id": "u2.linexp",
      "name": "Linear vs exponential models",
+     "lessons": [
+      1,
+      2,
+      6
+     ],
      "standards": [
       "NC.M1.F-LE.1",
       "NC.M1.F-LE.3"
@@ -232,6 +241,10 @@
     {
      "id": "u2.exponents",
      "name": "Properties of exponents",
+     "lessons": [
+      4,
+      5
+     ],
      "standards": [
       "NC.M1.N-RN.2"
      ]
@@ -239,6 +252,9 @@
     {
      "id": "u2.roc",
      "name": "Average rate of change",
+     "lessons": [
+      7
+     ],
      "standards": [
       "NC.M1.F-IF.6"
      ]
@@ -246,6 +262,10 @@
     {
      "id": "u2.writeline",
      "name": "Writing linear equations",
+     "lessons": [
+      8,
+      9
+     ],
      "standards": [
       "NC.M1.F-BF.1a",
       "NC.M1.A-CED.2"
@@ -254,6 +274,10 @@
     {
      "id": "u2.writeexp",
      "name": "Writing exponential equations",
+     "lessons": [
+      2,
+      9
+     ],
      "standards": [
       "NC.M1.F-BF.1a",
       "NC.M1.F-LE.5"

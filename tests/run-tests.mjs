@@ -40,6 +40,32 @@ const BANK_CHECKS = {
   u1b13: () => (Number.isInteger((100 - 7) / 4) ? 1 : 0),
   u1b14: () => 12 + 1.5 * 19,
   u1b15: () => 256 / 2 ** 5,
+  // Unit 2
+  u2b01: () => 0,
+  u2b02: () => 12 * Math.floor(150 / 12),
+  u2b03: () => ["$0 \\le t \\le 15$", "$0 \\le t \\le 60$", "$\\{0, 1, 2, \\ldots, 15\\}$", "$t \\ge 0$"].indexOf(`$0 \\le t \\le ${60 / 4}$`),
+  u2b04: () => { let n = 1; while (2 ** (n - 1) <= 1000) n++; return n; },
+  u2b05: () => [[3, 6, 12, 24], [5, 10, 15, 20], [100, 50, 25, 12.5], [1, 4, 9, 16], [2, 6, 18, 54]]
+    .map((y, i) => (y.slice(1).every((v, k) => v / y[k] === y[1] / y[0]) ? i : -1)).filter((i) => i >= 0),
+  u2b06: () => {
+    const f = (x) => 500 * x + 1000, g = (x) => 2 ** x, xs = Array.from({ length: 4000 }, (_, i) => i / 100 + 0.01);
+    const truth = [xs.filter((x) => x >= 13).every((x) => g(x) > f(x)), xs.every((x) => f(x) > g(x)), xs.every((x) => g(x) > f(x)), xs.every((x) => f(x) !== g(x) && Math.sign(f(x) - g(x)) === Math.sign(f(xs[0]) - g(xs[0])))];
+    return truth.filter(Boolean).length === 1 ? truth.indexOf(true) : -1;
+  },
+  u2b07: () => { for (let x = -20; x <= 20; x++) if ((2 ** x * 2 ** 5) / 2 ** 3 === 64) return x; },
+  u2b08: () => [9 / 4, -4 / 9, 4 / 9, -9 / 4].findIndex((v) => Math.abs(v - (2 / 3) ** -2) < 1e-12),
+  u2b09: () => { const coef = 3 ** 3 / 9, ex = 2 * 3 - -1; return [[3, 7], [3, 5], [1 / 3, 7], [1, 7]].findIndex(([c, e]) => c === coef && e === ex); },
+  u2b10: () => (17.5 - 5.5) / (8 - 2),
+  u2b11: () => { const f = (x) => 3 * 2 ** x; return [[2, 4], [1, 3], [2, 3], [3, 4]].findIndex(([p, q]) => (f(q) - f(p)) / (q - p) === 18); },
+  u2b12: () => { for (let b = 4; b < 100; b++) if ((b * b - 9) / (b - 3) === 11) return b; },
+  u2b13: () => { const m = (26.5 - 13) / (10 - 4), b = 13 - 4 * m; return b + 15 * m; },
+  u2b14: () => { const m = (-2 - 7) / (4 - -2), b = 7 - m * -2; return [[-3 / 2, 4], [-2 / 3, 17 / 3], [3 / 2, 10], [-3 / 2, 7]].findIndex(([M, B]) => M === m && Math.abs(B - b) < 1e-9); },
+  u2b15: () => { const m = (11 - 5) / (3 - 1); return 5 - m * 1; },
+  u2b16: () => 0,
+  u2b17: () => Math.round(900 * 0.7 ** 3),
+  u2b18: () => { const b = Math.sqrt(45 / 5); return [135, 65, 405, 225].indexOf(5 * b ** 3); },
+  u2b19: () => { const a = 4, b = 10 / 4; return a * b ** 2; },
+  u2b20: () => [0, 2],
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 

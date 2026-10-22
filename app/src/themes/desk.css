@@ -254,3 +254,4 @@ details summary { color: var(--pen); }
 .rung.now::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pen); }
 .sk.going .sk-box { font-size: 0; }
 .sk.going .sk-box::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pen); }
+.set-foot [data-act="next"]:hover:not(:disabled) { background: #000000; color: #FFFFFF; border-color: #FFFFFF; }
