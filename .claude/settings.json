@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(node tests/run-tests.mjs)",
+      "Bash(node tools/build.mjs)",
+      "Read(./**)",
+      "Edit(./content/**)",
+      "Edit(./curriculum/**)",
+      "Edit(./app/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Edit(./dist/**)"
+    ]
+  },
+  "env": {
+    "MATH1_SET_SIZE": "25",
+    "MATH1_DIAGNOSTIC_MIX": "basic:0.10,intermediate:0.30,hard:0.60"
+  }
+}
