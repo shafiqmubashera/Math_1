@@ -79,6 +79,17 @@ const BANK_CHECKS = {
   u3b10: () => [-2, 0, 5.5, 6, 7].map((y, i) => { const x = 4 - y; return x > -2 && x <= 6 ? i : -1; }).filter((i) => i >= 0),
   u3b11: () => (-4) ** 2 - 3 * -4,
   u3b12: () => (400 + 25 * 20) / (20 + 20),
+  // Unit 4
+  u4b01: () => { for (let x = -50; x <= 50; x++) if (3 * (2 * x - 5) === 2 * (x + 4) + 13) return x - 3; },
+  u4b02: () => { const x = (14 - 4) * 3 / 2; return x / 3; },
+  u4b03: () => { const C = (F) => (5 / 9) * (F - 32); const cands = [(c) => (9 / 5) * c + 32, (c) => (9 / 5) * c - 32, (c) => (5 / 9) * c + 32, (c) => (9 / 5) * (c + 32)]; return cands.findIndex((g) => [0, 20, 100].every((c) => Math.abs(C(g(c)) - c) < 1e-9)); },
+  u4b04: () => (96 * Math.PI) / (Math.PI * 16),
+  u4b05: () => { const vals = [-4, -3, 0, 8]; const not = vals.map((x, i) => (5 - 2 * x <= 11 ? -1 : i)).filter((i) => i >= 0); return not.length === 1 ? not[0] : -1; },
+  u4b06: () => { let n = 0; for (let k = -50; k <= 50; k++) if (-3 <= (k - 1) / 2 && (k - 1) / 2 < 1) n++; return n; },
+  u4b07: () => { let x = 0; while ((78 + 85 + 90 + 82 + x) / 5 < 84) x++; return x; },
+  u4b08: () => { const ok = (c) => 2 * c + 3 * 40 >= 250; const cands = [(c) => 2 * c + 120 >= 250, (c) => 2 * c + 120 <= 250, (c) => 3 * c + 80 >= 250, (c) => 2 * c + 40 >= 250]; return cands.findIndex((f) => [0, 50, 65, 66, 100].every((c) => f(c) === ok(c))); },
+  u4b09: () => { const eqs = [[4, -8, 4, 8], [4, -8, 4, -8], [4, -8, 2, -8], [4, -8, -4, 8]]; const none = eqs.map(([a, b, c, d], i) => (a === c && b !== d ? i : -1)).filter((i) => i >= 0); return none.length === 1 ? none[0] : -1; },
+  u4b10: () => { const w = (48 - 6) / 6; return 2 * w + 3; },
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 

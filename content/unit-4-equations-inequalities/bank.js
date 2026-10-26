@@ -1,0 +1,46 @@
+/* Unit 4 Equations & Inequalities: written question bank (context and SAT-style items that don't fit a template).
+   Every item is re-solved in tests/run-tests.mjs (see BANK_CHECKS) before it ships. */
+(function (G) {
+  const M1 = G.M1;
+  const bank = [
+    { id: "u4b01", skill: "u4.linear", level: "challenge", type: "numeric", calc: false, lesson: 2, standard: "NC.M1.A-REI.3", answer: 6,
+      prompt: "If $3(2x - 5) = 2(x + 4) + 13$, what is the value of $x - 3$?",
+      hint: "Solve for $x$ first.", solution: "$6x - 15 = 2x + 21$, so $4x = 36$ and $x = 9$. Then $x - 3 = \\mathbf{6}$." },
+    { id: "u4b02", skill: "u4.linear", level: "challenge", type: "numeric", calc: false, lesson: 2, standard: "NC.M1.A-REI.3", answer: 5,
+      prompt: "If $\\frac{2}{3}x + 4 = 14$, what is the value of $\\frac{1}{3}x$?",
+      hint: "Find $\\frac{2}{3}x$ first.", solution: "$\\frac{2}{3}x = 10$, so $\\frac{1}{3}x$ is half of that: **5**. (Here $x = 15$.)" },
+    { id: "u4b03", skill: "u4.literal", level: "hard", type: "mcq", calc: false, lesson: 4, standard: "NC.M1.A-CED.4",
+      prompt: "The formula $C = \\frac{5}{9}(F - 32)$ converts Fahrenheit to Celsius. Which formula gives $F$ in terms of $C$?",
+      choices: ["$F = \\frac{9}{5}C + 32$", "$F = \\frac{9}{5}C - 32$", "$F = \\frac{5}{9}C + 32$", "$F = \\frac{9}{5}(C + 32)$"], answer: 0,
+      why: ["Correct.", "Undo subtracting 32 by adding 32.", "Multiply by $\\frac{9}{5}$ to undo $\\frac{5}{9}$.", "Multiply first, then add 32."],
+      hint: "Multiply both sides by $\\frac{9}{5}$, then add 32.", solution: "$\\frac{9}{5}C = F - 32$, so **$F = \\frac{9}{5}C + 32$**." },
+    { id: "u4b04", skill: "u4.literal", level: "challenge", type: "numeric", calc: true, lesson: 4, standard: "NC.M1.A-CED.4", answer: 6,
+      prompt: "The volume of a cylinder is $V = \\pi r^2 h$. A cylinder has volume $96\\pi$ cubic inches and radius 4 inches. What is its height, in inches?",
+      hint: "Solve for $h$.", solution: "$h = \\frac{V}{\\pi r^2} = \\frac{96\\pi}{16\\pi} = \\mathbf{6}$ inches." },
+    { id: "u4b05", skill: "u4.ineq", level: "hard", type: "mcq", calc: false, lesson: 5, standard: "NC.M1.A-REI.3",
+      prompt: "Which value of $x$ is **not** a solution of $5 - 2x \\le 11$?",
+      choices: ["$-4$", "$-3$", "$0$", "$8$"], answer: 0,
+      why: ["Correct: $5 - 2(-4) = 13$, which is greater than 11.", "$5 - 2(-3) = 11 \\le 11$, so it is a solution.", "$5 \\le 11$, so it is a solution.", "$5 - 16 = -11 \\le 11$, so it is a solution."],
+      hint: "Solve, remembering to flip the sign when you divide by $-2$.", solution: "$-2x \\le 6$, so $x \\ge -3$. The value that is not a solution is **$-4$**." },
+    { id: "u4b06", skill: "u4.ineq", level: "challenge", type: "numeric", calc: false, lesson: 5, standard: "NC.M1.A-REI.3", answer: 8,
+      prompt: "How many integers $n$ satisfy $-3 \\le \\frac{n - 1}{2} < 1$?",
+      hint: "Multiply all three parts by 2, then add 1.", solution: "$-6 \\le n - 1 < 2$, so $-5 \\le n < 3$: $-5, -4, -3, -2, -1, 0, 1, 2$. That is **8** integers." },
+    { id: "u4b07", skill: "u4.model", level: "challenge", type: "numeric", calc: false, lesson: 6, standard: "NC.M1.A-CED.1", answer: 85,
+      prompt: "Nia's first four test scores are 78, 85, 90 and 82. What is the least score she can get on the fifth test so that her mean on all five is at least 84?",
+      hint: "The five scores must add up to at least $5 \\times 84$.", solution: "$78 + 85 + 90 + 82 + x \\ge 420$, so $335 + x \\ge 420$ and $x \\ge \\mathbf{85}$." },
+    { id: "u4b08", skill: "u4.model", level: "hard", type: "mcq", calc: false, lesson: 6, standard: "NC.M1.A-CED.1",
+      prompt: "A school club sells cookies for \\$2 each and brownies for \\$3 each. It sold 40 brownies and wants to raise at least \\$250. Which inequality shows the number of cookies $c$ it must sell?",
+      choices: ["$2c + 120 \\ge 250$", "$2c + 120 \\le 250$", "$3c + 80 \\ge 250$", "$2c + 40 \\ge 250$"], answer: 0,
+      why: ["Correct.", "\"At least\" means $\\ge$.", "Cookies cost \\$2 and 40 brownies earn $3 \\times 40$.", "40 brownies earn \\$120, not \\$40."],
+      hint: "How much did the brownies earn?", solution: "Brownies earned $3 \\times 40 = 120$. Cookies earn $2c$. **$2c + 120 \\ge 250$**." },
+    { id: "u4b09", skill: "u4.linear", level: "hard", type: "mcq", calc: false, lesson: 3, standard: "NC.M1.A-REI.1",
+      prompt: "Which equation has no solution?",
+      choices: ["$4(x - 2) = 4x + 8$", "$4(x - 2) = 4x - 8$", "$4(x - 2) = 2x - 8$", "$4(x - 2) = -4x + 8$"], answer: 0,
+      why: ["Correct.", "Both sides are $4x - 8$: infinitely many solutions.", "$4x - 8 = 2x - 8$ gives $x = 0$.", "$8x = 16$ gives $x = 2$."],
+      hint: "Distribute and compare both sides.", solution: "$4x - 8 = 4x + 8$ means $-8 = 8$, which is never true. **$4(x - 2) = 4x + 8$** has no solution." },
+    { id: "u4b10", skill: "u4.model", level: "challenge", type: "numeric", calc: false, lesson: 6, standard: "NC.M1.A-CED.1", answer: 17,
+      prompt: "A rectangle is 3 cm longer than twice its width. Its perimeter is 48 cm. What is its length, in cm?",
+      hint: "Let $w$ be the width. Then the length is $2w + 3$.", solution: "$2w + 2(2w + 3) = 48$, so $6w + 6 = 48$, $w = 7$, and the length is $2(7) + 3 = \\mathbf{17}$." },
+  ];
+  M1.units.u4 = Object.assign(M1.units.u4 || {}, { bank });
+})(typeof window !== "undefined" ? window : globalThis);
