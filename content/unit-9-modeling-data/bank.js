@@ -1,0 +1,46 @@
+/* Unit 9 Modeling Data: written question bank (context and SAT-style items that don't fit a template).
+   Every item is re-solved in tests/run-tests.mjs (see BANK_CHECKS) before it ships. */
+(function (G) {
+  const M1 = G.M1;
+  const bank = [
+    { id: "u9b01", skill: "u9.spread", level: "hard", type: "numeric", calc: true, lesson: 8, standard: "NC.M1.S-ID.2", answer: 88,
+      prompt: "Maya's mean on her first four quizzes is 85. What must she score on the fifth quiz to raise her mean to 85.6?",
+      hint: "Find the total she needs for five quizzes and the total she already has.", solution: "Needed total: $5 \\times 85.6 = 428$. She has $4 \\times 85 = 340$. Fifth score: $428 - 340 = \\mathbf{88}$." },
+    { id: "u9b02", skill: "u9.spread", level: "challenge", type: "mcq", calc: false, lesson: 7, standard: "NC.M1.S-ID.2",
+      prompt: "Every employee at a store gets a raise of \\$2 per hour. What happens to the mean and standard deviation of their hourly pay?",
+      choices: ["The mean goes up by \\$2; the standard deviation stays the same.", "Both go up by \\$2.", "The mean stays the same; the standard deviation goes up by \\$2.", "Both stay the same."], answer: 0,
+      why: ["Correct.", "Every pay moves up the same amount, so the distances from the mean do not change.", "Every pay goes up, so the mean must go up too.", "Every pay goes up, so the mean must go up too."],
+      hint: "Adding the same amount shifts the data without spreading it out.", solution: "Each pay shifts up \\$2, so the mean shifts up \\$2 and the spread is unchanged. **The mean goes up by \\$2; the standard deviation stays the same.**" },
+    { id: "u9b03", skill: "u9.spread", level: "challenge", type: "numeric", calc: false, lesson: 8, standard: "NC.M1.S-ID.2", answer: 34,
+      prompt: "The data set 2, 5, 9, 10, $k$ has $k > 10$. Its mean is 3 more than its median. What is $k$?",
+      hint: "With $k > 10$, the median is the middle of 2, 5, 9, 10, $k$.", solution: "The median is 9, so the mean is 12 and the total is $5 \\times 12 = 60$. $k = 60 - (2 + 5 + 9 + 10) = \\mathbf{34}$." },
+    { id: "u9b04", skill: "u9.correlation", level: "hard", type: "mcq", calc: false, lesson: 1, standard: "NC.M1.S-ID.9",
+      prompt: "A study of cities finds that cities with more hospitals have more deaths each year ($r = 0.91$). Which is the best explanation?",
+      choices: ["Larger cities have more people, which leads to more hospitals and more deaths.", "Hospitals cause deaths.", "Deaths cause cities to build hospitals.", "The correlation must be a mistake, because $r$ should be negative."], answer: 0,
+      why: ["Correct.", "Correlation alone does not show causation; population drives both.", "Correlation alone does not show this; population drives both.", "A positive $r$ just means both increase together."],
+      hint: "Look for a third variable that affects both.", solution: "Population is a lurking variable. **Larger cities have more people, which leads to more hospitals and more deaths.**" },
+    { id: "u9b05", skill: "u9.linefit", level: "challenge", type: "mcq", calc: false, lesson: 3, standard: "NC.M1.S-ID.7",
+      prompt: "A model for the height of a candle, in cm, after $t$ hours of burning is $\\hat{h} = 24 - 1.5t$. Which statement is true?",
+      choices: ["The model predicts the candle burns out after 16 hours.", "The candle grows 1.5 cm each hour.", "The candle starts 1.5 cm tall.", "After 24 hours, the candle is 1.5 cm tall."], answer: 0,
+      why: ["Correct.", "The slope is negative: the candle gets shorter.", "The starting height is the intercept, 24 cm.", "$24 - 1.5(24) = -12$, which is not 1.5."],
+      hint: "Set $\\hat{h} = 0$ to find when the candle burns out.", solution: "$0 = 24 - 1.5t$ gives $t = 16$. **The model predicts the candle burns out after 16 hours.**" },
+    { id: "u9b06", skill: "u9.linefit", level: "hard", type: "numeric", calc: true, lesson: 2, standard: "NC.M1.S-ID.6a", answer: 2.5,
+      prompt: "A line of best fit passes through $(2, 7)$ and $(10, 27)$. What is its slope?",
+      hint: "Slope is change in $y$ over change in $x$.", solution: "$\\frac{27 - 7}{10 - 2} = \\frac{20}{8} = \\mathbf{2.5}$" },
+    { id: "u9b07", skill: "u9.residuals", level: "challenge", type: "numeric", calc: true, lesson: 4, standard: "NC.M1.S-ID.6b", answer: -5,
+      prompt: "The model $\\hat{y} = 2x + 5$ is used on the data points $(1, 8)$, $(2, 7)$, $(3, 10)$ and $(4, 10)$. What is the sum of the residuals?",
+      hint: "Find each residual (actual − predicted), then add.", solution: "Predicted: 7, 9, 11, 13. Residuals: $1, -2, -1, -3$. Sum: $\\mathbf{-5}$." },
+    { id: "u9b08", skill: "u9.residuals", level: "hard", type: "mcq", calc: false, lesson: 5, standard: "NC.M1.S-ID.6b",
+      prompt: "A point has a residual of $-4$ for a line of best fit. What does that tell you?",
+      choices: ["The point is 4 units below the line.", "The point is 4 units above the line.", "The point is 4 units to the left of the line.", "The line's slope is $-4$."], answer: 0,
+      why: ["Correct.", "A negative residual means actual < predicted, so the point is below.", "Residuals are vertical distances.", "A residual is about one point, not the slope."],
+      hint: "Residual = actual − predicted.", solution: "Actual is 4 less than predicted. **The point is 4 units below the line.**" },
+    { id: "u9b09", skill: "u9.onevar", level: "challenge", type: "numeric", calc: false, lesson: 6, standard: "NC.M1.S-ID.1", answer: 25,
+      prompt: "A box plot of 100 students' test scores has $Q_1 = 62$, median 75 and $Q_3 = 84$. About how many students scored between 75 and 84?",
+      hint: "Each section of a box plot holds about one quarter of the data.", solution: "Median to $Q_3$ is one quarter: $\\frac{100}{4} = \\mathbf{25}$ students." },
+    { id: "u9b10", skill: "u9.onevar", level: "hard", type: "numeric", calc: false, lesson: 8, standard: "NC.M1.S-ID.3", answer: 32.5,
+      prompt: "A data set has $Q_1 = 20$ and $Q_3 = 25$. Using the $1.5 \\times \\text{IQR}$ rule, a value is an outlier if it is greater than what number?",
+      hint: "Upper fence = $Q_3 + 1.5 \\times \\text{IQR}$.", solution: "IQR $= 5$. Upper fence: $25 + 1.5(5) = \\mathbf{32.5}$." },
+  ];
+  M1.units.u9 = Object.assign(M1.units.u9 || {}, { bank });
+})(typeof window !== "undefined" ? window : globalThis);

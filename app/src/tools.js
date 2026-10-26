@@ -29,8 +29,8 @@
     const ylabelEvery = Math.max(1, Math.ceil((w.ymax - w.ymin) / w.ystep / 10));
     let k = 0;
     for (let y = Math.ceil(w.ymin / w.ystep) * w.ystep; y <= w.ymax + 1e-9; y += w.ystep, k++) {
-      el("line", { x1: pad.l, x2: W - pad.r, y1: sy(y), y2: sy(y), class: Math.abs(y) < 1e-9 ? "axis" : "minor" }, gGrid);
-      if (k % ylabelEvery === 0) el("text", { x: pad.l - 6, y: sy(y) + 4, class: "tick", "text-anchor": "end" }, gGrid).textContent = fmt(Math.round(y * 1e6) / 1e6);
+      if (!opts.noY) el("line", { x1: pad.l, x2: W - pad.r, y1: sy(y), y2: sy(y), class: Math.abs(y) < 1e-9 ? "axis" : "minor" }, gGrid);
+      if (!opts.noY && k % ylabelEvery === 0) el("text", { x: pad.l - 6, y: sy(y) + 4, class: "tick", "text-anchor": "end" }, gGrid).textContent = fmt(Math.round(y * 1e6) / 1e6);
     }
     for (let x = Math.ceil(w.xmin / w.xstep) * w.xstep; x <= w.xmax + 1e-9; x += w.xstep) {
       el("line", { y1: pad.t, y2: H - pad.b, x1: sx(x), x2: sx(x), class: Math.abs(x) < 1e-9 ? "axis" : "minor" }, gGrid);

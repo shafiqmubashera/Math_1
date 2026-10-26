@@ -133,6 +133,17 @@ const BANK_CHECKS = {
   u7b08: () => { for (let n = 2; n < 80; n += 2) if (n * (n + 2) === 80) return n; },
   u7b09: () => { for (let w = 0.5; w < 20; w += 0.5) if ((10 + 2 * w) * (8 + 2 * w) === 168) return w; },
   u7b10: () => 0,
+  u9b01: () => 5 * 85.6 - 4 * 85,
+  u9b02: () => { const pay = [10, 12, 15], up = pay.map((x) => x + 2), m = (a) => a.reduce((s, x) => s + x) / a.length, sd = (a) => Math.sqrt(m(a.map((x) => (x - m(a)) ** 2)));
+    return Math.abs(m(up) - m(pay) - 2) < 1e-9 && Math.abs(sd(up) - sd(pay)) < 1e-9 ? 0 : -1; },
+  u9b03: () => { for (let k = 11; k < 200; k++) { const a = [2, 5, 9, 10, k]; if (a.reduce((s, x) => s + x) / 5 === 9 + 3) return k; } },
+  u9b04: () => 0,
+  u9b05: () => [24 / 1.5 === 16, false, false, 24 - 1.5 * 24 === 1.5].indexOf(true),
+  u9b06: () => (27 - 7) / (10 - 2),
+  u9b07: () => [[1, 8], [2, 7], [3, 10], [4, 10]].reduce((s, [x, y]) => s + y - (2 * x + 5), 0),
+  u9b08: () => 0,
+  u9b09: () => 100 / 4,
+  u9b10: () => 25 + 1.5 * (25 - 20),
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 
