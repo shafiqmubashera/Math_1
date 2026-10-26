@@ -22,6 +22,7 @@ M1.curriculum = { units };
 const LEVELS = ["basic", "intermediate", "hard", "challenge"];
 const TYPES = ["mcq", "multi", "numeric", "plot", "graph-mcq"];
 let fails = 0, checked = 0;
+const bankPos = {};
 // Independent re-solves for the written bank (computed here, not copied from the item).
 const geo = (a, r, n) => a * r ** (n - 1);
 const BANK_CHECKS = {
@@ -227,6 +228,12 @@ for (const u of units) {
     const fps = new Set(set.questions.map((q) => q.fp));
     if (fps.size !== set.questions.length) fail(u.id, `set ${k} repeats a question`);
     for (const q of set.questions) if (seen.includes(q.fp)) fail(u.id, `set ${k} reuses a seen question`);
+    for (const q of set.questions) if (q.gen === "bank" && Array.isArray(q.choices)) {
+      const orig = (content.bank || []).find((x) => x.id === q.id);
+      const want = [].concat(orig.answer).map((i) => orig.choices[i]).sort(), got = [].concat(q.answer).map((i) => q.choices[i]).sort();
+      if (JSON.stringify(want) !== JSON.stringify(got)) fail(q.id, "shuffled bank choices lost the right answer");
+      bankPos[[].concat(q.answer)[0]] = (bankPos[[].concat(q.answer)[0]] || 0) + 1;
+    }
     seen = seen.concat([...fps]);
     // Simulate a student who gets basics right and others right 60% of the time.
     const answers = set.questions.map((q, i) => (q.level === "basic" || (i * 7) % 10 < 6 ? (q.type === "numeric" ? M1.qlib.fmt(q.answer) : q.answer) : null));
@@ -249,5 +256,6 @@ for (const u of units) {
   const up = M1.engine.updateState(st, set, g).state;
   if (Object.keys(up.skills).some((k) => !k.startsWith("u3."))) fail("review", "review questions leaked into unit skills");
 }
+if (Object.keys(bankPos).length < 3) fail("bank", "bank choices are not shuffled: " + JSON.stringify(bankPos));
 console.log(`\nChecked ${checked} questions. ${fails ? fails + " FAILURES" : "All passed."}`);
 process.exit(fails ? 1 : 0);

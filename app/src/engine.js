@@ -139,6 +139,16 @@
     return out;
   }
 
+  // Written bank items store the right choice first; shuffle choices (and their notes) when one is picked.
+  function shuffleChoices(q, r) {
+    if (!Array.isArray(q.choices) || q.noShuffle) return q;
+    const order = r.shuffle(q.choices.map((_, i) => i));
+    const out = Object.assign({}, q, { choices: order.map((i) => q.choices[i]) });
+    if (Array.isArray(q.why)) out.why = order.map((i) => q.why[i]);
+    out.answer = Array.isArray(q.answer) ? q.answer.map((a) => order.indexOf(a)).sort((x, y) => x - y) : order.indexOf(q.answer);
+    return out;
+  }
+
   function pickQuestion(slot, gens, bank, r, seen, inSet, typeCount) {
     const levelsToTry = [slot.level].concat(nearby(slot.level));
     for (const level of levelsToTry) {
@@ -146,7 +156,7 @@
       const bankC = bank.filter((b) => b.skill === slot.skill && b.level === level && !seen.has(b.fp) && !inSet.has(b.fp));
       // Least-used type first so a set mixes mcq, numeric, graphs and multi-select.
       const ranked = r.shuffle(cands).sort((a, b) => (typeCount[a.type] || 0) - (typeCount[b.type] || 0));
-      if (bankC.length && r.chance(0.35)) return r.pick(bankC);
+      if (bankC.length && r.chance(0.35)) return shuffleChoices(r.pick(bankC), r);
       for (const g of ranked) {
         for (let tries = 0; tries < 40; tries++) {
           let q;
@@ -154,7 +164,7 @@
           if (!seen.has(q.fp) && !inSet.has(q.fp)) return q;
         }
       }
-      if (bankC.length) return r.pick(bankC);
+      if (bankC.length) return shuffleChoices(r.pick(bankC), r);
     }
     return null;
   }
