@@ -90,6 +90,17 @@ const BANK_CHECKS = {
   u4b08: () => { const ok = (c) => 2 * c + 3 * 40 >= 250; const cands = [(c) => 2 * c + 120 >= 250, (c) => 2 * c + 120 <= 250, (c) => 3 * c + 80 >= 250, (c) => 2 * c + 40 >= 250]; return cands.findIndex((f) => [0, 50, 65, 66, 100].every((c) => f(c) === ok(c))); },
   u4b09: () => { const eqs = [[4, -8, 4, 8], [4, -8, 4, -8], [4, -8, 2, -8], [4, -8, -4, 8]]; const none = eqs.map(([a, b, c, d], i) => (a === c && b !== d ? i : -1)).filter((i) => i >= 0); return none.length === 1 ? none[0] : -1; },
   u4b10: () => { const w = (48 - 6) / 6; return 2 * w + 3; },
+  // Unit 8
+  u8b01: () => Math.hypot(7 - 2, 11 + 1),
+  u8b02: () => { const B = [2 * 3 + 1, 2 * -2 - 4]; return B[0] + B[1]; },
+  u8b03: () => { const m = (0 - 4) / (6 - 0); return [3 / 2, -2 / 3, 2 / 3, -3 / 2].findIndex((s) => Math.abs(s * m + 1) < 1e-9); },
+  u8b04: () => Math.hypot(8, 6),
+  u8b05: () => { const D = [1 + 8 - 4, 1 + 2 - 5]; return [[5, -2], [11, 6], [-3, 4], [5, 2]].findIndex((p) => p[0] === D[0] && p[1] === D[1]); },
+  u8b06: () => 6 + Math.hypot(3, 4) + Math.hypot(3, 4),
+  u8b07: () => 1 + (2 / 5) * (-9 - 1),
+  u8b08: () => { const m = 3 / 4; return 9 - m * (6 - 2); },
+  u8b09: () => { const P = [[-2, 1], [2, 4], [5, 0]]; const d = [[0, 1], [1, 2], [2, 0]].map(([i, j]) => (P[i][0] - P[j][0]) ** 2 + (P[i][1] - P[j][1]) ** 2).sort((a, b) => a - b); const right = d[0] + d[1] === d[2], iso = d[0] === d[1] || d[1] === d[2]; return right ? (iso ? 0 : 2) : iso ? 3 : -1; },
+  u8b10: () => { let n = 0; for (let x = -5; x <= 5; x++) for (let y = -5; y <= 5; y++) if (x * x + y * y === 25) n++; return n; },
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 
@@ -100,7 +111,7 @@ function checkQuestion(q, where) {
   if (!q.prompt || !q.solution || !q.hint) fail(where, "missing prompt/solution/hint");
   if ((q.prompt.match(/(?<!\\)\$/g) || []).length % 2) fail(where, "unbalanced $ in prompt: " + q.prompt);
   if ((q.solution.match(/(?<!\\)\$/g) || []).length % 2) fail(where, "unbalanced $ in solution: " + q.solution);
-  if (/NaN|undefined|Infinity/.test(q.prompt + q.solution + JSON.stringify(q.choices || ""))) fail(where, "NaN/undefined in text: " + q.prompt);
+  if (/NaN|(?<!\\text\{)undefined|Infinity/.test(q.prompt + q.solution + JSON.stringify(q.choices || ""))) fail(where, "NaN/undefined in text: " + q.prompt);
   if (q.type === "mcq" || q.type === "graph-mcq") {
     if (!Array.isArray(q.choices) || q.choices.length !== 4) fail(where, "mcq needs 4 choices");
     else if (new Set(q.choices.map(M1.qlib.norm)).size !== 4) fail(where, "duplicate choices " + q.choices.join(" | "));
