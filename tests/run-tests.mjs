@@ -101,6 +101,17 @@ const BANK_CHECKS = {
   u8b08: () => { const m = 3 / 4; return 9 - m * (6 - 2); },
   u8b09: () => { const P = [[-2, 1], [2, 4], [5, 0]]; const d = [[0, 1], [1, 2], [2, 0]].map(([i, j]) => (P[i][0] - P[j][0]) ** 2 + (P[i][1] - P[j][1]) ** 2).sort((a, b) => a - b); const right = d[0] + d[1] === d[2], iso = d[0] === d[1] || d[1] === d[2]; return right ? (iso ? 0 : 2) : iso ? 3 : -1; },
   u8b10: () => { let n = 0; for (let x = -5; x <= 5; x++) for (let y = -5; y <= 5; y++) if (x * x + y * y === 25) n++; return n; },
+  // Unit 5
+  u5b01: () => 12 * (4 / 2),
+  u5b02: () => { const x = (10 + 4) / 2, y = 10 - x; return x * x - y * y; },
+  u5b03: () => { for (let b = 0; b <= 20; b++) if (3 * (20 - b) + 8 * b === 100) return b; },
+  u5b04: () => { const s = (56 + 4) / 4; return 3 * s - 4; },
+  u5b05: () => [[0, 0], [3, 2], [-1, 6], [4, -2]].map(([x, y], i) => (y >= 2 * x - 3 && y < -x + 4 ? i : -1)).filter((i) => i >= 0)[0],
+  u5b06: () => { const sys = [[6, -4, 10], [6, -4, 16], [2, -3, 8], [3, 2, 8]]; return sys.findIndex(([a, b, c]) => a * -2 - b * 3 === 0 && c * 3 !== a * 8); },
+  u5b07: () => 0.5 * (40 / 4) * (40 / 5),
+  u5b08: () => Math.round((45 - 30) / (0.2 - 0.1)),
+  u5b09: () => { for (let x = -20; x <= 20; x++) { const y = 3 * x - 7; if (2 * x + 3 * y === 12) return x; } },
+  u5b10: () => { let best = 0; for (let c = 20; c <= 60; c++) for (let s = 0; c + s <= 100; s++) best = Math.max(best, 300 * c + 200 * s); return best; },
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 
