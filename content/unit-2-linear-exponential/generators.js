@@ -865,5 +865,99 @@
         solution: `The factor is ${dec(g)} $= 1 ${grow ? "+" : "-"} ${dec(p / 100)}$. **${right}**` };
     } });
 
+  // ───────────────────────── Thinking questions ─────────────────────────
+  const paren = M1.qlib.paren;
+  // Find the mistake: equation of a line through two points.
+  add({ id: "u2.th.find-error", skill: "u2.writeline", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const m = r.intNot(-5, 5, [0]), x1 = r.int(-4, 3), dx = r.int(1, 4), b = r.int(-9, 9);
+      const x2 = x1 + dx, y1 = m * x1 + b, y2 = m * x2 + b, kind0 = r.int(0, 3);
+      const kind = Math.abs(m) === 1 && kind0 === 0 ? 1 : kind0; // a flipped slope of ±1 would still be right
+      const mm = kind === 0 ? dx / (y2 - y1) : m;
+      const s1 = kind === 0 ? `slope $= \\frac{${x2} - ${paren(x1)}}{${y2} - ${paren(y1)}} = ${tex(mm)}$` : `slope $= \\frac{${y2} - ${paren(y1)}}{${x2} - ${paren(x1)}} = ${m}$`;
+      const bb = kind === 1 ? y1 + mm * x1 : y1 - mm * x1;
+      const s2 = kind === 1 ? `$${y1} = ${m}(${x1}) + b$, so $b = ${y1} + ${paren(m * x1)} = ${bb}$` : `$${y1} = ${tex(mm)}(${x1}) + b$, so $b = ${y1} - ${paren(mm * x1)} = ${tex(bb)}$`;
+      const shown = kind === 2 ? r.pick([-bb, bb + 1, bb - 1].filter((v) => v !== bb)) : bb;
+      const s3 = `$y = ${lin(mm, shown)}$`;
+      const bad = kind === 3 ? -1 : kind;
+      const whyWrong = ["Slope is change in $y$ over change in $x$.", "To get $b$ alone, subtract the $mx$ part from both sides.", "Step 3 does not use the value of $b$ found in Step 2."][Math.max(0, bad)];
+      const f = M1.qlib.findStep([s1, s2, s3], bad, whyWrong);
+      return { key: [m, x1, dx, b, kind, shown], choices: f.choices, answer: f.answer, why: f.why, think: true,
+        prompt: `Priya wrote the equation of the line through $${pt([x1, y1])}$ and $${pt([x2, y2])}$:<br>${f.stepsText}<br>Where is Priya's first mistake?`,
+        hint: "Check each step on its own.",
+        solution: `Slope $= \\frac{${y2 - y1}}{${dx}} = ${m}$. $b = ${y1} - ${paren(m * x1)} = ${b}$. The line is $y = ${lin(m, b)}$.<br>` +
+          (bad < 0 ? "**There is no mistake.**" : `The first mistake is in **Step ${bad + 1}**. ${whyWrong}`) };
+    } });
+
+  // Compare average rates of change of an exponential on two intervals, with a reason.
+  add({ id: "u2.th.roc-reason", skill: "u2.roc", level: L.H, type: "mcq", calc: true,
+    make(r) {
+      const a = r.int(1, 5), g = r.pick([2, 3]), w = r.int(1, 3), s = r.int(0, 2);
+      const f = (x) => a * g ** x;
+      const r1 = (f(s + w) - f(s)) / w, r2 = (f(s + 2 * w) - f(s + w)) / w;
+      const right = `From $x = ${s + w}$ to $x = ${s + 2 * w}$, because the function grows by a larger amount over each later interval of the same length.`;
+      const m = mcq(right, [
+        { text: `From $x = ${s}$ to $x = ${s + w}$, because the function starts growing sooner.`, why: `Compute both: $${tex(r1)}$ and $${tex(r2)}$.` },
+        { text: `They are equal, because both intervals have length ${w}.`, why: "Equal-length intervals give equal rates only for linear functions." },
+        { text: `They are equal, because the growth factor is always ${g}.`, why: "The factor is constant, but the amount added grows." },
+      ], r);
+      return { key: [a, g, w, s], ...m, think: true,
+        prompt: `$f(x) = ${expo(a, g)}$. Over which interval is the average rate of change of $f$ greater? Pick the answer with the correct reason.`,
+        hint: "Average rate of change is (change in $f$) ÷ (change in $x$).",
+        solution: `From ${s} to ${s + w}: $\\frac{${f(s + w)} - ${f(s)}}{${w}} = ${tex(r1)}$. From ${s + w} to ${s + 2 * w}: $\\frac{${f(s + 2 * w)} - ${f(s + w)}}{${w}} = ${tex(r2)}$.<br>**${right}**` };
+    } });
+
+  // What changes if: a linear cost model's rate goes up.
+  add({ id: "u2.th.what-if", skill: "u2.writeline", level: L.H, type: "numeric", calc: false,
+    make(r) {
+      const job = r.pick([["a plumber", "hour", "hours", "the call-out fee"], ["a tutor", "session", "sessions", "the sign-up fee"], ["a gym", "month", "months", "the joining fee"]]);
+      const rate = r.int(3, 12) * 5, fee = r.int(2, 9) * 10, up = r.pick([5, 10, 15]), n = r.int(3, 12);
+      return { key: [job[0], rate, fee, up, n], answer: up * n, think: true,
+        prompt: `The cost of ${job[0]} for $x$ ${job[2]} is $C(x) = ${rate}x + ${fee}$ dollars. The price per ${job[1]} goes up by \\$${up}, and ${job[3]} stays the same. How many more dollars do ${n} ${job[2]} cost now?`,
+        hint: `Only the ${rate} changes.`,
+        solution: `New cost: $C(x) = ${rate + up}x + ${fee}$. Each ${job[1]} costs \\$${up} more, so ${n} ${job[2]} cost $${up} \\times ${n} = \\mathbf{${up * n}}$ dollars more. The fee does not matter.` };
+    } });
+
+  // Make it true: a whole number where exponential beats linear.
+  add({ id: "u2.th.make-true", skill: "u2.linexp", level: L.C, type: "numeric", calc: true,
+    make(r) {
+      const g = r.pick([2, 3]), k = g === 2 ? r.pick([10, 20, 50, 100]) : r.pick([20, 50, 100, 200]), c = r.pick([0, 100, 500]);
+      let x0 = 1; while (!(g ** x0 > k * x0 + c)) x0++;
+      return { key: [g, k, c], answer: x0, accept: { lo: x0, int: true }, think: true,
+        prompt: `$f(x) = ${lin(k, c)}$ and $g(x) = ${g}^{x}$. Give **one** positive whole number $x$ for which $g(x) > f(x)$.`,
+        hint: "Try a few values in a table.",
+        solution: `$g(${x0 - 1}) = ${g ** (x0 - 1)}$ and $f(${x0 - 1}) = ${k * (x0 - 1) + c}$, so $g$ is not ahead yet. $g(${x0}) = ${g ** x0} > f(${x0}) = ${k * x0 + c}$. From then on $g$ stays ahead, so any whole number **${x0} or more** works.` };
+    } });
+
+  const U2_ASN = [
+    { s: "An exponential function with a growth factor greater than 1 eventually passes any increasing linear function.",
+      right: "Always true: growth that multiplies eventually beats growth that adds.",
+      wrong: ["Sometimes true: only if the exponential starts higher.", "Never true: a steep line stays ahead.", "Sometimes true: only if the line's slope is less than the factor."] },
+    { s: "Over equal intervals, a linear function changes by equal amounts.",
+      right: "Always true: the slope is the same everywhere, so equal steps in $x$ give equal changes in $y$.",
+      wrong: ["Sometimes true: only when the slope is positive.", "Never true: the outputs keep changing.", "Sometimes true: only for whole-number inputs."] },
+    { s: "The function $f(x) = a(b)^x$ with $a > 0$ and $0 < b < 1$ has a negative output for some $x$.",
+      right: "Never true: a positive number times a positive power stays positive. The outputs get close to 0.",
+      wrong: ["Always true: decay makes the outputs negative eventually.", "Sometimes true: only when $b < \\frac{1}{2}$.", "Sometimes true: only when $x$ is negative."] },
+    { s: "$2^x > x^2$ for every whole number $x \\ge 1$.",
+      right: "Sometimes true: it holds for $x = 1$ and $x \\ge 5$, but $2^3 = 8 < 9$.",
+      wrong: ["Always true: exponential grows faster.", "Never true: squaring is bigger than doubling.", "Sometimes true: only for even $x$."] },
+    { s: "If the average rate of change of a function is the same over $[0, 2]$ and $[2, 4]$, the function is linear.",
+      right: "Sometimes true: a linear function works, but so does a function that wiggles between those points.",
+      wrong: ["Always true: equal rates mean a line.", "Never true: exponential functions do this too.", "Always true: two equal rates prove the slope is constant."] },
+    { s: "$a^m \\cdot a^n = a^{mn}$ for whole numbers $m, n$ and $a > 1$.",
+      right: "Sometimes true: the rule is $a^{m+n}$, and $m + n = mn$ only for special pairs like $m = n = 2$.",
+      wrong: ["Always true: that is the product rule.", "Never true: you always add exponents.", "Sometimes true: only when $a = 2$."] },
+  ];
+  add({ id: "u2.th.always", skill: "u2.linexp", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, U2_ASN.length - 1), it = U2_ASN[i];
+      const m = mcq(it.right, it.wrong.map((t) => ({ text: t, why: "Test it with a few examples. " + it.right })), r);
+      return { key: [i], ...m, think: true,
+        prompt: `Is this statement always true, sometimes true, or never true?<br>"${it.s}"`,
+        hint: "Try a few examples, including unusual ones.",
+        solution: `**${it.right}**` };
+    } });
+
   M1.units.u2 = Object.assign(M1.units.u2 || {}, { generators: gens });
 })(typeof window !== "undefined" ? window : globalThis);

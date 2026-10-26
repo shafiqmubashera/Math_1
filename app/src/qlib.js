@@ -198,7 +198,17 @@
   // (x - p) with sign handled: x - 3, x + 2, x.
   const fac = (p, v = "x") => (p === 0 ? v : `${v} ${p > 0 ? "-" : "+"} ${Math.abs(p)}`);
 
-  M1.qlib = { lin, frac, pt, sample, box, terms2, quad, fac, clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
+  // "Find the mistake": steps shown in order, the student picks the first wrong one (or none).
+  // bad = index of the wrong step, or -1 when the work is right.
+  function findStep(steps, bad, whyWrong) {
+    const choices = steps.map((_, i) => `Step ${i + 1}`).concat(["There is no mistake"]);
+    const answer = bad < 0 ? steps.length : bad;
+    const why = choices.map((_, i) => (i === answer ? "Correct." : i < steps.length && i !== bad ? `Step ${i + 1} is right.` : bad < 0 ? "Every step checks out." : whyWrong));
+    return { choices, answer, why, think: true,
+      stepsText: steps.map((t, i) => `**Step ${i + 1}.** ${t}`).join("<br>") };
+  }
+
+  M1.qlib = { findStep, lin, frac, pt, sample, box, terms2, quad, fac, clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
     eqArithExplicit, eqGeomExplicit, eqArithRecursive, eqGeomRecursive, paren, windowFor, niceStep, norm };
   M1.units = M1.units || {};
 })(typeof window !== "undefined" ? window : globalThis);

@@ -338,6 +338,8 @@
     if (q.type === "mcq" || q.type === "graph-mcq") return `${LETTERS[q.answer]}. ${R(q.choices[q.answer])}`;
     if (q.type === "multi") return q.answer.map((k) => `${LETTERS[k]}. ${R(q.choices[k])}`).join("<br>");
     if (q.type === "plot") return q.answer.map((p) => `(${M1.qlib.fmt(p[0])}, ${M1.qlib.fmt(p[1])})`).join(", ");
+    if (q.accept && q.accept.in) return "Any of: " + q.accept.in.map((v) => R("$" + M1.qlib.tex(v) + "$")).join(", ");
+    if (q.accept) return "Any value that works, for example " + R("$" + M1.qlib.tex(q.answer) + "$");
     return R("$" + M1.qlib.tex(q.answer) + "$");
   }
 

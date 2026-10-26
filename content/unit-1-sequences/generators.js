@@ -765,5 +765,106 @@
         solution: `$d = (${last} - ${paren(a)}) \\div ${gaps} = ${d}$. Term ${ask}: $${a} ${signed(d)}(${ask - 1}) = \\mathbf{${arith(a, d, ask)}}$` };
     } });
 
+  // ───────────────────────── Thinking questions ─────────────────────────
+  // Find the mistake: a worked solution for a term of an arithmetic sequence.
+  add({ id: "u1.th.find-error", skill: "u1.arith", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(-9, 15), d = r.intNot(-6, 9, [0, 1, -1]), N = r.int(12, 40), kind = r.int(0, 3);
+      const t2 = a + d, t3 = a + 2 * d, right = arith(a, d, N);
+      const dd = kind === 0 ? -d : d;
+      const s1 = `$d = ${paren(kind === 0 ? a : t2)} - ${paren(kind === 0 ? t2 : a)} = ${dd}$`;
+      const s2 = kind === 1 ? `$f(n) = ${a} ${signed(d)}n$` : `$f(n) = ${a} ${signed(dd)}(n - 1)$`;
+      const val = kind === 0 ? arith(a, -d, N) : kind === 1 ? a + d * N : kind === 2 ? right + r.pick([-10, 10, d * 2]) : right;
+      const s3 = kind === 1 ? `$f(${N}) = ${a} ${signed(d)}(${N}) = ${val}$` : `$f(${N}) = ${a} ${signed(dd)}(${N - 1}) = ${val}$`;
+      const bad = kind === 3 ? -1 : kind;
+      const whyWrong = ["The difference is the later term minus the earlier term.", "The explicit form uses $(n - 1)$, because term 1 adds no differences.", "The arithmetic in the last step is off."][Math.max(0, bad)];
+      const f = M1.qlib.findStep([s1, s2, s3], bad, whyWrong);
+      return { key: [a, d, N, kind, val], choices: f.choices, answer: f.answer, why: f.why, think: true,
+        prompt: `Jordan found the ${ordinal(N)} term of $${a}, ${t2}, ${t3}, \\ldots$ like this:<br>${f.stepsText}<br>Where is Jordan's first mistake?`,
+        hint: "Check each step on its own.",
+        solution: `$d = ${t2} - ${paren(a)} = ${d}$, $f(n) = ${a} ${signed(d)}(n - 1)$, so $f(${N}) = ${a} ${signed(d)}(${N - 1}) = ${right}$.<br>` +
+          (bad < 0 ? "**There is no mistake.**" : `The first mistake is in **Step ${bad + 1}**. ${whyWrong}`) };
+    } });
+
+  // Is a number a term? Pick the answer with the right reason.
+  add({ id: "u1.th.is-term", skill: "u1.missing", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(2, 12), d = r.int(3, 9), T = r.int(80, 400);
+      if (T <= a) throw new Error("retry");
+      const yes = (T - a) % d === 0, gap = T - a;
+      const Y = `Yes, because $${T} - ${a} = ${gap}$ is a multiple of ${d}.`;
+      const N = `No, because $${T} - ${a} = ${gap}$ is not a multiple of ${d}.`;
+      const m = mcq(yes ? Y : N, [
+        { text: yes ? N : Y, why: `$${gap} \\div ${d} = ${fmt(gap / d)}$, ${yes ? "a whole number" : "not a whole number"}.` },
+        { text: `Yes, because ${T} is greater than ${a}.`, why: "Being bigger than the first term is not enough. The sequence skips numbers." },
+        { text: `No, because ${T} is not one of the first ten terms.`, why: "A term can come much later. Check the gap from the first term." },
+        { text: T % d ? `Yes, because ${T} is a multiple of ${d}.`.replace("is a", "is close to a") : `No, because the sequence starts at ${a}, not 0.`, why: `The test is whether $${T} - ${a}$ is a multiple of ${d}.` },
+      ], r);
+      return { key: [a, d, T], ...m, think: true,
+        prompt: `Is ${T} a term of the sequence $${a}, ${a + d}, ${a + 2 * d}, \\ldots$? Pick the answer with the correct reason.`,
+        hint: "Every term is the first term plus some number of steps.",
+        solution: `Each term is ${a} plus a whole number of ${d}s. $${T} - ${a} = ${gap}$, and $${gap} \\div ${d} = ${fmt(gap / d)}$. ${yes ? `That is a whole number, so ${T} **is** a term (term ${gap / d + 1}).` : `That is not a whole number, so ${T} is **not** a term.`}` };
+    } });
+
+  // What changes if the first term is scaled?
+  add({ id: "u1.th.what-if", skill: "u1.geom", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(2, 9), g = r.pick([2, 3, -2]), k = r.pick([2, 3, 4, 5, 10]), N = r.int(5, 9);
+      const m = mcq(`It is multiplied by ${k}.`, [
+        { text: `It increases by ${k}.`, why: `Every term is multiplied by ${k}, so the change is not a fixed amount.` },
+        { text: `It is multiplied by $${k}^{${N - 1}}$.`, why: `The ratio stays ${g}. Only the starting value is ${k} times as big.` },
+        { text: `It is multiplied by ${k * N}.`, why: "Each term is the first term times the same power of the ratio as before." },
+      ], r, [{ text: "It stays the same.", why: "The first term is a factor of every term." }]);
+      return { key: [a, g, k, N], ...m, think: true,
+        prompt: `A geometric sequence has $f(n) = ${a} \\cdot ${paren(g)}^{n - 1}$. The first term is changed from ${a} to ${a * k}, and the ratio stays the same. What happens to the ${ordinal(N)} term?`,
+        hint: "Write the term before and after the change.",
+        solution: `Before: $${a} \\cdot ${paren(g)}^{${N - 1}}$. After: $${a * k} \\cdot ${paren(g)}^{${N - 1}} = ${k} \\cdot \\left(${a} \\cdot ${paren(g)}^{${N - 1}}\\right)$. The term is **multiplied by ${k}**.` };
+    } });
+
+  // Make it true: choose a common difference that lands on a target.
+  add({ id: "u1.th.make-true", skill: "u1.arith", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const a = r.int(1, 15), gap = r.pick([24, 30, 36, 40, 42, 48, 60, 72, 84, 90]), T = a + gap;
+      const ds = []; for (let d = 2; d <= gap; d++) if (gap % d === 0) ds.push(d);
+      return { key: [a, gap], answer: ds[0], accept: { in: ds }, think: true,
+        prompt: `An arithmetic sequence starts at ${a} and has a common difference $d$ that is a whole number greater than 1. Give **one** value of $d$ that makes ${T} a term of the sequence.`,
+        hint: `How far is ${T} from ${a}?`,
+        solution: `${T} must be ${a} plus a whole number of steps: $${T} - ${a} = ${gap}$ must be a multiple of $d$. Any factor of ${gap} greater than 1 works: **${ds.join(", ")}**.` };
+    } });
+
+  // Always, sometimes or never: answer with a reason.
+  const U1_ASN = [
+    { s: "An arithmetic sequence with a positive common difference eventually has a term greater than 1,000.",
+      right: "Always true: adding the same positive amount again and again passes any number.",
+      wrong: ["Sometimes true: only if the first term is positive.", "Never true: the terms grow by the same amount, so they stay small.", "Sometimes true: only if the difference is at least 10."] },
+    { s: "A geometric sequence with a negative common ratio has only negative terms.",
+      right: "Never true: the signs switch back and forth, as in $1, -2, 4, -8$.",
+      wrong: ["Always true: multiplying by a negative makes the terms negative.", "Sometimes true: only when the first term is negative.", "Always true: the ratio is negative, so every term is too."] },
+    { s: "A sequence can be both arithmetic and geometric.",
+      right: "Sometimes true: $5, 5, 5, \\ldots$ has difference 0 and ratio 1.",
+      wrong: ["Never true: one adds and the other multiplies.", "Always true: every sequence has a difference and a ratio.", "Never true: a ratio of 1 is not allowed."] },
+    { s: "If the first term and the common difference of an arithmetic sequence are both odd, every term is odd.",
+      right: "Never true: the second term is odd + odd, which is even.",
+      wrong: ["Always true: odd numbers stay odd.", "Sometimes true: only when the difference is 1.", "Sometimes true: only for the first few terms."] },
+    { s: "A geometric sequence with a positive first term and a ratio between 0 and 1 eventually has a negative term.",
+      right: "Never true: multiplying a positive number by a positive ratio stays positive. The terms get closer to 0.",
+      wrong: ["Always true: the terms keep shrinking, so they pass 0.", "Sometimes true: only if the ratio is less than $\\frac{1}{2}$.", "Sometimes true: only after many terms."] },
+    { s: "The terms of an arithmetic sequence with common difference 3 are all multiples of 3.",
+      right: "Sometimes true: $3, 6, 9, \\ldots$ works, but $1, 4, 7, \\ldots$ does not.",
+      wrong: ["Always true: you keep adding 3.", "Never true: adding 3 changes the remainder.", "Always true: the difference is a multiple of 3."] },
+    { s: "If the first two terms of a geometric sequence are whole numbers, the common ratio is a whole number.",
+      right: "Sometimes true: $2, 6, \\ldots$ has ratio 3, but $4, 6, \\ldots$ has ratio $\\frac{3}{2}$.",
+      wrong: ["Always true: whole numbers divide to whole numbers.", "Never true: a ratio is always a fraction.", "Always true: the second term is the first term times the ratio."] },
+  ];
+  add({ id: "u1.th.always", skill: "u1.classify", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, U1_ASN.length - 1), it = U1_ASN[i];
+      const m = mcq(it.right, it.wrong.map((t) => ({ text: t, why: "Test it with a few examples. " + it.right })), r);
+      return { key: [i], ...m, think: true,
+        prompt: `Is this statement always true, sometimes true, or never true?<br>"${it.s}"`,
+        hint: "Try a few examples, including unusual ones.",
+        solution: `**${it.right}**` };
+    } });
+
   M1.units.u1 = Object.assign(M1.units.u1 || {}, { generators: gens });
 })(typeof window !== "undefined" ? window : globalThis);

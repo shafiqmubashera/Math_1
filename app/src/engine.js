@@ -170,9 +170,10 @@
     return false;
   }
 
-  // accept: { lo, hi, loOpen, hiOpen, int, not: [values] }. Missing bounds are unbounded.
+  // accept: { in: [values] } or { lo, hi, loOpen, hiOpen, int, not: [values] }. Missing bounds are unbounded.
   function accepts(a, v) {
     const eps = 1e-9;
+    if (a.in) return a.in.some((x) => Math.abs(x - v) < eps);
     if (a.lo != null && (a.loOpen ? v <= a.lo + eps : v < a.lo - eps)) return false;
     if (a.hi != null && (a.hiOpen ? v >= a.hi - eps : v > a.hi + eps)) return false;
     if (a.int && Math.abs(v - Math.round(v)) > eps) return false;
