@@ -112,6 +112,17 @@ const BANK_CHECKS = {
   u5b08: () => Math.round((45 - 30) / (0.2 - 0.1)),
   u5b09: () => { for (let x = -20; x <= 20; x++) { const y = 3 * x - 7; if (2 * x + 3 * y === 12) return x; } },
   u5b10: () => { let best = 0; for (let c = 20; c <= 60; c++) for (let s = 0; c + s <= 100; s++) best = Math.max(best, 300 * c + 200 * s); return best; },
+  // Unit 6
+  u6b01: () => { for (let t = 0.5; t < 20; t += 0.5) if (-16 * t * t + 32 * t + 48 === 0) return t; },
+  u6b02: () => [[2, -5], [-2, -5], [2, 5], [-5, 2]].findIndex(([h, k]) => h === 2 && k === -5),
+  u6b03: () => { const ys = [4, 9, 16, 25]; let d = ys[3] - ys[2], v = ys[3]; const dd = (ys[3] - ys[2]) - (ys[2] - ys[1]); for (let x = 5; x <= 10; x++) { d += dd; v += d; } return v; },
+  u6b04: () => { let best = 0; for (let x = 0; x <= 20; x++) best = Math.max(best, (10 + x) * (200 - 10 * x)); return best; },
+  u6b05: () => { const fs = [(x) => 100 * x + 1000, (x) => 5 * x * x, (x) => 1.1 ** x, (x) => 50 * x]; const v = fs.map((f) => f(2000)); return v.indexOf(Math.max(...v)); },
+  u6b06: () => { for (let c = -50; c <= 50; c++) if (3 * 3 - 6 * 3 + c === 0) return c; },
+  u6b07: () => { const d1 = 5 - 2, d2 = 12 - 5; return 12 + d2 + (d2 - d1); },
+  u6b08: () => { for (let w = 1; w < 54; w++) if (w * (w + 3) === 54) return w; },
+  u6b09: () => { const f = (x) => (x - 1) * (x - 7); const t = [f(1) === 0 && f(7) === 0, f(4) === -9 && f(3) === f(5), f(0) === 7, f(100) < 0, f(3) === f(5)]; return t.map((v, i) => (v ? i : -1)).filter((i) => i >= 0); },
+  u6b10: () => (36 - 4) / 4,
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 
