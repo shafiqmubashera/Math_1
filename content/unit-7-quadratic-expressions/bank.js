@@ -1,0 +1,46 @@
+/* Unit 7 Structures of Quadratic Expressions: written question bank (context and SAT-style items that don't fit a template).
+   Every item is re-solved in tests/run-tests.mjs (see BANK_CHECKS) before it ships. */
+(function (G) {
+  const M1 = G.M1;
+  const bank = [
+    { id: "u7b01", skill: "u7.polyops", level: "hard", type: "numeric", calc: false, lesson: 2, standard: "NC.M1.A-APR.1", answer: 4,
+      prompt: "A square garden has side $x$ meters. A new design makes one side 2 meters longer and the other side 2 meters shorter. How many square meters smaller is the new garden?",
+      hint: "Compare $x^2$ with $(x + 2)(x - 2)$.", solution: "$(x + 2)(x - 2) = x^2 - 4$, so the new garden is **4** square meters smaller, whatever $x$ is." },
+    { id: "u7b02", skill: "u7.polyops", level: "challenge", type: "numeric", calc: false, lesson: 2, standard: "NC.M1.A-APR.1", answer: 9,
+      prompt: "$(x + k)^2 = x^2 + 6x + c$ for every $x$. What is $c$?",
+      hint: "Expand the left side and match the $x$-terms first.", solution: "$(x + k)^2 = x^2 + 2kx + k^2$. So $2k = 6$, $k = 3$, and $c = k^2 = \\mathbf{9}$." },
+    { id: "u7b03", skill: "u7.factor", level: "hard", type: "mcq", calc: false, lesson: 4, standard: "NC.M1.A-SSE.3",
+      prompt: "The area of a rectangle is $x^2 + 9x + 20$ square units. Its width is $x + 4$ units. Which expression is its length?",
+      choices: ["$x + 5$", "$x + 16$", "$x + 9$", "$x + 20$"], answer: 0,
+      why: ["Correct.", "Check: $(x + 4)(x + 16)$ has a constant of 64.", "Check: $(x + 4)(x + 9)$ has a middle term of $13x$.", "Check: $(x + 4)(x + 20)$ has a constant of 80."],
+      hint: "Find the factor that multiplies with $x + 4$ to give the area.", solution: "$x^2 + 9x + 20 = (x + 4)(x + 5)$. The length is **$x + 5$**." },
+    { id: "u7b04", skill: "u7.factor", level: "challenge", type: "numeric", calc: false, lesson: 4, standard: "NC.M1.A-SSE.3", answer: 7,
+      prompt: "$2x^2 + bx - 15 = (2x - 3)(x + 5)$ for every $x$. What is $b$?",
+      hint: "Multiply out the right side and compare the $x$-terms.", solution: "$(2x - 3)(x + 5) = 2x^2 + 10x - 3x - 15 = 2x^2 + 7x - 15$. So $b = \\mathbf{7}$." },
+    { id: "u7b05", skill: "u7.factor", level: "challenge", type: "mcq", calc: false, lesson: 3, standard: "NC.M1.A-SSE.3",
+      prompt: "Which expression is equivalent to $x^4 - 16$?",
+      choices: ["$(x^2 + 4)(x + 2)(x - 2)$", "$(x^2 - 4)^2$", "$(x - 2)^4$", "$(x^2 + 4)(x^2 + 4)$"], answer: 0,
+      why: ["Correct.", "$(x^2 - 4)^2 = x^4 - 8x^2 + 16$.", "$(x - 2)^4$ has an $x^3$ term.", "$(x^2 + 4)^2 = x^4 + 8x^2 + 16$."],
+      hint: "$x^4 - 16$ is a difference of squares: $(x^2)^2 - 4^2$.", solution: "$x^4 - 16 = (x^2 + 4)(x^2 - 4) = $ **$(x^2 + 4)(x + 2)(x - 2)$**." },
+    { id: "u7b06", skill: "u7.factoredform", level: "hard", type: "numeric", calc: false, lesson: 6, standard: "NC.M1.A-APR.3", answer: 3,
+      prompt: "The graph of $y = (x - 1)(x - 5)$ has its vertex at $(h, k)$. What is $h$?",
+      hint: "The vertex is halfway between the zeros.", solution: "The zeros are 1 and 5, so $h = \\frac{1 + 5}{2} = \\mathbf{3}$." },
+    { id: "u7b07", skill: "u7.factoredform", level: "challenge", type: "mcq", calc: false, lesson: 6, standard: "NC.M1.F-IF.8a",
+      prompt: "A rocket's height, in meters, after $t$ seconds is $h(t) = -5(t + 1)(t - 9)$. Which statement is true?",
+      choices: ["It lands after 9 seconds and is highest after 4 seconds.", "It lands after 1 second and is highest after 5 seconds.", "It starts on the ground and lands after 9 seconds.", "It lands after 10 seconds and is highest after 5 seconds."], answer: 0,
+      why: ["Correct.", "$t = -1$ is not a time after launch; the zero that matters is $t = 9$.", "$h(0) = -5(1)(-9) = 45$, so it starts 45 meters up.", "The zeros are $-1$ and $9$, not $0$ and $10$."],
+      hint: "Find the zeros, then the time halfway between them.", solution: "Zeros $t = -1$ and $t = 9$: it lands at $t = 9$. Vertex at $t = \\frac{-1 + 9}{2} = 4$. **It lands after 9 seconds and is highest after 4 seconds.**" },
+    { id: "u7b08", skill: "u7.solve", level: "hard", type: "numeric", calc: false, lesson: 7, standard: "NC.M1.A-REI.4", answer: 8,
+      prompt: "The product of two consecutive positive even integers is 80. What is the smaller integer?",
+      hint: "Write $n(n + 2) = 80$ and solve.", solution: "$n^2 + 2n - 80 = 0$, so $(n + 10)(n - 8) = 0$. The positive solution is $n = \\mathbf{8}$ (and $8 \\cdot 10 = 80$)." },
+    { id: "u7b09", skill: "u7.solve", level: "challenge", type: "numeric", calc: false, lesson: 8, standard: "NC.M1.A-REI.4", answer: 2,
+      prompt: "A 10 m by 8 m pool has a path of the same width $w$ all around it. The pool and path together cover 168 square meters. What is $w$, in meters?",
+      hint: "The outside is $(10 + 2w)$ by $(8 + 2w)$.", solution: "$(10 + 2w)(8 + 2w) = 168$ gives $4w^2 + 36w - 88 = 0$, so $w^2 + 9w - 22 = 0$ and $(w + 11)(w - 2) = 0$. So $w = \\mathbf{2}$." },
+    { id: "u7b10", skill: "u7.solve", level: "challenge", type: "mcq", calc: false, lesson: 8, standard: "NC.M1.A-REI.4",
+      prompt: "How many real solutions does $(x - 3)^2 = -4$ have?",
+      choices: ["None", "One", "Two", "Infinitely many"], answer: 0,
+      why: ["Correct.", "One solution would need the right side to be 0.", "Two solutions need the right side to be positive.", "A square equals a given number for at most two values of $x$."],
+      hint: "Can a square be negative?", solution: "A square is never negative, so no real $x$ works. **None**." },
+  ];
+  M1.units.u7 = Object.assign(M1.units.u7 || {}, { bank });
+})(typeof window !== "undefined" ? window : globalThis);

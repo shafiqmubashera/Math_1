@@ -123,6 +123,16 @@ const BANK_CHECKS = {
   u6b08: () => { for (let w = 1; w < 54; w++) if (w * (w + 3) === 54) return w; },
   u6b09: () => { const f = (x) => (x - 1) * (x - 7); const t = [f(1) === 0 && f(7) === 0, f(4) === -9 && f(3) === f(5), f(0) === 7, f(100) < 0, f(3) === f(5)]; return t.map((v, i) => (v ? i : -1)).filter((i) => i >= 0); },
   u6b10: () => (36 - 4) / 4,
+  u7b01: () => { const x = 7; return x * x - (x + 2) * (x - 2); },
+  u7b02: () => { const k = 6 / 2; return k * k; },
+  u7b03: () => [5, 16, 9, 20].findIndex((c) => 4 + c === 9 && 4 * c === 20),
+  u7b04: () => 2 * 5 + (-3) * 1,
+  u7b05: () => { const fs = [(x) => (x * x + 4) * (x + 2) * (x - 2), (x) => (x * x - 4) ** 2, (x) => (x - 2) ** 4, (x) => (x * x + 4) ** 2]; return fs.findIndex((f) => [0, 1, 3, -2].every((x) => f(x) === x ** 4 - 16)); },
+  u7b06: () => (1 + 5) / 2,
+  u7b07: () => { const h = (t) => -5 * (t + 1) * (t - 9); let best = 0; for (let t = 0; t <= 9; t++) if (h(t) > h(best)) best = t; return h(9) === 0 && best === 4 && h(0) !== 0 ? 0 : -1; },
+  u7b08: () => { for (let n = 2; n < 80; n += 2) if (n * (n + 2) === 80) return n; },
+  u7b09: () => { for (let w = 0.5; w < 20; w += 0.5) if ((10 + 2 * w) * (8 + 2 * w) === 168) return w; },
+  u7b10: () => 0,
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 
