@@ -66,6 +66,19 @@ const BANK_CHECKS = {
   u2b18: () => { const b = Math.sqrt(45 / 5); return [135, 65, 405, 225].indexOf(5 * b ** 3); },
   u2b19: () => { const a = 4, b = 10 / 4; return a * b ** 2; },
   u2b20: () => [0, 2],
+  // Unit 3
+  u3b01: () => { const a = (16 + 5) / 3; return 3 * (2 * a) - 5; },
+  u3b02: () => { const a = (19 - 4) / 3; return a * -2 + 4; },
+  u3b03: () => 0,
+  u3b04: () => { const outs = Array.from({ length: 121 }, (_, n) => 9 * n); return outs[0] === 0 && outs[2] === 18 && outs[120] === 1080 ? 0 : -1; },
+  u3b05: () => Math.max(...[-3, 5].map((x) => -2 * x + 7)),
+  u3b06: () => Math.round(15 / 0.05),
+  u3b07: () => { const f = (x) => 2 * x + 1, g = (x) => x - 3, h = (x) => f(x) - 2 * g(x); return [1, 5, -2].every((x) => h(x) === 7) ? 0 : -1; },
+  u3b08: () => { const m = (0 - 12) / 4; let c = 0; for (let x = 0; x <= 10; x++) if (12 + m * x > 0) c++; return c; },
+  u3b09: () => { const f = (x) => 2 ** x; return [[(x) => 8 * f(x)], [(x) => f(x) + 8], [(x) => f(x) + 3], [(x) => 3 * f(x)]].findIndex(([e]) => [0, 1, 2.5].every((x) => Math.abs(e(x) - f(x + 3)) < 1e-9)); },
+  u3b10: () => [-2, 0, 5.5, 6, 7].map((y, i) => { const x = 4 - y; return x > -2 && x <= 6 ? i : -1; }).filter((i) => i >= 0),
+  u3b11: () => (-4) ** 2 - 3 * -4,
+  u3b12: () => (400 + 25 * 20) / (20 + 20),
 };
 const fail = (where, msg) => { fails++; if (fails < 60) console.log("FAIL", where, "-", msg); };
 

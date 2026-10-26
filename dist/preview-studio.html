@@ -75,6 +75,17 @@ math { font-size: 1.08em; }
 .pill.lvl-challenge { color: var(--on-accent); background: var(--t2); border-color: var(--t2); }
 .pill.calc-ok { color: var(--good); border-color: currentColor; background: transparent; }
 .pill.calc-no { color: var(--bad); border-color: currentColor; background: transparent; }
+.pill.think { color: var(--accent); border-color: currentColor; background: var(--accent-soft); }
+.pill.done { color: var(--good); border-color: currentColor; background: transparent; }
+.pill.lock { color: var(--muted); }
+.lock-note { color: var(--muted); }
+.parents .row { margin: 10px 0; }
+.big-check { font-size: 1rem; margin: 8px 0; }
+.file-btn { cursor: pointer; }
+.flags { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
+.flags li { border-top: 1px solid var(--line); padding-top: 8px; }
+.btn-link.flag { margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+.btn-link.flag.on { color: var(--bad); font-weight: 700; }
 
 /* Header */
 .top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
@@ -216,6 +227,13 @@ body[data-view="set"] { background-image: none; }
 .grid-svg .pt-hover { fill: var(--accent); opacity: 0.3; pointer-events: none; }
 .grid-svg .pt-answer { fill: none; stroke: var(--good); stroke-width: 2.5; }
 .grid-svg .user-line { stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
+.grid-svg .curve.alt { stroke: var(--t0); }
+.grid-svg .curve.dashed { stroke-dasharray: 7 5; }
+.grid-svg .shade { fill: var(--accent); opacity: 0.16; }
+.grid-svg .end-closed { fill: var(--accent); }
+.grid-svg .end-open { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve-label { fill: var(--ink, currentColor); font: 600 12px var(--font-body); }
 
 /* Calculator */
 .calc-blocked { padding: 18px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-weight: 700; text-align: center; }
@@ -348,8 +366,8 @@ h2, h3 { font-weight: 600; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script>
 window.M1 = window.M1 || {};
-M1.curriculum = {"course":"NC Math 1 (WCPSS)","order":"WCPSS teaching order","units":[{"id":"u1","book":1,"order":1,"title":"Sequences","status":"live","lessons":[{"n":1,"focus":"Use variables to describe ways of seeing a pattern."},{"n":2,"focus":"Describe a growing pattern with tables, graphs, and equations."},{"n":3,"focus":"Model a sequence of figures using tables, graphs, and equations."},{"n":4,"focus":"Model a sequence using a table, graph, and explicit and recursive equations."},{"n":5,"focus":"Represent a story context using tables, graphs, and equations; use function notation to write explicit and recursive equations."},{"n":6,"focus":"Understand the characteristics that make sequences decrease; compare decreasing arithmetic and geometric sequences."},{"n":7,"focus":"Determine if a sequence is geometric, arithmetic, or neither; write recursive and explicit equations."},{"n":8,"focus":"Find missing terms in an arithmetic sequence."},{"n":9,"focus":"Apply understanding of geometric sequences to find missing terms."},{"n":10,"focus":"Identify the type of sequence given any representation; move efficiently between representations."}],"skills":[{"id":"u1.patterns","name":"Growing patterns and expressions","lessons":[1,2,3],"standards":["NC.M1.A-SSE.1a","NC.M1.F-IF.3"]},{"id":"u1.arith","name":"Arithmetic sequences: common difference and terms","lessons":[2,4,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.geom","name":"Geometric sequences: common ratio and terms","lessons":[3,5,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.forms","name":"Explicit and recursive equations","lessons":[4,5,7],"standards":["NC.M1.F-BF.2","NC.M1.F-IF.2"]},{"id":"u1.classify","name":"Arithmetic, geometric or neither","lessons":[7,10],"standards":["NC.M1.F-LE.1"]},{"id":"u1.graphs","name":"Sequences in tables and graphs","lessons":[2,3,4,10],"standards":["NC.M1.F-IF.3","NC.M1.F-IF.7"]},{"id":"u1.decrease","name":"Decreasing sequences","lessons":[6],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.1"]},{"id":"u1.missing","name":"Missing terms from two known terms","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-BF.2"]},{"id":"u1.context","name":"Sequences in real situations","lessons":[4,5,6,10],"standards":["NC.M1.F-BF.2","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-1/family.html"},{"id":"u2","book":2,"order":2,"title":"Linear & Exponential Functions","status":"live","lessons":[{"n":1,"focus":"Represent situations with different types of growth; compare models over time."},{"n":2,"focus":"Model with linear and exponential functions; discrete vs continuous models."},{"n":3,"focus":"Determine if a function is discrete or continuous; determine the domain."},{"n":4,"focus":"Relate exponential key features to negative exponents; rewrite expressions with negative exponents."},{"n":5,"focus":"Change the form of algebraic expressions using properties of exponents."},{"n":6,"focus":"Make and interpret modeling decisions; which type of function grows faster."},{"n":7,"focus":"Find the average rate of change of a function over an interval."},{"n":8,"focus":"Find patterns for writing equations of linear functions."},{"n":9,"focus":"Use different forms of linear and exponential functions to write and graph equations."}],"skills":[{"id":"u2.discrete","name":"Discrete vs continuous, domain","lessons":[2,3],"standards":["NC.M1.F-IF.5","NC.M1.F-IF.3"]},{"id":"u2.linexp","name":"Linear vs exponential models","lessons":[1,2,6],"standards":["NC.M1.F-LE.1","NC.M1.F-LE.3"]},{"id":"u2.exponents","name":"Properties of exponents","lessons":[4,5],"standards":["NC.M1.N-RN.2"]},{"id":"u2.roc","name":"Average rate of change","lessons":[7],"standards":["NC.M1.F-IF.6"]},{"id":"u2.writeline","name":"Writing linear equations","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.A-CED.2"]},{"id":"u2.writeexp","name":"Writing exponential equations","lessons":[2,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-2/family.html"},{"id":"u3","book":3,"order":3,"title":"Features of Functions","status":"planned","lessons":[{"n":1,"focus":"Graph a function to model a situation; identify key features."},{"n":2,"focus":"Use key features to analyze tables and graphs; interval notation."},{"n":3,"focus":"Identify key features efficiently; domain, range, increase/decrease notation."},{"n":4,"focus":"Interpret and write equations of functions; combine two linear functions."},{"n":5,"focus":"Interpret function notation to match a function with its features."}],"skills":[{"id":"u3.features","name":"Key features from graphs and tables","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u3.domain","name":"Domain, range and interval notation","standards":["NC.M1.F-IF.5"]},{"id":"u3.notation","name":"Function notation","standards":["NC.M1.F-IF.1","NC.M1.F-IF.2"]},{"id":"u3.combine","name":"Combining functions","standards":["NC.M1.F-BF.1b"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-3/family.html"},{"id":"u4","book":4,"order":4,"title":"Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve multi-step linear equations using inverse operations."},{"n":2,"focus":"Solve literal equations (formulas) for a variable; use units."},{"n":3,"focus":"Compare strategies for solving linear and literal equations."},{"n":4,"focus":"Reason about inequalities; justify properties; inequality notation."},{"n":5,"focus":"Write and solve inequalities; set builder and interval notation."},{"n":6,"focus":"Similarities and differences in solving equations and inequalities; common errors."}],"skills":[{"id":"u4.linear","name":"Multi-step linear equations","standards":["NC.M1.A-REI.1","NC.M1.A-REI.3"]},{"id":"u4.literal","name":"Literal equations and formulas","standards":["NC.M1.A-CED.4"]},{"id":"u4.ineq","name":"Solving inequalities","standards":["NC.M1.A-REI.3"]},{"id":"u4.model","name":"Writing equations and inequalities from context","standards":["NC.M1.A-CED.1"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-4/family.html"},{"id":"u8","book":8,"order":5,"title":"Connecting Algebra & Geometry","status":"planned","lessons":[{"n":1,"focus":"Distance between two points; perimeter on the coordinate plane."},{"n":2,"focus":"Midpoint and points that divide a segment in a ratio."},{"n":3,"focus":"Parallel and perpendicular lines; write their equations."},{"n":4,"focus":"Classify quadrilaterals with coordinates; perimeter and area."}],"skills":[{"id":"u8.distance","name":"Distance and perimeter","standards":["NC.M1.G-GPE.4"]},{"id":"u8.midpoint","name":"Midpoint and partitioning","standards":["NC.M1.G-GPE.6"]},{"id":"u8.slopes","name":"Parallel and perpendicular lines","standards":["NC.M1.G-GPE.5"]},{"id":"u8.polygons","name":"Classifying polygons with coordinates","standards":["NC.M1.G-GPE.4"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-8/family.html"},{"id":"u5","book":5,"order":6,"title":"Systems of Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve systems of linear equations in context."},{"n":2,"focus":"Represent linear constraints."},{"n":3,"focus":"Graph solution sets of two-variable linear inequalities."},{"n":4,"focus":"Graph linear equations in standard form."},{"n":5,"focus":"Represent constraints symbolically and graphically."},{"n":6,"focus":"Solution sets of systems of linear inequalities."},{"n":7,"focus":"Solve systems of linear inequalities."},{"n":8,"focus":"Intuitive strategies for systems in standard form."},{"n":9,"focus":"Solve systems by elimination."},{"n":10,"focus":"Systems with no solution or infinitely many solutions."}],"skills":[{"id":"u5.solve","name":"Solving linear systems","standards":["NC.M1.A-REI.6","NC.M1.A-REI.5"]},{"id":"u5.standard","name":"Standard form and intercepts","standards":["NC.M1.A-CED.2","NC.M1.A-REI.10"]},{"id":"u5.ineq2","name":"Graphing inequalities and systems","standards":["NC.M1.A-REI.12"]},{"id":"u5.model","name":"Modeling with constraints","standards":["NC.M1.A-CED.3"]},{"id":"u5.count","name":"Number of solutions","standards":["NC.M1.A-REI.6"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-5/family.html"},{"id":"u6","book":6,"order":7,"title":"Quadratic Functions","status":"planned","lessons":[{"n":1,"focus":"Model a growing pattern; analyze the type of growth."},{"n":2,"focus":"Compare linear and quadratic functions."},{"n":3,"focus":"Model quadratics with tables, graphs, equations; first and second differences."},{"n":4,"focus":"Model a story context; features from a graph."},{"n":5,"focus":"Compare quadratic and exponential growth."},{"n":6,"focus":"Linear, exponential, quadratic or other; key features."}],"skills":[{"id":"u6.model","name":"Modeling quadratic patterns","standards":["NC.M1.A-CED.2","NC.M1.F-BF.1a"]},{"id":"u6.diffs","name":"First and second differences","standards":["NC.M1.F-LE.1"]},{"id":"u6.features","name":"Quadratic key features","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u6.compare","name":"Comparing growth","standards":["NC.M1.F-LE.3","NC.M1.F-IF.9"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-6/family.html"},{"id":"u7","book":7,"order":8,"title":"Structures of Quadratic Expressions","status":"planned","lessons":[{"n":1,"focus":"Patterns in equations and graphs of quadratics."},{"n":2,"focus":"Add and subtract linear and quadratic functions."},{"n":3,"focus":"Multiply binomials and factor trinomials with diagrams."},{"n":4,"focus":"Sign patterns; difference of squares."},{"n":5,"focus":"Factor when the leading coefficient is not 1."},{"n":6,"focus":"Graph from factored form."},{"n":7,"focus":"Solve quadratic equations graphically and algebraically."},{"n":8,"focus":"Solve quadratics efficiently; read graph information from equations."}],"skills":[{"id":"u7.polyops","name":"Adding, subtracting, multiplying","standards":["NC.M1.A-APR.1"]},{"id":"u7.factor","name":"Factoring","standards":["NC.M1.A-SSE.3"]},{"id":"u7.factoredform","name":"Graphing from factored form","standards":["NC.M1.A-APR.3","NC.M1.F-IF.8a"]},{"id":"u7.solve","name":"Solving quadratic equations","standards":["NC.M1.A-REI.4","NC.M1.A-REI.11"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-7/family.html"},{"id":"u9","book":9,"order":9,"title":"Modeling Data","status":"planned","lessons":[{"n":1,"focus":"Scatterplots, correlation coefficient, correlation vs causation."},{"n":2,"focus":"Model data with a linear function."},{"n":3,"focus":"Interpret data using linear models."},{"n":4,"focus":"Understand and interpret residuals."},{"n":5,"focus":"Residuals vs correlation coefficients."},{"n":6,"focus":"Box plots, dot plots, histograms."},{"n":7,"focus":"Standard deviation."},{"n":8,"focus":"Compare data sets by center, spread and shape."}],"skills":[{"id":"u9.correlation","name":"Correlation and causation","standards":["NC.M1.S-ID.8","NC.M1.S-ID.9"]},{"id":"u9.linefit","name":"Lines of best fit","standards":["NC.M1.S-ID.6a","NC.M1.S-ID.7"]},{"id":"u9.residuals","name":"Residuals","standards":["NC.M1.S-ID.6b"]},{"id":"u9.onevar","name":"One-variable data displays","standards":["NC.M1.S-ID.1"]},{"id":"u9.spread","name":"Center, spread and outliers","standards":["NC.M1.S-ID.2","NC.M1.S-ID.3"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-9/family.html"}]};
-M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
+M1.curriculum = {"course":"NC Math 1 (WCPSS)","order":"WCPSS teaching order","units":[{"id":"u1","book":1,"order":1,"title":"Sequences","status":"live","lessons":[{"n":1,"focus":"Use variables to describe ways of seeing a pattern."},{"n":2,"focus":"Describe a growing pattern with tables, graphs, and equations."},{"n":3,"focus":"Model a sequence of figures using tables, graphs, and equations."},{"n":4,"focus":"Model a sequence using a table, graph, and explicit and recursive equations."},{"n":5,"focus":"Represent a story context using tables, graphs, and equations; use function notation to write explicit and recursive equations."},{"n":6,"focus":"Understand the characteristics that make sequences decrease; compare decreasing arithmetic and geometric sequences."},{"n":7,"focus":"Determine if a sequence is geometric, arithmetic, or neither; write recursive and explicit equations."},{"n":8,"focus":"Find missing terms in an arithmetic sequence."},{"n":9,"focus":"Apply understanding of geometric sequences to find missing terms."},{"n":10,"focus":"Identify the type of sequence given any representation; move efficiently between representations."}],"skills":[{"id":"u1.patterns","name":"Growing patterns and expressions","lessons":[1,2,3],"standards":["NC.M1.A-SSE.1a","NC.M1.F-IF.3"]},{"id":"u1.arith","name":"Arithmetic sequences: common difference and terms","lessons":[2,4,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.geom","name":"Geometric sequences: common ratio and terms","lessons":[3,5,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.forms","name":"Explicit and recursive equations","lessons":[4,5,7],"standards":["NC.M1.F-BF.2","NC.M1.F-IF.2"]},{"id":"u1.classify","name":"Arithmetic, geometric or neither","lessons":[7,10],"standards":["NC.M1.F-LE.1"]},{"id":"u1.graphs","name":"Sequences in tables and graphs","lessons":[2,3,4,10],"standards":["NC.M1.F-IF.3","NC.M1.F-IF.7"]},{"id":"u1.decrease","name":"Decreasing sequences","lessons":[6],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.1"]},{"id":"u1.missing","name":"Missing terms from two known terms","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-BF.2"]},{"id":"u1.context","name":"Sequences in real situations","lessons":[4,5,6,10],"standards":["NC.M1.F-BF.2","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-1/family.html"},{"id":"u2","book":2,"order":2,"title":"Linear & Exponential Functions","status":"live","lessons":[{"n":1,"focus":"Represent situations with different types of growth; compare models over time."},{"n":2,"focus":"Model with linear and exponential functions; discrete vs continuous models."},{"n":3,"focus":"Determine if a function is discrete or continuous; determine the domain."},{"n":4,"focus":"Relate exponential key features to negative exponents; rewrite expressions with negative exponents."},{"n":5,"focus":"Change the form of algebraic expressions using properties of exponents."},{"n":6,"focus":"Make and interpret modeling decisions; which type of function grows faster."},{"n":7,"focus":"Find the average rate of change of a function over an interval."},{"n":8,"focus":"Find patterns for writing equations of linear functions."},{"n":9,"focus":"Use different forms of linear and exponential functions to write and graph equations."}],"skills":[{"id":"u2.discrete","name":"Discrete vs continuous, domain","lessons":[2,3],"standards":["NC.M1.F-IF.5","NC.M1.F-IF.3"]},{"id":"u2.linexp","name":"Linear vs exponential models","lessons":[1,2,6],"standards":["NC.M1.F-LE.1","NC.M1.F-LE.3"]},{"id":"u2.exponents","name":"Properties of exponents","lessons":[4,5],"standards":["NC.M1.N-RN.2"]},{"id":"u2.roc","name":"Average rate of change","lessons":[7],"standards":["NC.M1.F-IF.6"]},{"id":"u2.writeline","name":"Writing linear equations","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.A-CED.2"]},{"id":"u2.writeexp","name":"Writing exponential equations","lessons":[2,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-2/family.html"},{"id":"u3","book":3,"order":3,"title":"Features of Functions","status":"live","lessons":[{"n":1,"focus":"Graph a function to model a situation; identify key features."},{"n":2,"focus":"Use key features to analyze tables and graphs; interval notation."},{"n":3,"focus":"Identify key features efficiently; domain, range, increase/decrease notation."},{"n":4,"focus":"Interpret and write equations of functions; combine two linear functions."},{"n":5,"focus":"Interpret function notation to match a function with its features."}],"skills":[{"id":"u3.features","name":"Key features from graphs and tables","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u3.domain","name":"Domain, range and interval notation","standards":["NC.M1.F-IF.5"]},{"id":"u3.notation","name":"Function notation","standards":["NC.M1.F-IF.1","NC.M1.F-IF.2"]},{"id":"u3.combine","name":"Combining functions","standards":["NC.M1.F-BF.1b"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-3/family.html"},{"id":"u4","book":4,"order":4,"title":"Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve multi-step linear equations using inverse operations."},{"n":2,"focus":"Solve literal equations (formulas) for a variable; use units."},{"n":3,"focus":"Compare strategies for solving linear and literal equations."},{"n":4,"focus":"Reason about inequalities; justify properties; inequality notation."},{"n":5,"focus":"Write and solve inequalities; set builder and interval notation."},{"n":6,"focus":"Similarities and differences in solving equations and inequalities; common errors."}],"skills":[{"id":"u4.linear","name":"Multi-step linear equations","standards":["NC.M1.A-REI.1","NC.M1.A-REI.3"]},{"id":"u4.literal","name":"Literal equations and formulas","standards":["NC.M1.A-CED.4"]},{"id":"u4.ineq","name":"Solving inequalities","standards":["NC.M1.A-REI.3"]},{"id":"u4.model","name":"Writing equations and inequalities from context","standards":["NC.M1.A-CED.1"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-4/family.html"},{"id":"u8","book":8,"order":5,"title":"Connecting Algebra & Geometry","status":"planned","lessons":[{"n":1,"focus":"Distance between two points; perimeter on the coordinate plane."},{"n":2,"focus":"Midpoint and points that divide a segment in a ratio."},{"n":3,"focus":"Parallel and perpendicular lines; write their equations."},{"n":4,"focus":"Classify quadrilaterals with coordinates; perimeter and area."}],"skills":[{"id":"u8.distance","name":"Distance and perimeter","standards":["NC.M1.G-GPE.4"]},{"id":"u8.midpoint","name":"Midpoint and partitioning","standards":["NC.M1.G-GPE.6"]},{"id":"u8.slopes","name":"Parallel and perpendicular lines","standards":["NC.M1.G-GPE.5"]},{"id":"u8.polygons","name":"Classifying polygons with coordinates","standards":["NC.M1.G-GPE.4"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-8/family.html"},{"id":"u5","book":5,"order":6,"title":"Systems of Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve systems of linear equations in context."},{"n":2,"focus":"Represent linear constraints."},{"n":3,"focus":"Graph solution sets of two-variable linear inequalities."},{"n":4,"focus":"Graph linear equations in standard form."},{"n":5,"focus":"Represent constraints symbolically and graphically."},{"n":6,"focus":"Solution sets of systems of linear inequalities."},{"n":7,"focus":"Solve systems of linear inequalities."},{"n":8,"focus":"Intuitive strategies for systems in standard form."},{"n":9,"focus":"Solve systems by elimination."},{"n":10,"focus":"Systems with no solution or infinitely many solutions."}],"skills":[{"id":"u5.solve","name":"Solving linear systems","standards":["NC.M1.A-REI.6","NC.M1.A-REI.5"]},{"id":"u5.standard","name":"Standard form and intercepts","standards":["NC.M1.A-CED.2","NC.M1.A-REI.10"]},{"id":"u5.ineq2","name":"Graphing inequalities and systems","standards":["NC.M1.A-REI.12"]},{"id":"u5.model","name":"Modeling with constraints","standards":["NC.M1.A-CED.3"]},{"id":"u5.count","name":"Number of solutions","standards":["NC.M1.A-REI.6"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-5/family.html"},{"id":"u6","book":6,"order":7,"title":"Quadratic Functions","status":"planned","lessons":[{"n":1,"focus":"Model a growing pattern; analyze the type of growth."},{"n":2,"focus":"Compare linear and quadratic functions."},{"n":3,"focus":"Model quadratics with tables, graphs, equations; first and second differences."},{"n":4,"focus":"Model a story context; features from a graph."},{"n":5,"focus":"Compare quadratic and exponential growth."},{"n":6,"focus":"Linear, exponential, quadratic or other; key features."}],"skills":[{"id":"u6.model","name":"Modeling quadratic patterns","standards":["NC.M1.A-CED.2","NC.M1.F-BF.1a"]},{"id":"u6.diffs","name":"First and second differences","standards":["NC.M1.F-LE.1"]},{"id":"u6.features","name":"Quadratic key features","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u6.compare","name":"Comparing growth","standards":["NC.M1.F-LE.3","NC.M1.F-IF.9"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-6/family.html"},{"id":"u7","book":7,"order":8,"title":"Structures of Quadratic Expressions","status":"planned","lessons":[{"n":1,"focus":"Patterns in equations and graphs of quadratics."},{"n":2,"focus":"Add and subtract linear and quadratic functions."},{"n":3,"focus":"Multiply binomials and factor trinomials with diagrams."},{"n":4,"focus":"Sign patterns; difference of squares."},{"n":5,"focus":"Factor when the leading coefficient is not 1."},{"n":6,"focus":"Graph from factored form."},{"n":7,"focus":"Solve quadratic equations graphically and algebraically."},{"n":8,"focus":"Solve quadratics efficiently; read graph information from equations."}],"skills":[{"id":"u7.polyops","name":"Adding, subtracting, multiplying","standards":["NC.M1.A-APR.1"]},{"id":"u7.factor","name":"Factoring","standards":["NC.M1.A-SSE.3"]},{"id":"u7.factoredform","name":"Graphing from factored form","standards":["NC.M1.A-APR.3","NC.M1.F-IF.8a"]},{"id":"u7.solve","name":"Solving quadratic equations","standards":["NC.M1.A-REI.4","NC.M1.A-REI.11"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-7/family.html"},{"id":"u9","book":9,"order":9,"title":"Modeling Data","status":"planned","lessons":[{"n":1,"focus":"Scatterplots, correlation coefficient, correlation vs causation."},{"n":2,"focus":"Model data with a linear function."},{"n":3,"focus":"Interpret data using linear models."},{"n":4,"focus":"Understand and interpret residuals."},{"n":5,"focus":"Residuals vs correlation coefficients."},{"n":6,"focus":"Box plots, dot plots, histograms."},{"n":7,"focus":"Standard deviation."},{"n":8,"focus":"Compare data sets by center, spread and shape."}],"skills":[{"id":"u9.correlation","name":"Correlation and causation","standards":["NC.M1.S-ID.8","NC.M1.S-ID.9"]},{"id":"u9.linefit","name":"Lines of best fit","standards":["NC.M1.S-ID.6a","NC.M1.S-ID.7"]},{"id":"u9.residuals","name":"Residuals","standards":["NC.M1.S-ID.6b"]},{"id":"u9.onevar","name":"One-variable data displays","standards":["NC.M1.S-ID.1"]},{"id":"u9.spread","name":"Center, spread and outliers","standards":["NC.M1.S-ID.2","NC.M1.S-ID.3"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-9/family.html"}]};
+M1.buildInfo = {"built":"2026-10-26T22:21:07.364Z"};
 </script>
 <script>/* app/src/qlib.js */
 /* Question-building helpers shared by every unit's generators.
@@ -513,7 +531,56 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     return 10 * p;
   }
 
-  M1.qlib = { clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
+  // ── Shared by the later units ──
+  // Linear expression mx + b in KaTeX (handles m = ±1, b = 0, fractions).
+  function lin(m, b, v = "x") {
+    if (m === 0) return tex(b);
+    const mt = m === 1 ? "" : m === -1 ? "-" : tex(m);
+    return `${mt}${v}${b === 0 ? "" : " " + signed(b)}`;
+  }
+  // a/b reduced, as KaTeX.
+  function frac(n, d) {
+    const g = gcd(n, d), s = (n < 0) !== (d < 0) && n !== 0 ? "-" : "";
+    const N = Math.abs(n) / g, D = Math.abs(d) / g;
+    return D === 1 ? `${s}${N}` : `${s}\\frac{${N}}{${D}}`;
+  }
+  const pt = (p) => `(${fmt(p[0])}, ${fmt(p[1])})`;
+  // Sample y = f(x) on [x0, x1] as a polyline, cut where it leaves [ylo, yhi] by a margin.
+  function sample(f, x0, x1, n = 80) {
+    const out = [];
+    for (let i = 0; i <= n; i++) { const x = x0 + ((x1 - x0) * i) / n, y = f(x); if (Number.isFinite(y)) out.push([clean(x), clean(y)]); }
+    return out;
+  }
+  // A square-ish window around the origin.
+  const box = (lo, hi, step = 1, ylo = lo, yhi = hi, ystep = step) => ({ xmin: lo, xmax: hi, ymin: ylo, ymax: yhi, xstep: step, ystep });
+  // Format ax + by = c style coefficients: "3x - 2y".
+  function terms2(a, b, x = "x", y = "y") {
+    const t1 = a === 0 ? "" : `${a === 1 ? "" : a === -1 ? "-" : a}${x}`;
+    if (b === 0) return t1 || "0";
+    const bb = Math.abs(b) === 1 ? "" : Math.abs(b);
+    return t1 ? `${t1} ${b < 0 ? "-" : "+"} ${bb}${y}` : `${b < 0 ? "-" : ""}${bb}${y}`;
+  }
+  // Quadratic ax^2 + bx + c in KaTeX.
+  function quad(a, b, c, v = "x") {
+    let s = a === 1 ? `${v}^2` : a === -1 ? `-${v}^2` : `${tex(a)}${v}^2`;
+    if (b) s += ` ${b < 0 ? "-" : "+"} ${Math.abs(b) === 1 ? "" : tex(Math.abs(b))}${v}`;
+    if (c) s += ` ${signed(c)}`;
+    return s;
+  }
+  // (x - p) with sign handled: x - 3, x + 2, x.
+  const fac = (p, v = "x") => (p === 0 ? v : `${v} ${p > 0 ? "-" : "+"} ${Math.abs(p)}`);
+
+  // "Find the mistake": steps shown in order, the student picks the first wrong one (or none).
+  // bad = index of the wrong step, or -1 when the work is right.
+  function findStep(steps, bad, whyWrong) {
+    const choices = steps.map((_, i) => `Step ${i + 1}`).concat(["There is no mistake"]);
+    const answer = bad < 0 ? steps.length : bad;
+    const why = choices.map((_, i) => (i === answer ? "Correct." : i < steps.length && i !== bad ? `Step ${i + 1} is right.` : bad < 0 ? "Every step checks out." : whyWrong));
+    return { choices, answer, why, think: true,
+      stepsText: steps.map((t, i) => `**Step ${i + 1}.** ${t}`).join("<br>") };
+  }
+
+  M1.qlib = { findStep, lin, frac, pt, sample, box, terms2, quad, fac, clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
     eqArithExplicit, eqGeomExplicit, eqArithRecursive, eqGeomRecursive, paren, windowFor, niceStep, norm };
   M1.units = M1.units || {};
 })(typeof window !== "undefined" ? window : globalThis);
@@ -1285,6 +1352,107 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
         answer: arith(a, d, ask),
         hint: `There are ${gaps} equal steps from ${a} to ${last}.`,
         solution: `$d = (${last} - ${paren(a)}) \\div ${gaps} = ${d}$. Term ${ask}: $${a} ${signed(d)}(${ask - 1}) = \\mathbf{${arith(a, d, ask)}}$` };
+    } });
+
+  // ───────────────────────── Thinking questions ─────────────────────────
+  // Find the mistake: a worked solution for a term of an arithmetic sequence.
+  add({ id: "u1.th.find-error", skill: "u1.arith", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(-9, 15), d = r.intNot(-6, 9, [0, 1, -1]), N = r.int(12, 40), kind = r.int(0, 3);
+      const t2 = a + d, t3 = a + 2 * d, right = arith(a, d, N);
+      const dd = kind === 0 ? -d : d;
+      const s1 = `$d = ${paren(kind === 0 ? a : t2)} - ${paren(kind === 0 ? t2 : a)} = ${dd}$`;
+      const s2 = kind === 1 ? `$f(n) = ${a} ${signed(d)}n$` : `$f(n) = ${a} ${signed(dd)}(n - 1)$`;
+      const val = kind === 0 ? arith(a, -d, N) : kind === 1 ? a + d * N : kind === 2 ? right + r.pick([-10, 10, d * 2]) : right;
+      const s3 = kind === 1 ? `$f(${N}) = ${a} ${signed(d)}(${N}) = ${val}$` : `$f(${N}) = ${a} ${signed(dd)}(${N - 1}) = ${val}$`;
+      const bad = kind === 3 ? -1 : kind;
+      const whyWrong = ["The difference is the later term minus the earlier term.", "The explicit form uses $(n - 1)$, because term 1 adds no differences.", "The arithmetic in the last step is off."][Math.max(0, bad)];
+      const f = M1.qlib.findStep([s1, s2, s3], bad, whyWrong);
+      return { key: [a, d, N, kind, val], choices: f.choices, answer: f.answer, why: f.why, think: true,
+        prompt: `Jordan found the ${ordinal(N)} term of $${a}, ${t2}, ${t3}, \\ldots$ like this:<br>${f.stepsText}<br>Where is Jordan's first mistake?`,
+        hint: "Check each step on its own.",
+        solution: `$d = ${t2} - ${paren(a)} = ${d}$, $f(n) = ${a} ${signed(d)}(n - 1)$, so $f(${N}) = ${a} ${signed(d)}(${N - 1}) = ${right}$.<br>` +
+          (bad < 0 ? "**There is no mistake.**" : `The first mistake is in **Step ${bad + 1}**. ${whyWrong}`) };
+    } });
+
+  // Is a number a term? Pick the answer with the right reason.
+  add({ id: "u1.th.is-term", skill: "u1.missing", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(2, 12), d = r.int(3, 9), T = r.int(80, 400);
+      if (T <= a) throw new Error("retry");
+      const yes = (T - a) % d === 0, gap = T - a;
+      const Y = `Yes, because $${T} - ${a} = ${gap}$ is a multiple of ${d}.`;
+      const N = `No, because $${T} - ${a} = ${gap}$ is not a multiple of ${d}.`;
+      const m = mcq(yes ? Y : N, [
+        { text: yes ? N : Y, why: `$${gap} \\div ${d} = ${fmt(gap / d)}$, ${yes ? "a whole number" : "not a whole number"}.` },
+        { text: `Yes, because ${T} is greater than ${a}.`, why: "Being bigger than the first term is not enough. The sequence skips numbers." },
+        { text: `No, because ${T} is not one of the first ten terms.`, why: "A term can come much later. Check the gap from the first term." },
+        { text: T % d ? `Yes, because ${T} is a multiple of ${d}.`.replace("is a", "is close to a") : `No, because the sequence starts at ${a}, not 0.`, why: `The test is whether $${T} - ${a}$ is a multiple of ${d}.` },
+      ], r);
+      return { key: [a, d, T], ...m, think: true,
+        prompt: `Is ${T} a term of the sequence $${a}, ${a + d}, ${a + 2 * d}, \\ldots$? Pick the answer with the correct reason.`,
+        hint: "Every term is the first term plus some number of steps.",
+        solution: `Each term is ${a} plus a whole number of ${d}s. $${T} - ${a} = ${gap}$, and $${gap} \\div ${d} = ${fmt(gap / d)}$. ${yes ? `That is a whole number, so ${T} **is** a term (term ${gap / d + 1}).` : `That is not a whole number, so ${T} is **not** a term.`}` };
+    } });
+
+  // What changes if the first term is scaled?
+  add({ id: "u1.th.what-if", skill: "u1.geom", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(2, 9), g = r.pick([2, 3, -2]), k = r.pick([2, 3, 4, 5, 10]), N = r.int(5, 9);
+      const m = mcq(`It is multiplied by ${k}.`, [
+        { text: `It increases by ${k}.`, why: `Every term is multiplied by ${k}, so the change is not a fixed amount.` },
+        { text: `It is multiplied by $${k}^{${N - 1}}$.`, why: `The ratio stays ${g}. Only the starting value is ${k} times as big.` },
+        { text: `It is multiplied by ${k * N}.`, why: "Each term is the first term times the same power of the ratio as before." },
+      ], r, [{ text: "It stays the same.", why: "The first term is a factor of every term." }]);
+      return { key: [a, g, k, N], ...m, think: true,
+        prompt: `A geometric sequence has $f(n) = ${a} \\cdot ${paren(g)}^{n - 1}$. The first term is changed from ${a} to ${a * k}, and the ratio stays the same. What happens to the ${ordinal(N)} term?`,
+        hint: "Write the term before and after the change.",
+        solution: `Before: $${a} \\cdot ${paren(g)}^{${N - 1}}$. After: $${a * k} \\cdot ${paren(g)}^{${N - 1}} = ${k} \\cdot \\left(${a} \\cdot ${paren(g)}^{${N - 1}}\\right)$. The term is **multiplied by ${k}**.` };
+    } });
+
+  // Make it true: choose a common difference that lands on a target.
+  add({ id: "u1.th.make-true", skill: "u1.arith", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const a = r.int(1, 15), gap = r.pick([24, 30, 36, 40, 42, 48, 60, 72, 84, 90]), T = a + gap;
+      const ds = []; for (let d = 2; d <= gap; d++) if (gap % d === 0) ds.push(d);
+      return { key: [a, gap], answer: ds[0], accept: { in: ds }, think: true,
+        prompt: `An arithmetic sequence starts at ${a} and has a common difference $d$ that is a whole number greater than 1. Give **one** value of $d$ that makes ${T} a term of the sequence.`,
+        hint: `How far is ${T} from ${a}?`,
+        solution: `${T} must be ${a} plus a whole number of steps: $${T} - ${a} = ${gap}$ must be a multiple of $d$. Any factor of ${gap} greater than 1 works: **${ds.join(", ")}**.` };
+    } });
+
+  // Always, sometimes or never: answer with a reason.
+  const U1_ASN = [
+    { s: "An arithmetic sequence with a positive common difference eventually has a term greater than 1,000.",
+      right: "Always true: adding the same positive amount again and again passes any number.",
+      wrong: ["Sometimes true: only if the first term is positive.", "Never true: the terms grow by the same amount, so they stay small.", "Sometimes true: only if the difference is at least 10."] },
+    { s: "A geometric sequence with a negative common ratio has only negative terms.",
+      right: "Never true: the signs switch back and forth, as in $1, -2, 4, -8$.",
+      wrong: ["Always true: multiplying by a negative makes the terms negative.", "Sometimes true: only when the first term is negative.", "Always true: the ratio is negative, so every term is too."] },
+    { s: "A sequence can be both arithmetic and geometric.",
+      right: "Sometimes true: $5, 5, 5, \\ldots$ has difference 0 and ratio 1.",
+      wrong: ["Never true: one adds and the other multiplies.", "Always true: every sequence has a difference and a ratio.", "Never true: a ratio of 1 is not allowed."] },
+    { s: "If the first term and the common difference of an arithmetic sequence are both odd, every term is odd.",
+      right: "Never true: the second term is odd + odd, which is even.",
+      wrong: ["Always true: odd numbers stay odd.", "Sometimes true: only when the difference is 1.", "Sometimes true: only for the first few terms."] },
+    { s: "A geometric sequence with a positive first term and a ratio between 0 and 1 eventually has a negative term.",
+      right: "Never true: multiplying a positive number by a positive ratio stays positive. The terms get closer to 0.",
+      wrong: ["Always true: the terms keep shrinking, so they pass 0.", "Sometimes true: only if the ratio is less than $\\frac{1}{2}$.", "Sometimes true: only after many terms."] },
+    { s: "The terms of an arithmetic sequence with common difference 3 are all multiples of 3.",
+      right: "Sometimes true: $3, 6, 9, \\ldots$ works, but $1, 4, 7, \\ldots$ does not.",
+      wrong: ["Always true: you keep adding 3.", "Never true: adding 3 changes the remainder.", "Always true: the difference is a multiple of 3."] },
+    { s: "If the first two terms of a geometric sequence are whole numbers, the common ratio is a whole number.",
+      right: "Sometimes true: $2, 6, \\ldots$ has ratio 3, but $4, 6, \\ldots$ has ratio $\\frac{3}{2}$.",
+      wrong: ["Always true: whole numbers divide to whole numbers.", "Never true: a ratio is always a fraction.", "Always true: the second term is the first term times the ratio."] },
+  ];
+  add({ id: "u1.th.always", skill: "u1.classify", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, U1_ASN.length - 1), it = U1_ASN[i];
+      const m = mcq(it.right, it.wrong.map((t) => ({ text: t, why: "Test it with a few examples. " + it.right })), r);
+      return { key: [i], ...m, think: true,
+        prompt: `Is this statement always true, sometimes true, or never true?<br>"${it.s}"`,
+        hint: "Try a few examples, including unusual ones.",
+        solution: `**${it.right}**` };
     } });
 
   M1.units.u1 = Object.assign(M1.units.u1 || {}, { generators: gens });
@@ -2231,6 +2399,100 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
         solution: `The factor is ${dec(g)} $= 1 ${grow ? "+" : "-"} ${dec(p / 100)}$. **${right}**` };
     } });
 
+  // ───────────────────────── Thinking questions ─────────────────────────
+  const paren = M1.qlib.paren;
+  // Find the mistake: equation of a line through two points.
+  add({ id: "u2.th.find-error", skill: "u2.writeline", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const m = r.intNot(-5, 5, [0]), x1 = r.int(-4, 3), dx = r.int(1, 4), b = r.int(-9, 9);
+      const x2 = x1 + dx, y1 = m * x1 + b, y2 = m * x2 + b, kind0 = r.int(0, 3);
+      const kind = Math.abs(m) === 1 && kind0 === 0 ? 1 : kind0; // a flipped slope of ±1 would still be right
+      const mm = kind === 0 ? dx / (y2 - y1) : m;
+      const s1 = kind === 0 ? `slope $= \\frac{${x2} - ${paren(x1)}}{${y2} - ${paren(y1)}} = ${tex(mm)}$` : `slope $= \\frac{${y2} - ${paren(y1)}}{${x2} - ${paren(x1)}} = ${m}$`;
+      const bb = kind === 1 ? y1 + mm * x1 : y1 - mm * x1;
+      const s2 = kind === 1 ? `$${y1} = ${m}(${x1}) + b$, so $b = ${y1} + ${paren(m * x1)} = ${bb}$` : `$${y1} = ${tex(mm)}(${x1}) + b$, so $b = ${y1} - ${paren(mm * x1)} = ${tex(bb)}$`;
+      const shown = kind === 2 ? r.pick([-bb, bb + 1, bb - 1].filter((v) => v !== bb)) : bb;
+      const s3 = `$y = ${lin(mm, shown)}$`;
+      const bad = kind === 3 ? -1 : kind;
+      const whyWrong = ["Slope is change in $y$ over change in $x$.", "To get $b$ alone, subtract the $mx$ part from both sides.", "Step 3 does not use the value of $b$ found in Step 2."][Math.max(0, bad)];
+      const f = M1.qlib.findStep([s1, s2, s3], bad, whyWrong);
+      return { key: [m, x1, dx, b, kind, shown], choices: f.choices, answer: f.answer, why: f.why, think: true,
+        prompt: `Priya wrote the equation of the line through $${pt([x1, y1])}$ and $${pt([x2, y2])}$:<br>${f.stepsText}<br>Where is Priya's first mistake?`,
+        hint: "Check each step on its own.",
+        solution: `Slope $= \\frac{${y2 - y1}}{${dx}} = ${m}$. $b = ${y1} - ${paren(m * x1)} = ${b}$. The line is $y = ${lin(m, b)}$.<br>` +
+          (bad < 0 ? "**There is no mistake.**" : `The first mistake is in **Step ${bad + 1}**. ${whyWrong}`) };
+    } });
+
+  // Compare average rates of change of an exponential on two intervals, with a reason.
+  add({ id: "u2.th.roc-reason", skill: "u2.roc", level: L.H, type: "mcq", calc: true,
+    make(r) {
+      const a = r.int(1, 5), g = r.pick([2, 3]), w = r.int(1, 3), s = r.int(0, 2);
+      const f = (x) => a * g ** x;
+      const r1 = (f(s + w) - f(s)) / w, r2 = (f(s + 2 * w) - f(s + w)) / w;
+      const right = `From $x = ${s + w}$ to $x = ${s + 2 * w}$, because the function grows by a larger amount over each later interval of the same length.`;
+      const m = mcq(right, [
+        { text: `From $x = ${s}$ to $x = ${s + w}$, because the function starts growing sooner.`, why: `Compute both: $${tex(r1)}$ and $${tex(r2)}$.` },
+        { text: `They are equal, because both intervals have length ${w}.`, why: "Equal-length intervals give equal rates only for linear functions." },
+        { text: `They are equal, because the growth factor is always ${g}.`, why: "The factor is constant, but the amount added grows." },
+      ], r);
+      return { key: [a, g, w, s], ...m, think: true,
+        prompt: `$f(x) = ${expo(a, g)}$. Over which interval is the average rate of change of $f$ greater? Pick the answer with the correct reason.`,
+        hint: "Average rate of change is (change in $f$) ÷ (change in $x$).",
+        solution: `From ${s} to ${s + w}: $\\frac{${f(s + w)} - ${f(s)}}{${w}} = ${tex(r1)}$. From ${s + w} to ${s + 2 * w}: $\\frac{${f(s + 2 * w)} - ${f(s + w)}}{${w}} = ${tex(r2)}$.<br>**${right}**` };
+    } });
+
+  // What changes if: a linear cost model's rate goes up.
+  add({ id: "u2.th.what-if", skill: "u2.writeline", level: L.H, type: "numeric", calc: false,
+    make(r) {
+      const job = r.pick([["a plumber", "hour", "hours", "the call-out fee"], ["a tutor", "session", "sessions", "the sign-up fee"], ["a gym", "month", "months", "the joining fee"]]);
+      const rate = r.int(3, 12) * 5, fee = r.int(2, 9) * 10, up = r.pick([5, 10, 15]), n = r.int(3, 12);
+      return { key: [job[0], rate, fee, up, n], answer: up * n, think: true,
+        prompt: `The cost of ${job[0]} for $x$ ${job[2]} is $C(x) = ${rate}x + ${fee}$ dollars. The price per ${job[1]} goes up by \\$${up}, and ${job[3]} stays the same. How many more dollars do ${n} ${job[2]} cost now?`,
+        hint: `Only the ${rate} changes.`,
+        solution: `New cost: $C(x) = ${rate + up}x + ${fee}$. Each ${job[1]} costs \\$${up} more, so ${n} ${job[2]} cost $${up} \\times ${n} = \\mathbf{${up * n}}$ dollars more. The fee does not matter.` };
+    } });
+
+  // Make it true: a whole number where exponential beats linear.
+  add({ id: "u2.th.make-true", skill: "u2.linexp", level: L.C, type: "numeric", calc: true,
+    make(r) {
+      const g = r.pick([2, 3]), k = g === 2 ? r.pick([10, 20, 50, 100]) : r.pick([20, 50, 100, 200]), c = r.pick([0, 100, 500]);
+      let x0 = 1; while (!(g ** x0 > k * x0 + c)) x0++;
+      return { key: [g, k, c], answer: x0, accept: { lo: x0, int: true }, think: true,
+        prompt: `$f(x) = ${lin(k, c)}$ and $g(x) = ${g}^{x}$. Give **one** positive whole number $x$ for which $g(x) > f(x)$.`,
+        hint: "Try a few values in a table.",
+        solution: `$g(${x0 - 1}) = ${g ** (x0 - 1)}$ and $f(${x0 - 1}) = ${k * (x0 - 1) + c}$, so $g$ is not ahead yet. $g(${x0}) = ${g ** x0} > f(${x0}) = ${k * x0 + c}$. From then on $g$ stays ahead, so any whole number **${x0} or more** works.` };
+    } });
+
+  const U2_ASN = [
+    { s: "An exponential function with a growth factor greater than 1 eventually passes any increasing linear function.",
+      right: "Always true: growth that multiplies eventually beats growth that adds.",
+      wrong: ["Sometimes true: only if the exponential starts higher.", "Never true: a steep line stays ahead.", "Sometimes true: only if the line's slope is less than the factor."] },
+    { s: "Over equal intervals, a linear function changes by equal amounts.",
+      right: "Always true: the slope is the same everywhere, so equal steps in $x$ give equal changes in $y$.",
+      wrong: ["Sometimes true: only when the slope is positive.", "Never true: the outputs keep changing.", "Sometimes true: only for whole-number inputs."] },
+    { s: "The function $f(x) = a(b)^x$ with $a > 0$ and $0 < b < 1$ has a negative output for some $x$.",
+      right: "Never true: a positive number times a positive power stays positive. The outputs get close to 0.",
+      wrong: ["Always true: decay makes the outputs negative eventually.", "Sometimes true: only when $b < \\frac{1}{2}$.", "Sometimes true: only when $x$ is negative."] },
+    { s: "$2^x > x^2$ for every whole number $x \\ge 1$.",
+      right: "Sometimes true: it holds for $x = 1$ and $x \\ge 5$, but $2^3 = 8 < 9$.",
+      wrong: ["Always true: exponential grows faster.", "Never true: squaring is bigger than doubling.", "Sometimes true: only for even $x$."] },
+    { s: "If the average rate of change of a function is the same over $[0, 2]$ and $[2, 4]$, the function is linear.",
+      right: "Sometimes true: a linear function works, but so does a function that wiggles between those points.",
+      wrong: ["Always true: equal rates mean a line.", "Never true: exponential functions do this too.", "Always true: two equal rates prove the slope is constant."] },
+    { s: "$a^m \\cdot a^n = a^{mn}$ for whole numbers $m, n$ and $a > 1$.",
+      right: "Sometimes true: the rule is $a^{m+n}$, and $m + n = mn$ only for special pairs like $m = n = 2$.",
+      wrong: ["Always true: that is the product rule.", "Never true: you always add exponents.", "Sometimes true: only when $a = 2$."] },
+  ];
+  add({ id: "u2.th.always", skill: "u2.linexp", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, U2_ASN.length - 1), it = U2_ASN[i];
+      const m = mcq(it.right, it.wrong.map((t) => ({ text: t, why: "Test it with a few examples. " + it.right })), r);
+      return { key: [i], ...m, think: true,
+        prompt: `Is this statement always true, sometimes true, or never true?<br>"${it.s}"`,
+        hint: "Try a few examples, including unusual ones.",
+        solution: `**${it.right}**` };
+    } });
+
   M1.units.u2 = Object.assign(M1.units.u2 || {}, { generators: gens });
 })(typeof window !== "undefined" ? window : globalThis);
 
@@ -2326,6 +2588,663 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       hint: "The domain is about the **inputs**. Look at what each input counts.", solution: "Tickets and shifts are counted in whole numbers. Time can be any value, even when the output (like a number of people) is a whole number." },
   ];
   M1.units.u2 = Object.assign(M1.units.u2 || {}, { bank });
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>/* content/unit-3-features-of-functions/generators.js */
+/* Unit 3 Features of Functions: question generators.
+   Each generator: { id, skill, level, type, calc, make(r) } where make returns
+   { key, prompt, ... } and every answer is computed here, never typed by hand. */
+(function (G) {
+  const M1 = G.M1;
+  const { fmt, tex, signed, mcq, multi, lin, pt, box, findStep, paren } = M1.qlib;
+
+  const L = { B: "basic", I: "intermediate", H: "hard", C: "challenge" };
+  const gens = [];
+  const add = (g) => gens.push(g);
+  const W = box(-7, 7);
+
+  // ── Piecewise-linear graphs with whole-number corners ──
+  // Corners alternate up and down, so every piece is one increasing or decreasing run.
+  function zigzag(r, { pieces = r.int(3, 4), withZero = false } = {}) {
+    for (let tries = 0; tries < 2000; tries++) {
+      const pool = [];
+      for (let x = -6; x <= 6; x++) pool.push(x);
+      let xs = r.shuffle(pool).slice(0, pieces + 1).sort((a, b) => a - b);
+      if (withZero && !xs.includes(0)) continue;
+      if (xs.some((x, i) => i && x - xs[i - 1] < 2)) continue;
+      let up = r.chance(0.5), y = r.int(-4, 4);
+      const ys = [y];
+      let ok = true;
+      for (let i = 1; i < xs.length; i++) {
+        const step = r.int(2, 6);
+        y = up ? y + step : y - step;
+        if (y > 6 || y < -6) { ok = false; break; }
+        ys.push(y); up = !up;
+      }
+      if (!ok) continue;
+      // one highest and one lowest corner keeps "maximum at" questions single-answer
+      const mx = Math.max(...ys), mn = Math.min(...ys);
+      if (ys.filter((v) => v === mx).length > 1 || ys.filter((v) => v === mn).length > 1) continue;
+      return makePw(xs, ys);
+    }
+    throw new Error("zigzag: no graph found");
+  }
+  function makePw(xs, ys) {
+    const f = (x) => {
+      for (let i = 0; i < xs.length - 1; i++) if (x >= xs[i] - 1e-9 && x <= xs[i + 1] + 1e-9) return ys[i] + ((ys[i + 1] - ys[i]) * (x - xs[i])) / (xs[i + 1] - xs[i]);
+      return NaN;
+    };
+    const runs = xs.slice(0, -1).map((x, i) => ({ a: x, b: xs[i + 1], up: ys[i + 1] > ys[i] }));
+    return { xs, ys, f, runs, pts: xs.map((x, i) => [x, ys[i]]), lo: xs[0], hi: xs[xs.length - 1],
+      max: Math.max(...ys), min: Math.min(...ys) };
+  }
+  const graphOf = (P, extra = {}) => Object.assign({ window: W, paths: [{ pts: P.pts }], closed: [P.pts[0], P.pts[P.pts.length - 1]] }, extra);
+  const iv = (a, b, lc = "[", rc = "]") => `${lc}${a}, ${b}${rc}`;
+
+  // ───────────────────────── Key features from graphs and tables ─────────────────────────
+  add({ id: "u3.fe.y-intercept", skill: "u3.features", level: L.B, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r, { withZero: true });
+      return { key: [P.xs, P.ys], answer: P.f(0), graph: graphOf(P),
+        prompt: "The graph of $y = f(x)$ is shown. What is the $y$-intercept of the graph?",
+        hint: "The y-intercept is where the graph crosses the y-axis, where $x = 0$.",
+        solution: `At $x = 0$ the graph is at $y = ${P.f(0)}$. The $y$-intercept is **${P.f(0)}**.` };
+    } });
+
+  add({ id: "u3.fe.max-min", skill: "u3.features", level: L.B, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r), askMax = r.chance(0.5);
+      const v = askMax ? P.max : P.min;
+      return { key: [P.xs, P.ys, askMax], answer: v, graph: graphOf(P),
+        prompt: `The whole graph of $y = f(x)$ is shown. What is the ${askMax ? "maximum" : "minimum"} value of $f$?`,
+        hint: `The ${askMax ? "maximum" : "minimum"} value is the ${askMax ? "greatest" : "least"} $y$-value on the graph.`,
+        solution: `The ${askMax ? "highest" : "lowest"} point is $${pt(P.pts[P.ys.indexOf(v)])}$. The ${askMax ? "maximum" : "minimum"} value is the $y$-value, **${v}**.` };
+    } });
+
+  add({ id: "u3.fe.increasing", skill: "u3.features", level: L.I, type: "graph-mcq", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 3 }), askUp = r.chance(0.5);
+      const runs = P.runs.filter((x) => x.up === askUp), other = P.runs.filter((x) => x.up !== askUp);
+      const R0 = r.pick(runs), O = r.pick(other);
+      const yA = P.f(R0.a), yB = P.f(R0.b);
+      const m = mcq(`$${iv(R0.a, R0.b, "(", ")")}$`, [
+        { text: `$${iv(O.a, O.b, "(", ")")}$`, why: `On that interval the graph goes ${askUp ? "down" : "up"} from left to right.` },
+        { text: `$${iv(Math.min(yA, yB), Math.max(yA, yB), "(", ")")}$`, why: "Those are y-values. Intervals of increase and decrease use x-values." },
+        { text: `$${iv(P.lo, P.hi, "(", ")")}$`, why: `The graph does not ${askUp ? "rise" : "fall"} over the whole domain.` },
+      ], r, [{ text: `$${iv(R0.a - 1, R0.b + 1, "(", ")")}$`, why: "That interval goes past the turning points." }]);
+      return { key: [P.xs, P.ys, askUp, R0.a], ...m, graph: graphOf(P),
+        prompt: `The graph of $y = f(x)$ is shown. On which interval is $f$ ${askUp ? "increasing" : "decreasing"}?`,
+        hint: `Read left to right. Where does the graph go ${askUp ? "up" : "down"}?`,
+        solution: `From $x = ${R0.a}$ to $x = ${R0.b}$ the graph goes ${askUp ? "up" : "down"}. $f$ is ${askUp ? "increasing" : "decreasing"} on **$${iv(R0.a, R0.b, "(", ")")}$**.` };
+    } });
+
+  add({ id: "u3.fe.table-zero", skill: "u3.features", level: L.I, type: "numeric", calc: false,
+    make(r) {
+      const m = r.pick([2, 4, -2, -4, 3, -3]), z = r.int(-6, 10) + (Math.abs(m) % 2 === 0 && r.chance(0.4) ? 0.5 : 0);
+      const b = -m * z, xs = [0, 1, 2, 3, 4];
+      if (xs.includes(z)) return this.make(r);
+      return { key: [m, z], answer: z,
+        table: { headers: ["$x$", "$f(x)$"], rows: xs.map((x) => [String(x), String(m * x + b)]) },
+        prompt: "The table shows values of a linear function $f$. What is the $x$-intercept of the graph of $f$ (the value of $x$ where $f(x) = 0$)?",
+        hint: "Find the slope from the table, then work back to where the output is 0.",
+        solution: `From the table the output changes by ${m} each time $x$ goes up by 1, so the slope is ${m}, and $f(0) = ${b}$. $f(x) = ${lin(m, b)}$. Set $${lin(m, b)} = 0$: $x = \\mathbf{${tex(z)}}$.` };
+    } });
+
+  add({ id: "u3.fe.select-true", skill: "u3.features", level: L.H, type: "multi", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: r.int(3, 4) });
+      const iMax = P.ys.indexOf(P.max), iMin = P.ys.indexOf(P.min);
+      const R0 = r.pick(P.runs);
+      const a = r.int(P.lo, P.hi), b = r.int(P.lo, P.hi);
+      const items = [
+        { text: `The maximum value is ${P.max}.`, ok: true },
+        { text: `The maximum value is ${P.xs[iMax]}.`, ok: P.xs[iMax] === P.max, why: `${P.xs[iMax]} is where the maximum happens. The value is ${P.max}.` },
+        { text: `$f$ is ${R0.up ? "increasing" : "decreasing"} on $${iv(R0.a, R0.b, "(", ")")}$.`, ok: true },
+        { text: `$f$ is ${R0.up ? "decreasing" : "increasing"} on $${iv(R0.a, R0.b, "(", ")")}$.`, ok: false, why: `The graph goes ${R0.up ? "up" : "down"} there.` },
+        { text: `$f(${a}) ${P.f(a) > P.f(b) ? ">" : P.f(a) < P.f(b) ? "<" : "="} f(${b})$`, ok: true },
+        { text: `The minimum value happens at $x = ${P.xs[iMin]}$.`, ok: true },
+      ];
+      // keep 5 items, at least one false
+      const keep = r.shuffle(items).slice(0, 5);
+      if (!keep.some((x) => !x.ok)) keep[0] = items[3];
+      if (keep.every((x) => !x.ok) || new Set(keep.map((x) => x.text)).size < keep.length) return this.make(r);
+      const m = multi(keep, r);
+      return { key: [P.xs, P.ys, R0.a, a, b, keep.map((x) => x.text)], ...m, graph: graphOf(P),
+        prompt: "The whole graph of $y = f(x)$ is shown. Select **all** true statements.",
+        hint: "Values are y-values. Where things happen are x-values.",
+        solution: `Highest point $${pt(P.pts[iMax])}$, lowest point $${pt(P.pts[iMin])}$. ${P.runs.map((u) => `${u.up ? "Increasing" : "Decreasing"} on $(${u.a}, ${u.b})$`).join("; ")}. $f(${a}) = ${fmt(P.f(a))}$ and $f(${b}) = ${fmt(P.f(b))}$.<br>True: ${m.answer.map((i) => m.choices[i]).join(" · ")}` };
+    } });
+
+  add({ id: "u3.fe.story", skill: "u3.features", level: L.H, type: "graph-mcq", calc: false,
+    make(r) {
+      // distance from home over time: away, rest, back or further
+      const pts = [[0, 0]];
+      let t = 0, d = 0;
+      const kinds = r.shuffle(["away", "rest", "back"]);
+      if (kinds[0] === "back" || (kinds[0] === "rest")) kinds.unshift("away");
+      for (const k of kinds) {
+        const dt = r.int(1, 3);
+        t += dt;
+        if (k === "away") d += r.int(2, 4) * dt;
+        if (k === "back") d = Math.max(1, d - r.int(1, 3) * dt);
+        pts.push([t, d]);
+      }
+      if (t > 10 || d > 14 || pts.some((p, i) => i && p[1] <= 0)) return this.make(r);
+      const segs = pts.slice(0, -1).map((p, i) => ({ a: p[0], b: pts[i + 1][0], k: pts[i + 1][1] > p[1] ? 0 : pts[i + 1][1] === p[1] ? 1 : 2 }));
+      const S = r.pick(segs);
+      const choices = ["She is walking away from home.", "She is stopped.", "She is walking back toward home.", "She is at home."];
+      const why = ["The distance from home would go up.", "The distance would stay the same.", "The distance from home would go down.", "Her distance from home is not 0 there."];
+      return { key: [pts, S.a], choices, answer: S.k, why: why.map((w, i) => (i === S.k ? "Correct." : w)),
+        graph: { window: { xmin: 0, xmax: Math.max(10, t), ymin: 0, ymax: 16, xstep: 1, ystep: 2 }, paths: [{ pts }], closed: [pts[0], pts[pts.length - 1]] },
+        prompt: `The graph shows Maya's distance from home, in blocks, $t$ minutes after she leaves. What is happening from $t = ${S.a}$ to $t = ${S.b}$?`,
+        hint: "Is the distance going up, staying the same, or going down?",
+        solution: `From $t = ${S.a}$ to $t = ${S.b}$ the distance goes from ${fmt(pts.find((p) => p[0] === S.a)[1])} to ${fmt(pts.find((p) => p[0] === S.b)[1])} blocks. **${choices[S.k]}**` };
+    } });
+
+  add({ id: "u3.fe.solutions", skill: "u3.features", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 4 });
+      const ks = []; for (let k = P.min + 1; k < P.max; k++) if (!P.ys.includes(k)) ks.push(k);
+      if (!ks.length) return this.make(r);
+      const k = r.pick(ks);
+      const n = P.runs.filter((u) => (P.f(u.a) - k) * (P.f(u.b) - k) < 0).length;
+      return { key: [P.xs, P.ys, k], answer: n, graph: graphOf(P),
+        prompt: `The whole graph of $y = f(x)$ is shown. How many solutions does the equation $f(x) = ${k}$ have?`,
+        hint: `Draw the horizontal line $y = ${k}$. Count where it meets the graph.`,
+        solution: `The line $y = ${k}$ crosses the graph on ${n === 1 ? "one piece" : `${n} pieces`}: ${P.runs.filter((u) => (P.f(u.a) - k) * (P.f(u.b) - k) < 0).map((u) => `between $x = ${u.a}$ and $x = ${u.b}$`).join(", ")}. **${n}** solution${n === 1 ? "" : "s"}.` };
+    } });
+
+  add({ id: "u3.fe.count-above", skill: "u3.features", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 3 });
+      const k = r.int(P.min, P.max - 1);
+      const xs = []; for (let x = P.lo; x <= P.hi; x++) if (P.f(x) > k) xs.push(x);
+      if (!xs.length) return this.make(r);
+      return { key: [P.xs, P.ys, k], answer: xs.length, graph: graphOf(P),
+        prompt: `The whole graph of $y = f(x)$ is shown. For how many **whole-number** values of $x$ is $f(x) > ${k}$?`,
+        hint: "Check each whole number in the domain. Points exactly on the line do not count.",
+        solution: `The whole numbers with $f(x) > ${k}$ are ${xs.join(", ")}. That is **${xs.length}** values.` };
+    } });
+
+  // ───────────────────────── Domain, range and interval notation ─────────────────────────
+  add({ id: "u3.do.ineq-to-interval", skill: "u3.domain", level: L.B, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(-9, 4), b = a + r.int(2, 10), lc = r.pick(["[", "("]), rc = r.pick(["]", ")"]);
+      const ineq = `${a} ${lc === "[" ? "\\le" : "<"} x ${rc === "]" ? "\\le" : "<"} ${b}`;
+      const flip = (c) => ({ "[": "(", "(": "[", "]": ")", ")": "]" }[c]);
+      const m = mcq(`$${iv(a, b, lc, rc)}$`, [
+        { text: `$${iv(a, b, flip(lc), rc)}$`, why: `$${lc === "[" ? "\\le" : "<"}$ on the left means ${lc === "[" ? "include" : "leave out"} ${a}: ${lc === "[" ? "square bracket" : "round bracket"}.` },
+        { text: `$${iv(a, b, lc, flip(rc))}$`, why: `$${rc === "]" ? "\\le" : "<"}$ on the right means ${rc === "]" ? "include" : "leave out"} ${b}.` },
+        { text: `$${iv(a, b, flip(lc), flip(rc))}$`, why: "Square brackets include an endpoint; round brackets leave it out." },
+      ], r);
+      return { key: [a, b, lc, rc], ...m,
+        prompt: `Which interval means the same as $${ineq}$?`,
+        hint: "Square bracket: the endpoint is included. Round bracket: it is not.",
+        solution: `${lc === "[" ? `${a} is included` : `${a} is not included`} and ${rc === "]" ? `${b} is included` : `${b} is not included`}: **$${iv(a, b, lc, rc)}$**.` };
+    } });
+
+  add({ id: "u3.do.graph-domain", skill: "u3.domain", level: L.I, type: "graph-mcq", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 3 });
+      const openL = r.chance(0.5), openR = r.chance(0.5), askDomain = r.chance(0.5);
+      const first = P.pts[0], last = P.pts[P.pts.length - 1];
+      const g = graphOf(P, { closed: [openL ? null : first, openR ? null : last].filter(Boolean), open: [openL ? first : null, openR ? last : null].filter(Boolean) });
+      let right, wrong;
+      if (askDomain) {
+        right = `$${iv(P.lo, P.hi, openL ? "(" : "[", openR ? ")" : "]")}$`;
+        wrong = [{ text: `$${iv(P.min, P.max, "[", "]")}$`, why: "That uses y-values. The domain is the x-values." }]
+          .concat([["[", "]"], ["(", ")"], ["[", ")"], ["(", "]"]].map(([p, q]) => ({ text: `$${iv(P.lo, P.hi, p, q)}$`, why: "Open circles are left out (round bracket); filled circles are included (square bracket)." })));
+      } else {
+        // the range ends come from the highest and lowest points; an open end only matters if the extreme is there
+        const iMax = P.ys.indexOf(P.max), iMin = P.ys.indexOf(P.min), n = P.ys.length - 1;
+        const maxOpen = (iMax === 0 && openL) || (iMax === n && openR), minOpen = (iMin === 0 && openL) || (iMin === n && openR);
+        right = `$${iv(P.min, P.max, minOpen ? "(" : "[", maxOpen ? ")" : "]")}$`;
+        wrong = [
+          { text: `$${iv(P.lo, P.hi, minOpen ? "(" : "[", maxOpen ? ")" : "]")}$`, why: "That uses x-values. The range is the y-values." },
+          { text: `$${iv(P.min, P.max, minOpen ? "[" : "(", maxOpen ? "]" : ")")}$`, why: "Check whether the highest and lowest points are filled or open." },
+          { text: `$${iv(first[1], last[1], "[", "]")}$`, why: "The range runs from the lowest to the highest y-value, not from the ends of the graph." },
+        ];
+      }
+      const m = mcq(right, wrong, r, [{ text: `$${iv(P.min - 1, P.max + 1, "[", "]")}$`, why: "Read the lowest and highest y-values exactly." }, { text: `$${iv(P.lo - 1, P.hi + 1, "[", "]")}$`, why: "Read the ends of the graph exactly." }]);
+      return { key: [P.xs, P.ys, openL, openR, askDomain], ...m, graph: g,
+        prompt: `The whole graph of $y = f(x)$ is shown. A filled circle means the point is included; an open circle means it is not. What is the ${askDomain ? "domain" : "range"} of $f$?`,
+        hint: askDomain ? "Domain: the x-values the graph covers, left to right." : "Range: the y-values the graph covers, bottom to top.",
+        solution: `${askDomain ? `The graph runs from $x = ${P.lo}$ to $x = ${P.hi}$` : `The lowest y-value is ${P.min} and the highest is ${P.max}`}. The ${askDomain ? "domain" : "range"} is **${right}**.` };
+    } });
+
+  add({ id: "u3.do.words", skill: "u3.domain", level: L.I, type: "mcq", calc: false,
+    make(r) {
+      const a = r.int(-5, 10), b = a + r.int(3, 20);
+      const forms = [
+        [`at least ${a} and less than ${b}`, "[", ")"], [`greater than ${a} and at most ${b}`, "(", "]"],
+        [`between ${a} and ${b}, including both`, "[", "]"], [`more than ${a} but less than ${b}`, "(", ")"],
+      ];
+      const i = r.int(0, 3), [w, lc, rc] = forms[i];
+      const all = [["[", "]"], ["[", ")"], ["(", "]"], ["(", ")"]].map(([p, q]) => `$${iv(a, b, p, q)}$`);
+      const right = `$${iv(a, b, lc, rc)}$`;
+      const m = mcq(right, all.filter((x) => x !== right).map((t) => ({ text: t, why: "\"At least\" and \"at most\" include the endpoint. \"Greater than\", \"less than\" and \"more than\" leave it out." })), r);
+      return { key: [a, b, i], ...m,
+        prompt: `The input $x$ can be any number ${w}. Which interval shows the domain?`,
+        hint: "\"At least\" includes the number. \"More than\" does not.",
+        solution: `**${right}**` };
+    } });
+
+  add({ id: "u3.do.context", skill: "u3.domain", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const start = r.pick([60, 80, 90, 100]), rate = r.pick([4, 5, 10, 20].filter((x) => start % x === 0)), askD = r.chance(0.5);
+      const T = start / rate;
+      const right = askD ? `$${iv(0, T)}$` : `$${iv(0, start)}$`;
+      const m = mcq(right, [
+        { text: askD ? `$${iv(0, start)}$` : `$${iv(0, T)}$`, why: askD ? `${start} is a battery level, an output.` : `${T} is a number of hours, an input.` },
+        { text: askD ? `$[0, \\infty)$` : `$[0, \\infty)$`, why: "The model stops when the battery is empty." },
+        { text: askD ? `$${iv(0, T, "(", ")")}$` : `$${iv(0, start, "(", ")")}$`, why: "Both ends happen: the start and the moment the battery hits 0%." },
+      ], r);
+      return { key: [start, rate, askD], ...m,
+        prompt: `A phone battery is at ${start}%. It loses ${rate}% each hour until it is empty. $B(t)$ is the battery level $t$ hours from now. What is the ${askD ? "domain" : "range"} of $B$ for this situation?`,
+        hint: "When does the battery reach 0%?",
+        solution: `$B(t) = ${start} - ${rate}t$ reaches 0 when $t = ${start} \\div ${rate} = ${T}$. Times run from 0 to ${T}; levels run from ${start} down to 0. The ${askD ? "domain" : "range"} is **${right}**.` };
+    } });
+
+  add({ id: "u3.do.range-linear", skill: "u3.domain", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const m0 = r.pick([2, 3, 4, -2, -3]), b = r.int(-6, 6), a = r.int(-3, 4), openA = r.chance(0.5);
+      const fa = m0 * a + b;
+      const right = m0 > 0 ? `$${openA ? "(" : "["}${fa}, \\infty)$` : `$(-\\infty, ${fa}${openA ? ")" : "]"}$`;
+      const m = mcq(right, [
+        { text: m0 > 0 ? `$(-\\infty, ${fa}${openA ? ")" : "]"}$` : `$${openA ? "(" : "["}${fa}, \\infty)$`, why: m0 > 0 ? "The slope is positive, so outputs go up as $x$ goes up." : "The slope is negative, so outputs go down as $x$ goes up." },
+        { text: `$${openA ? "(" : "["}${a}, \\infty)$`, why: "That is the domain. The range is the outputs." },
+        { text: `$(-\\infty, \\infty)$`, why: "The domain is cut off at one end, so the range is too." },
+      ], r, [{ text: m0 > 0 ? `$${openA ? "[" : "("}${fa}, \\infty)$` : `$(-\\infty, ${fa}${openA ? "]" : ")"}$`, why: openA ? `$x = ${a}$ is not in the domain, so ${fa} is not in the range.` : `$x = ${a}$ is in the domain, so ${fa} is in the range.` }]);
+      return { key: [m0, b, a, openA], ...m,
+        prompt: `$f(x) = ${lin(m0, b)}$ with domain $x ${openA ? ">" : "\\ge"} ${a}$. What is the range of $f$?`,
+        hint: `Find $f(${a})$. Then decide whether the outputs go up or down from there.`,
+        solution: `$f(${a}) = ${fa}$. The slope ${m0} is ${m0 > 0 ? "positive, so outputs increase without end" : "negative, so outputs decrease without end"}${openA ? `, and $x = ${a}$ is not included, so ${fa} is not either` : ""}. Range: **${right}**.` };
+    } });
+
+  add({ id: "u3.do.select-in", skill: "u3.domain", level: L.C, type: "multi", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 3 });
+      const openL = r.chance(0.6), openR = !openL || r.chance(0.5);
+      const first = P.pts[0], last = P.pts[P.pts.length - 1];
+      // y is in the range if some included x gives it (each piece is strictly monotone, so it hits y once)
+      const inRange = (y) => P.runs.some((u, i) => {
+        const ya = P.ys[i], yb = P.ys[i + 1];
+        if (y < Math.min(ya, yb) || y > Math.max(ya, yb)) return false;
+        const x = u.a + ((y - ya) * (u.b - u.a)) / (yb - ya);
+        return !((x === P.lo && openL) || (x === P.hi && openR));
+      });
+      const inDomain = (x) => x > P.lo && x < P.hi || (x === P.lo && !openL) || (x === P.hi && !openR);
+      const items = [
+        { text: `${P.lo} is in the domain.`, ok: inDomain(P.lo), why: openL ? "The left end is an open circle." : "" },
+        { text: `${P.hi} is in the domain.`, ok: inDomain(P.hi), why: openR ? "The right end is an open circle." : "" },
+        { text: `${first[1]} is in the range.`, ok: inRange(first[1]), why: "" },
+        { text: `${last[1]} is in the range.`, ok: inRange(last[1]), why: "" },
+        { text: `${P.max} is in the range.`, ok: inRange(P.max), why: "" },
+        { text: `${P.hi + 1} is in the domain.`, ok: false, why: "The graph stops before that." },
+      ];
+      const uniq = []; for (const it of items) if (!uniq.some((u) => u.text === it.text)) uniq.push(it);
+      if (uniq.length < 4 || uniq.every((x) => x.ok) || !uniq.some((x) => x.ok)) return this.make(r);
+      const m = multi(uniq.slice(0, 5), r);
+      return { key: [P.xs, P.ys, openL, openR], ...m,
+        graph: graphOf(P, { closed: [openL ? null : first, openR ? null : last].filter(Boolean), open: [openL ? first : null, openR ? last : null].filter(Boolean) }),
+        prompt: "The whole graph of $y = f(x)$ is shown. Filled circles are included; open circles are not. Select **all** true statements.",
+        hint: "A y-value at an open circle can still be in the range if the graph reaches it somewhere else.",
+        solution: `True: ${m.answer.map((i) => m.choices[i]).join(" · ")} A value at an open circle counts only if the graph reaches it at another, included point.` };
+    } });
+
+  // ───────────────────────── Function notation ─────────────────────────
+  add({ id: "u3.no.evaluate", skill: "u3.notation", level: L.B, type: "numeric", calc: false,
+    make(r) {
+      const a = r.intNot(-6, 6, [0, 1]), b = r.int(-9, 9), k = r.intNot(-5, 6, [0]), sq = r.chance(0.35);
+      const val = sq ? k * k + b : a * k + b;
+      return { key: [a, b, k, sq], answer: val,
+        prompt: `$f(x) = ${sq ? `x^2 ${signed(b)}` : lin(a, b)}$. What is $f(${k})$?`,
+        hint: `Replace every $x$ with ${paren(k)}.`,
+        solution: `$f(${k}) = ${sq ? `(${k})^2 ${signed(b)} = ${k * k} ${signed(b)}` : `${a}(${k}) ${signed(b)} = ${a * k} ${signed(b)}`} = \\mathbf{${val}}$` };
+    } });
+
+  add({ id: "u3.no.table", skill: "u3.notation", level: L.B, type: "numeric", calc: false,
+    make(r) {
+      const xs = [-2, -1, 0, 1, 2, 3], ys = xs.map(() => r.int(-9, 12));
+      const askOut = r.chance(0.5), i = r.int(0, 5);
+      if (!askOut && ys.filter((v) => v === ys[i]).length > 1) return this.make(r);
+      return { key: [ys, i, askOut], answer: askOut ? ys[i] : xs[i],
+        table: { headers: ["$x$", "$f(x)$"], rows: xs.map((x, k) => [String(x), String(ys[k])]) },
+        prompt: askOut ? `Use the table. What is $f(${xs[i]})$?` : `Use the table. For what value of $x$ is $f(x) = ${ys[i]}$?`,
+        hint: askOut ? `Find the row where $x = ${xs[i]}$.` : `Find ${ys[i]} in the $f(x)$ column.`,
+        solution: askOut ? `In the row $x = ${xs[i]}$, $f(x) = \\mathbf{${ys[i]}}$.` : `$f(x) = ${ys[i]}$ in the row where $x = \\mathbf{${xs[i]}}$.` };
+    } });
+
+  add({ id: "u3.no.solve", skill: "u3.notation", level: L.I, type: "numeric", calc: false,
+    make(r) {
+      const a = r.intNot(-7, 7, [0, 1]), b = r.int(-12, 12), x = r.int(-8, 10);
+      const k = a * x + b;
+      return { key: [a, b, x], answer: x,
+        prompt: `$g(x) = ${lin(a, b)}$. For what value of $x$ is $g(x) = ${k}$?`,
+        hint: "Set the expression equal to the output and solve.",
+        solution: `$${lin(a, b)} = ${k}$, so $${a}x = ${k - b}$ and $x = \\mathbf{${x}}$.` };
+    } });
+
+  add({ id: "u3.no.graph-read", skill: "u3.notation", level: L.I, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r);
+      const askOut = r.chance(0.5);
+      if (askOut) {
+        const x = r.int(P.lo, P.hi);
+        if (!Number.isInteger(P.f(x))) return this.make(r);
+        return { key: [P.xs, P.ys, x, 1], answer: P.f(x), graph: graphOf(P),
+          prompt: `The graph of $y = f(x)$ is shown. What is $f(${x})$?`,
+          hint: `Go to $x = ${x}$ and read the height of the graph.`,
+          solution: `At $x = ${x}$ the graph is at $y = ${P.f(x)}$, so $f(${x}) = \\mathbf{${P.f(x)}}$.` };
+      }
+      // a y-value hit exactly once, at a corner
+      const iMax = P.ys.indexOf(P.max), k = P.max;
+      return { key: [P.xs, P.ys, 0], answer: P.xs[iMax], graph: graphOf(P),
+        prompt: `The whole graph of $y = f(x)$ is shown. For what value of $x$ is $f(x) = ${k}$?`,
+        hint: `Find where the graph is at height ${k}.`,
+        solution: `The graph reaches $y = ${k}$ only at the point $${pt(P.pts[iMax])}$, so $x = \\mathbf{${P.xs[iMax]}}$.` };
+    } });
+
+  const MEANINGS = [
+    { f: "C", in: "m", what: (x, y) => [`$C(m)$ is the cost, in dollars, of a phone call that lasts $m$ minutes.`, `A ${x}-minute call costs ${y} dollars.`, `A ${y}-minute call costs ${x} dollars.`, `Each minute costs ${y} dollars.`, `The call costs ${y} dollars more after ${x} minutes.`] },
+    { f: "h", in: "t", what: (x, y) => [`$h(t)$ is the height, in feet, of a kite $t$ seconds after it is launched.`, `${x} seconds after launch, the kite is ${y} feet high.`, `${y} seconds after launch, the kite is ${x} feet high.`, `The kite rises ${y} feet every ${x} seconds.`, `The kite takes ${x} seconds to rise ${x * y} feet.`] },
+    { f: "P", in: "d", what: (x, y) => [`$P(d)$ is the number of people at a fair on day $d$ of the fair.`, `On day ${x}, ${y} people were at the fair.`, `On day ${y}, ${x} people were at the fair.`, `${y} more people came each day for ${x} days.`, `In ${x} days, ${x * y} people came in total.`] },
+    { f: "W", in: "w", what: (x, y) => [`$W(w)$ is the weight, in pounds, of a puppy $w$ weeks after it is born.`, `At ${x} weeks old, the puppy weighs ${y} pounds.`, `At ${y} weeks old, the puppy weighs ${x} pounds.`, `The puppy gains ${y} pounds each week.`, `The puppy gains ${x} pounds in ${y} weeks.`] },
+  ];
+  add({ id: "u3.no.meaning", skill: "u3.notation", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, MEANINGS.length - 1), M = MEANINGS[i];
+      const x = r.int(2, 30), y = r.int(5, 90);
+      if (x === y) return this.make(r);
+      const [ctx, right, swap, rate, total] = M.what(x, y);
+      const m = mcq(right, [
+        { text: swap, why: `The number inside the parentheses is the input, ${M.in}. The other number is the output.` },
+        { text: rate, why: "The statement gives one input and one output, not a rate." },
+        { text: total, why: "It says nothing about a total over time." },
+      ], r);
+      return { key: [i, x, y], ...m,
+        prompt: `${ctx} What does $${M.f}(${x}) = ${y}$ mean?`,
+        hint: "Input inside the parentheses, output on the other side.",
+        solution: `The input is $${M.in} = ${x}$ and the output is ${y}. **${right}**` };
+    } });
+
+  add({ id: "u3.no.expressions", skill: "u3.notation", level: L.H, type: "numeric", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 6, [0, 1]), b = r.int(-9, 9), p = r.int(-4, 5), q = r.int(-4, 5), kind = r.int(0, 2);
+      const f = (x) => a * x + b;
+      const [expr, val, work] = kind === 0
+        ? [`f(${p}) + f(${q})`, f(p) + f(q), `$f(${p}) = ${f(p)}$ and $f(${q}) = ${f(q)}$, so the sum is ${f(p) + f(q)}.`]
+        : kind === 1 ? [`f(${p + q}) - f(${p})`, f(p + q) - f(p), `$f(${p + q}) = ${f(p + q)}$ and $f(${p}) = ${f(p)}$, so the difference is ${f(p + q) - f(p)}.`]
+          : [`2f(${p}) - f(${2 * p})`, 2 * f(p) - f(2 * p), `$2f(${p}) = 2(${f(p)}) = ${2 * f(p)}$ and $f(${2 * p}) = ${f(2 * p)}$, so the result is ${2 * f(p) - f(2 * p)}.`];
+      if (kind === 1 && q === 0) return this.make(r);
+      return { key: [a, b, p, q, kind], answer: val,
+        prompt: `$f(x) = ${lin(a, b)}$. What is the value of $${expr}$?`,
+        hint: "Find each function value first, then combine.",
+        solution: `${work} The value is **${val}**.` };
+    } });
+
+  add({ id: "u3.no.two-values", skill: "u3.notation", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const m = r.intNot(-5, 6, [0]), b = r.int(-10, 10), p = r.int(-3, 3), q = p + r.int(2, 5), t = r.int(6, 12);
+      return { key: [m, b, p, q, t], answer: m * t + b,
+        prompt: `$f$ is a linear function with $f(${p}) = ${m * p + b}$ and $f(${q}) = ${m * q + b}$. What is $f(${t})$?`,
+        hint: "Find the slope from the two values first.",
+        solution: `Slope $= \\frac{${m * q + b} - ${paren(m * p + b)}}{${q} - ${paren(p)}} = ${m}$. Then $b = ${m * p + b} - ${paren(m)}(${p}) = ${b}$, so $f(x) = ${lin(m, b)}$ and $f(${t}) = \\mathbf{${m * t + b}}$.` };
+    } });
+
+  add({ id: "u3.no.exp-shift", skill: "u3.notation", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const g = r.pick([2, 3]), k = g === 2 ? r.int(4, 8) : r.int(3, 5), s = r.int(1, 2), up = r.chance(0.4);
+      const val = up ? g ** (k + s) : g ** (k - s);
+      return { key: [g, k, s, up], answer: val,
+        prompt: `$h(x) = ${g}^x$ and $h(k) = ${g ** k}$. What is $h(k ${up ? "+" : "-"} ${s})$?`,
+        hint: `Each step of 1 in $x$ ${up ? "multiplies" : "divides"} the output by ${g}.`,
+        solution: `$h(k) = ${g}^k = ${g ** k}$, so $k = ${k}$. $h(${k} ${up ? "+" : "-"} ${s}) = ${g}^{${up ? k + s : k - s}} = \\mathbf{${val}}$. (Or ${up ? "multiply" : "divide"} ${g ** k} by ${g} ${s === 1 ? "once" : "twice"}.)` };
+    } });
+
+  // ───────────────────────── Combining functions ─────────────────────────
+  const fx = (m, b) => lin(m, b);
+  add({ id: "u3.co.evaluate", skill: "u3.combine", level: L.B, type: "numeric", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 6, [0]), b = r.int(-9, 9), c = r.intNot(-5, 6, [0]), d = r.int(-9, 9), k = r.int(-4, 5), op = r.pick(["+", "-"]);
+      const v = op === "+" ? a * k + b + (c * k + d) : a * k + b - (c * k + d);
+      return { key: [a, b, c, d, k, op], answer: v,
+        prompt: `$f(x) = ${fx(a, b)}$ and $g(x) = ${fx(c, d)}$. What is $f(${k}) ${op} g(${k})$?`,
+        hint: "Find each value, then combine.",
+        solution: `$f(${k}) = ${a * k + b}$ and $g(${k}) = ${c * k + d}$. $${a * k + b} ${op} ${paren(c * k + d)} = \\mathbf{${v}}$` };
+    } });
+
+  add({ id: "u3.co.add", skill: "u3.combine", level: L.B, type: "mcq", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 6, [0]), b = r.int(-9, 9), c = r.intNot(-5, 6, [0, -a]), d = r.int(-9, 9);
+      if (b + d === 0 && b === 0) return this.make(r);
+      const m = mcq(`$${lin(a + c, b + d)}$`, [
+        { text: `$${lin(a * c, b * d)}$`, why: "Adding functions adds like terms. It does not multiply them." },
+        { text: `$${lin(a + c, b - d)}$`, why: "Both constants are added." },
+        { text: `$${lin(a - c, b + d)}$`, why: "Both $x$-terms are added." },
+      ], r, [{ text: `$${lin(a + c + 1, b + d)}$`, why: "Combine the $x$-terms carefully." }]);
+      return { key: [a, b, c, d], ...m,
+        prompt: `$f(x) = ${fx(a, b)}$ and $g(x) = ${fx(c, d)}$. Which expression is $f(x) + g(x)$?`,
+        hint: "Add the $x$-terms, then add the constants.",
+        solution: `$(${fx(a, b)}) + (${fx(c, d)}) = \\mathbf{${lin(a + c, b + d)}}$` };
+    } });
+
+  add({ id: "u3.co.subtract", skill: "u3.combine", level: L.I, type: "mcq", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 8, [0]), b = r.int(-9, 9), c = r.intNot(-5, 8, [0, a]), d = r.intNot(-9, 9, [0]);
+      const m = mcq(`$${lin(a - c, b - d)}$`, [
+        { text: `$${lin(a - c, b + d)}$`, why: "Subtract all of $g(x)$: the constant changes sign too." },
+        { text: `$${lin(a + c, b - d)}$`, why: "Subtract the $x$-terms too." },
+        { text: `$${lin(c - a, d - b)}$`, why: "That is $g(x) - f(x)$." },
+      ], r, [{ text: `$${lin(a - c, d - b)}$`, why: "Distribute the minus sign to every term of $g(x)$." }]);
+      return { key: [a, b, c, d], ...m,
+        prompt: `$f(x) = ${fx(a, b)}$ and $g(x) = ${fx(c, d)}$. Which expression is $f(x) - g(x)$?`,
+        hint: "Put $g(x)$ in parentheses and distribute the minus sign.",
+        solution: `$(${fx(a, b)}) - (${fx(c, d)}) = ${fx(a, b)} ${c < 0 ? "+" : "-"} ${Math.abs(c) === 1 ? "" : Math.abs(c)}x ${d < 0 ? "+" : "-"} ${Math.abs(d)} = \\mathbf{${lin(a - c, b - d)}}$` };
+    } });
+
+  add({ id: "u3.co.table", skill: "u3.combine", level: L.I, type: "numeric", calc: false,
+    make(r) {
+      const xs = [0, 1, 2, 3, 4], fv = xs.map(() => r.int(-6, 15)), gv = xs.map(() => r.int(-6, 15));
+      const i = r.int(0, 4), j = r.int(0, 4), kind = r.int(0, 2);
+      const [expr, val, work] = kind === 0 ? [`(f + g)(${xs[i]})`, fv[i] + gv[i], `$f(${xs[i]}) + g(${xs[i]}) = ${fv[i]} + ${paren(gv[i])}$`]
+        : kind === 1 ? [`(f - g)(${xs[i]})`, fv[i] - gv[i], `$f(${xs[i]}) - g(${xs[i]}) = ${fv[i]} - ${paren(gv[i])}$`]
+          : [`f(${xs[i]}) + g(${xs[j]})`, fv[i] + gv[j], `$f(${xs[i]}) + g(${xs[j]}) = ${fv[i]} + ${paren(gv[j])}$`];
+      return { key: [fv, gv, i, j, kind], answer: val,
+        table: { headers: ["$x$", "$f(x)$", "$g(x)$"], rows: xs.map((x, k) => [String(x), String(fv[k]), String(gv[k])]) },
+        prompt: `Use the table. What is $${expr}$?`,
+        hint: "$(f + g)(x)$ means $f(x) + g(x)$.",
+        solution: `${work} = **${val}**` };
+    } });
+
+  add({ id: "u3.co.profit", skill: "u3.combine", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const item = r.pick(["T-shirts", "bracelets", "candles", "phone cases"]);
+      const p = r.int(12, 30), c = r.int(3, p - 4), F = r.int(5, 40) * 10;
+      const m = mcq(`$P(x) = ${p - c}x - ${F}$`, [
+        { text: `$P(x) = ${p - c}x + ${F}$`, why: "The fixed cost is subtracted, because $C(x)$ is subtracted." },
+        { text: `$P(x) = ${p + c}x - ${F}$`, why: "Subtract the cost per item." },
+        { text: `$P(x) = ${p + c}x + ${F}$`, why: "Profit is revenue minus cost: $R(x) - C(x)$." },
+      ], r);
+      return { key: [p, c, F, item], ...m,
+        prompt: `A student sells ${item}. Revenue is $R(x) = ${p}x$ and cost is $C(x) = ${c}x + ${F}$, in dollars, for $x$ ${item}. Profit is revenue minus cost. Which function gives the profit $P(x)$?`,
+        hint: "$P(x) = R(x) - C(x)$. Distribute the minus sign.",
+        solution: `$P(x) = ${p}x - (${c}x + ${F}) = \\mathbf{${p - c}x - ${F}}$` };
+    } });
+
+  add({ id: "u3.co.multiply", skill: "u3.combine", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 6, [0, 1]), b = r.intNot(-7, 7, [0]);
+      const m = mcq(`$${a}x^2 ${signed(a * b)}x$`, [
+        { text: `$${a}x^2 ${signed(b)}$`, why: `Multiply ${a}x by both terms: $${a}x \\cdot ${paren(b)} = ${a * b}x$.` },
+        { text: `$${lin(a + 1, b)}$`, why: "That adds the functions. Multiplying gives an $x^2$ term." },
+        { text: `$${a}x^2 ${signed(a * b)}$`, why: `$${a}x \\cdot ${paren(b)}$ still has an $x$.` },
+      ], r);
+      return { key: [a, b], ...m,
+        prompt: `$f(x) = ${a}x$ and $g(x) = ${lin(1, b)}$. Which expression is $f(x) \\cdot g(x)$?`,
+        hint: "Distribute $f(x)$ to each term of $g(x)$.",
+        solution: `$${a}x(x ${signed(b)}) = ${a}x \\cdot x + ${a}x \\cdot ${paren(b)} = \\mathbf{${a}x^2 ${signed(a * b)}x}$` };
+    } });
+
+  add({ id: "u3.co.break-even", skill: "u3.combine", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const p = r.int(8, 25), c = r.int(2, p - 3), n = r.int(10, 60), F = (p - c) * n, goal = r.chance(0.5) ? 0 : r.int(2, 10) * 10;
+      const ans = Math.ceil((F + goal) / (p - c));
+      return { key: [p, c, n, goal], answer: ans,
+        prompt: `A club's revenue is $R(x) = ${p}x$ and its cost is $C(x) = ${c}x + ${F}$, in dollars, for $x$ items sold. What is the least number of items the club must sell so that $R(x) - C(x) ${goal ? `\\ge ${goal}` : "\\ge 0"}$?`,
+        hint: "Write $R(x) - C(x)$ as one expression first.",
+        solution: `$R(x) - C(x) = ${p - c}x - ${F}$. ${goal ? `$${p - c}x - ${F} \\ge ${goal}$ gives $x \\ge \\frac{${F + goal}}{${p - c}}${(F + goal) % (p - c) ? ` \\approx ${fmt(Math.round(((F + goal) / (p - c)) * 100) / 100)}` : ""}$` : `$${p - c}x - ${F} \\ge 0$ gives $x \\ge ${F / (p - c)}$`}. The least whole number is **${ans}**.` };
+    } });
+
+  add({ id: "u3.co.graph-sum", skill: "u3.combine", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const m1 = r.pick([1, 2, -1, 0.5, -2]), b1 = r.int(-3, 3), m2 = r.pick([1, -1, 2, -0.5, 3]), b2 = r.int(-3, 3), k = r.pick([-2, 2, 4, -4, 0]);
+      const f = (x) => m1 * x + b1, g = (x) => m2 * x + b2, op = r.pick(["+", "-"]);
+      if (!Number.isInteger(f(k)) || !Number.isInteger(g(k)) || Math.abs(f(k)) > 7 || Math.abs(g(k)) > 7 || m1 === m2) return this.make(r);
+      const v = op === "+" ? f(k) + g(k) : f(k) - g(k);
+      return { key: [m1, b1, m2, b2, k, op], answer: v,
+        graph: { window: W, paths: [{ pts: [[-7, f(-7)], [7, f(7)]] }, { pts: [[-7, g(-7)], [7, g(7)]], alt: true, dashed: true }] },
+        prompt: `The graphs of $f$ (solid) and $g$ (dashed) are shown. What is $(f ${op} g)(${k})$?`,
+        hint: `Read $f(${k})$ and $g(${k})$ from the graphs.`,
+        solution: `$f(${k}) = ${f(k)}$ and $g(${k}) = ${g(k)}$. $(f ${op} g)(${k}) = ${f(k)} ${op} ${paren(g(k))} = \\mathbf{${v}}$` };
+    } });
+
+  // ───────────────────────── Thinking questions ─────────────────────────
+  add({ id: "u3.th.find-error", skill: "u3.notation", level: L.H, type: "mcq", calc: false,
+    make(r) {
+      const a = r.intNot(-6, 6, [0, 1, -1]), b = r.intNot(-12, 12, [0]), x = r.int(-6, 8), k = a * x + b, kind = r.int(0, 3);
+      const s1 = kind === 0 ? `$${lin(a, b)} = ${k}$ becomes $${a}x = ${k + b}$` : `$${lin(a, b)} = ${k}$ becomes $${a}x = ${k - b}$`;
+      const lhs = kind === 0 ? k + b : k - b;
+      const s2 = kind === 1 ? `$x = ${lhs} \\cdot ${paren(a)} = ${lhs * a}$` : `$x = ${lhs} \\div ${paren(a)} = ${tex(lhs / a)}$`;
+      const xx = kind === 1 ? lhs * a : lhs / a;
+      const s3 = kind === 2 ? `So $g(${tex(xx)}) = ${k}$, and the answer is $${k}$.` : `So the answer is $x = ${tex(xx)}$.`;
+      const bad = kind === 3 ? -1 : kind;
+      const whyWrong = [`To undo $${signed(b)}$, ${b > 0 ? "subtract" : "add"} ${Math.abs(b)} on both sides.`, `To undo multiplying by ${a}, divide by ${a}.`, "The question asks for the input $x$, not the output."][Math.max(0, bad)];
+      const f = findStep([s1, s2, s3], bad, whyWrong);
+      return { key: [a, b, x, kind], choices: f.choices, answer: f.answer, why: f.why, think: true,
+        prompt: `$g(x) = ${lin(a, b)}$. Sam solved "For what $x$ is $g(x) = ${k}$?" like this:<br>${f.stepsText}<br>Where is Sam's first mistake?`,
+        hint: "Redo each step yourself.",
+        solution: `$${lin(a, b)} = ${k}$, so $${a}x = ${k - b}$ and $x = ${x}$.<br>` + (bad < 0 ? "**There is no mistake.**" : `The first mistake is in **Step ${bad + 1}**. ${whyWrong}`) };
+    } });
+
+  add({ id: "u3.th.f-of-sum", skill: "u3.notation", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const a = r.intNot(-5, 6, [0, 1]), b = r.intNot(-9, 9, [0]), p = r.int(1, 6), q = r.int(1, 6);
+      const lhs = a * (p + q) + b, rhs = a * p + b + a * q + b;
+      const right = `No. $f(${p + q}) = ${lhs}$ but $f(${p}) + f(${q}) = ${rhs}$, because the constant ${b} is counted twice on the right.`;
+      const m = mcq(right, [
+        { text: `Yes. Function notation works like multiplication, so $f(${p} + ${q}) = f(${p}) + f(${q})$.`, why: "$f(\\ldots)$ means \"put this input into f\", not \"multiply by f\"." },
+        { text: `Yes, because ${p} + ${q} = ${p + q} on both sides.`, why: `Compute both sides: ${lhs} and ${rhs}.` },
+        { text: `No, because $f(${p + q})$ is ${lhs + 1} and $f(${p}) + f(${q})$ is ${rhs}.`, why: `$f(${p + q}) = ${a}(${p + q}) ${signed(b)} = ${lhs}$.` },
+      ], r);
+      return { key: [a, b, p, q], ...m, think: true,
+        prompt: `$f(x) = ${lin(a, b)}$. Is $f(${p} + ${q})$ equal to $f(${p}) + f(${q})$? Pick the answer with the correct reason.`,
+        hint: "Work out both sides.",
+        solution: `$f(${p + q}) = ${a}(${p + q}) ${signed(b)} = ${lhs}$. $f(${p}) + f(${q}) = ${a * p + b} + ${paren(a * q + b)} = ${rhs}$. **${right}**` };
+    } });
+
+  add({ id: "u3.th.make-true", skill: "u3.features", level: L.C, type: "numeric", calc: false,
+    make(r) {
+      const P = zigzag(r, { pieces: 3 });
+      const k = r.int(P.min + 1, P.max - 1), want = r.pick(["up", "down"]);
+      const xs = [];
+      for (const u of P.runs) if ((want === "up") === u.up) for (let x = u.a; x < u.b; x++) if (x > u.a && P.f(x) > k) xs.push(x);
+      if (xs.length < 2) return this.make(r);
+      return { key: [P.xs, P.ys, k, want], answer: xs[0], accept: { in: xs }, think: true, graph: graphOf(P),
+        prompt: `The whole graph of $y = f(x)$ is shown. Give **one** whole number $x$ where $f$ is ${want === "up" ? "increasing" : "decreasing"} **and** $f(x) > ${k}$.`,
+        hint: "First find the intervals where the graph goes the right way. Then look above the line $y = " + k + "$.",
+        solution: `$f$ is ${want === "up" ? "increasing" : "decreasing"} on ${P.runs.filter((u) => (want === "up") === u.up).map((u) => `$(${u.a}, ${u.b})$`).join(" and ")}. Of those whole numbers, these have $f(x) > ${k}$: **${xs.join(", ")}**. Any one of them is correct.` };
+    } });
+
+  const U3_ASN = [
+    { s: "A function's maximum value happens at the right end of its domain.",
+      right: "Sometimes true: it does for an increasing line on $[0, 5]$, but a hill-shaped graph peaks in the middle.",
+      wrong: ["Always true: the graph ends at its highest point.", "Never true: the maximum is always in the middle.", "Always true: x-values get larger to the right."] },
+    { s: "If $f(a) = f(b)$ and $a \\ne b$, then $f$ is not a function.",
+      right: "Never true: two inputs can share an output. A function only forbids one input having two outputs.",
+      wrong: ["Always true: each output must come from one input.", "Sometimes true: only when $a$ and $b$ are close together.", "Always true: that fails the vertical line test."] },
+    { s: "The range of a linear function with domain $[0, 4]$ is a closed interval.",
+      right: "Always true: the outputs run between $f(0)$ and $f(4)$, and both are reached. (If the slope is 0, the range is the single number $f(0)$.)",
+      wrong: ["Never true: lines go on forever.", "Sometimes true: only when the slope is positive.", "Sometimes true: only when $f(0) = 0$."] },
+    { s: "A graph that is increasing on $(0, 3)$ and decreasing on $(3, 6)$ has its maximum at $x = 3$.",
+      right: "Sometimes true: it is the highest point of that hill, but the graph could go higher somewhere else outside $(0, 6)$.",
+      wrong: ["Always true: going up then down makes a maximum.", "Never true: the maximum is a y-value, not an x-value.", "Always true: a turning point is always the maximum."] },
+    { s: "If $f$ and $g$ are linear functions, then $f(x) + g(x)$ is a linear function.",
+      right: "Always true: adding two expressions of the form $mx + b$ gives another one of that form. (It may be a constant, which is still linear.)",
+      wrong: ["Sometimes true: only when both slopes are positive.", "Never true: adding makes an $x^2$ term.", "Sometimes true: only when the lines cross."] },
+    { s: "If $f(x) = 3x$, then $f(2x) = 2f(x)$.",
+      right: "Always true: $f(2x) = 6x$ and $2f(x) = 2(3x) = 6x$.",
+      wrong: ["Never true: the 2 is in different places.", "Sometimes true: only when $x = 0$.", "Sometimes true: only for positive $x$."] },
+  ];
+  add({ id: "u3.th.always", skill: "u3.features", level: L.C, type: "mcq", calc: false,
+    make(r) {
+      const i = r.int(0, U3_ASN.length - 1), it = U3_ASN[i];
+      const m = mcq(it.right, it.wrong.map((t) => ({ text: t, why: "Test it with examples. " + it.right })), r);
+      return { key: [i], ...m, think: true,
+        prompt: `Is this statement always true, sometimes true, or never true?<br>"${it.s}"`,
+        hint: "Try a few examples, including unusual ones.",
+        solution: `**${it.right}**` };
+    } });
+
+  M1.units.u3 = Object.assign(M1.units.u3 || {}, { generators: gens });
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>/* content/unit-3-features-of-functions/bank.js */
+/* Unit 3 Features of Functions: written question bank (context and SAT-style items that don't fit a template).
+   Every item is re-solved in tests/run-tests.mjs (see BANK_CHECKS) before it ships. */
+(function (G) {
+  const M1 = G.M1;
+  const bank = [
+    { id: "u3b01", skill: "u3.notation", level: "hard", type: "numeric", calc: false, lesson: 3, standard: "NC.M1.F-IF.2", answer: 37,
+      prompt: "$f(x) = 3x - 5$ and $f(a) = 16$. What is $f(2a)$?",
+      hint: "Find $a$ first.", solution: "$3a - 5 = 16$ gives $a = 7$. Then $f(2a) = f(14) = 3(14) - 5 = \\mathbf{37}$." },
+    { id: "u3b02", skill: "u3.notation", level: "challenge", type: "numeric", calc: false, lesson: 3, standard: "NC.M1.F-IF.2", answer: -6,
+      prompt: "$g(x) = ax + 4$ for some constant $a$, and $g(3) = 19$. What is $g(-2)$?",
+      hint: "Use $g(3) = 19$ to find $a$.", solution: "$3a + 4 = 19$, so $a = 5$. $g(-2) = 5(-2) + 4 = \\mathbf{-6}$." },
+    { id: "u3b03", skill: "u3.features", level: "challenge", type: "mcq", calc: false, lesson: 1, standard: "NC.M1.F-IF.4",
+      prompt: "A function $f$ has $f(2) = 5$ and $f(6) = -3$. Nothing else is known about $f$. Which statement **must** be true?",
+      choices: ["The graph of $f$ passes through $(6, -3)$.", "$f$ is decreasing from $x = 2$ to $x = 6$.", "$f(4) = 1$", "The maximum value of $f$ is 5."], answer: 0,
+      why: ["Correct.", "The graph could go up and down between those points.", "That is only true if $f$ is linear.", "$f$ could be greater than 5 somewhere else."],
+      hint: "Which statement follows from the two facts alone?", solution: "$f(6) = -3$ means the point $(6, -3)$ is on the graph. The other statements could be false. **The graph passes through $(6, -3)$.**" },
+    { id: "u3b04", skill: "u3.domain", level: "hard", type: "mcq", calc: false, lesson: 2, standard: "NC.M1.F-IF.5",
+      prompt: "A theater has 120 seats, and each ticket costs \\$9. $R(n) = 9n$ is the revenue, in dollars, from selling $n$ tickets to one show. What is the range of $R$?",
+      choices: ["$\\{0, 9, 18, \\ldots, 1080\\}$", "$[0, 1080]$", "$\\{0, 1, 2, \\ldots, 120\\}$", "$[0, 120]$"], answer: 0,
+      why: ["Correct.", "Only whole tickets are sold, so the revenue jumps in steps of \\$9.", "That is the domain: the numbers of tickets.", "That mixes up the domain and range, and tickets are whole numbers."],
+      hint: "Find the outputs for 0, 1, 2, … tickets.", solution: "$n$ is a whole number from 0 to 120, so the revenue is $0, 9, 18, \\ldots, 9(120) = 1080$: **$\\{0, 9, 18, \\ldots, 1080\\}$**." },
+    { id: "u3b05", skill: "u3.domain", level: "challenge", type: "numeric", calc: false, lesson: 2, standard: "NC.M1.F-IF.5", answer: 13,
+      prompt: "$h(x) = -2x + 7$ has domain $[-3, 5]$. What is the greatest value in the range of $h$?",
+      hint: "The slope is negative. Which end of the domain gives the biggest output?", solution: "$h$ decreases, so the greatest output is at the smallest input: $h(-3) = 6 + 7 = \\mathbf{13}$." },
+    { id: "u3b06", skill: "u3.combine", level: "challenge", type: "numeric", calc: true, lesson: 5, standard: "NC.M1.F-BF.1b", answer: 300,
+      prompt: "Phone plan A costs $A(m) = 0.05m + 20$ dollars and plan B costs $B(m) = 0.10m + 5$ dollars for $m$ minutes. For what number of minutes is $A(m) - B(m) = 0$?",
+      hint: "Write $A(m) - B(m)$ as one expression.", solution: "$A(m) - B(m) = -0.05m + 15 = 0$, so $m = 15 \\div 0.05 = \\mathbf{300}$ minutes. The plans cost the same then." },
+    { id: "u3b07", skill: "u3.combine", level: "hard", type: "mcq", calc: false, lesson: 5, standard: "NC.M1.F-BF.1b",
+      prompt: "$f(x) = 2x + 1$ and $g(x) = x - 3$. Which expression is $f(x) - 2g(x)$?",
+      choices: ["$7$", "$-5$", "$4x - 5$", "$x + 4$"], answer: 0,
+      why: ["Correct.", "$-2(-3) = +6$, not $-6$.", "Subtract $2g(x)$; do not add it.", "Multiply all of $g(x)$ by 2 first."],
+      hint: "Find $2g(x)$ first, then subtract it.", solution: "$2g(x) = 2x - 6$. $f(x) - 2g(x) = 2x + 1 - 2x + 6 = \\mathbf{7}$." },
+    { id: "u3b08", skill: "u3.features", level: "challenge", type: "numeric", calc: false, lesson: 1, standard: "NC.M1.F-IF.4", answer: 4,
+      prompt: "$f$ is a linear function with $f(0) = 12$ and $f(4) = 0$. For how many whole numbers $x$ from 0 to 10 is $f(x) > 0$?",
+      hint: "Is $f$ increasing or decreasing? Where is it 0?", solution: "The slope is $\\frac{0 - 12}{4 - 0} = -3$, so $f$ decreases and is positive only for $x < 4$: $x = 0, 1, 2, 3$. **4** values." },
+    { id: "u3b09", skill: "u3.notation", level: "challenge", type: "mcq", calc: false, lesson: 3, standard: "NC.M1.F-IF.2",
+      prompt: "$f(x) = 2^x$. Which expression is equal to $f(x + 3)$ for every $x$?",
+      choices: ["$8f(x)$", "$f(x) + 8$", "$f(x) + 3$", "$3f(x)$"], answer: 0,
+      why: ["Correct.", "Try $x = 1$: $f(4) = 16$ but $f(1) + 8 = 10$.", "Adding 3 to the input does not add 3 to the output.", "Try $x = 1$: $f(4) = 16$ but $3f(1) = 6$."],
+      hint: "$2^{x + 3} = 2^x \\cdot 2^3$.", solution: "$f(x + 3) = 2^{x+3} = 2^x \\cdot 2^3 = \\mathbf{8f(x)}$." },
+    { id: "u3b10", skill: "u3.domain", level: "challenge", type: "multi", calc: false, lesson: 2, standard: "NC.M1.F-IF.5",
+      prompt: "$f(x) = 4 - x$ with domain $(-2, 6]$. Select **all** values that are in the range of $f$.",
+      choices: ["$-2$", "$0$", "$5.5$", "$6$", "$7$"], answer: [0, 1, 2],
+      why: ["$f(6) = -2$, and 6 is in the domain.", "", "", "$f(-2) = 6$, but $-2$ is not in the domain.", "Outputs stay below 6."],
+      hint: "Find the outputs at both ends, and note which end is included.", solution: "$f(6) = -2$ (included) and $f(-2) = 6$ (not included). The range is $[-2, 6)$, so **$-2$, 0 and 5.5** are in it." },
+    { id: "u3b11", skill: "u3.notation", level: "hard", type: "numeric", calc: false, lesson: 3, standard: "NC.M1.F-IF.2", answer: 28,
+      prompt: "$f(x) = x^2 - 3x$. What is $f(-4)$?",
+      hint: "Use parentheses: $(-4)^2$.", solution: "$f(-4) = (-4)^2 - 3(-4) = 16 + 12 = \\mathbf{28}$." },
+    { id: "u3b12", skill: "u3.combine", level: "challenge", type: "numeric", calc: true, lesson: 5, standard: "NC.M1.F-BF.1b", answer: 22.5,
+      prompt: "A school expects $S(y) = 400 + 25y$ students and $T(y) = 20 + y$ teachers $y$ years from now. The function $R(y) = \\frac{S(y)}{T(y)}$ gives students per teacher. What is $R(20)$?",
+      hint: "Find $S(20)$ and $T(20)$ first.", solution: "$S(20) = 400 + 500 = 900$ and $T(20) = 40$. $R(20) = 900 \\div 40 = \\mathbf{22.5}$ students per teacher." },
+  ];
+  M1.units.u3 = Object.assign(M1.units.u3 || {}, { bank });
 })(typeof window !== "undefined" ? window : globalThis);
 
 </script>
@@ -2489,6 +3408,7 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       case "numeric": {
         const v = Q.parseNum(resp);
         if (!Number.isFinite(v)) return false;
+        if (q.accept) return accepts(q.accept, v); // "make it true" items: any value in the allowed set
         const tol = q.tol != null ? q.tol : 1e-6 * Math.max(1, Math.abs(q.answer));
         return Math.abs(v - q.answer) <= tol;
       }
@@ -2499,6 +3419,17 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       }
     }
     return false;
+  }
+
+  // accept: { in: [values] } or { lo, hi, loOpen, hiOpen, int, not: [values] }. Missing bounds are unbounded.
+  function accepts(a, v) {
+    const eps = 1e-9;
+    if (a.in) return a.in.some((x) => Math.abs(x - v) < eps);
+    if (a.lo != null && (a.loOpen ? v <= a.lo + eps : v < a.lo - eps)) return false;
+    if (a.hi != null && (a.hiOpen ? v >= a.hi - eps : v > a.hi + eps)) return false;
+    if (a.int && Math.abs(v - Math.round(v)) > eps) return false;
+    if ((a.not || []).some((x) => Math.abs(x - v) < eps)) return false;
+    return true;
   }
 
   function gradeSet(set, answers) {
@@ -2570,7 +3501,7 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     return { state: st, events };
   }
 
-  M1.engine = { LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
+  M1.engine = { accepts, LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
 })(typeof window !== "undefined" ? window : globalThis);
 
 </script>
@@ -2646,7 +3577,8 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
   }
 
   // ───────────── Coordinate grid ─────────────
-  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode }
+  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode,
+  //         paths:[{pts, dashed, label}], shade:[[x,y]...polygon...], open:[[x,y]], closed:[[x,y]], labels:[{at:[x,y], text}] }
   function GraphGrid(container, opts) {
     const W = 360, H = 300, pad = { l: 40, r: 14, t: 14, b: 30 };
     const w = Object.assign({ xstep: 1, ystep: 1 }, opts.window);
@@ -2670,6 +3602,17 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     }
     if (opts.xlabel) el("text", { x: W - pad.r, y: H - 4, class: "axis-label", "text-anchor": "end" }, svg).textContent = opts.xlabel;
 
+    const clip = "gc" + Math.random().toString(36).slice(2, 8);
+    const cp = el("clipPath", { id: clip }, el("defs", {}, svg));
+    el("rect", { x: pad.l, y: pad.t, width: W - pad.l - pad.r, height: H - pad.t - pad.b }, cp);
+    const gFixed = el("g", { "clip-path": `url(#${clip})` }, svg);
+    for (const poly of opts.shade || []) el("polygon", { points: poly.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "shade" }, gFixed);
+    for (const P of opts.paths || []) {
+      el("polyline", { points: P.pts.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "curve" + (P.dashed ? " dashed" : "") + (P.alt ? " alt" : "") }, gFixed);
+    }
+    for (const p of opts.closed || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-closed" }, gFixed);
+    for (const p of opts.open || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-open" }, gFixed);
+    for (const L of opts.labels || []) el("text", { x: sx(L.at[0]) + 6, y: sy(L.at[1]) - 6, class: "curve-label" }, svg).textContent = L.text;
     const gLines = el("g", {}, svg);
     const gPts = el("g", {}, svg);
     let pts = (opts.points || []).map((p) => p.slice());
@@ -2915,7 +3858,7 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     get(k) { try { const v = G.localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
     set(k, v) { try { G.localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
   };
-  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [] });
+  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [], flags: [], openAll: false });
 
   async function init() {
     let db = null, user = null, uid = null, owner = false;
@@ -3029,6 +3972,16 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
 
   // ───────────── helpers ─────────────
   const units = () => M1.curriculum.units;
+  const ordered = () => units().slice().sort((a, b) => a.order - b.order);
+  const isLive = (u) => u.status === "live" && !!M1.units[u.id];
+  // A unit is finished once one full set in it has been submitted, whatever the score.
+  const finishedUnit = (uid, data = main) => data.history.some((h) => h.unitId === uid);
+  function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
+  function isOpen(u, data = main) {
+    if (data.openAll) return true;
+    const p = prevUnit(u);
+    return !p || finishedUnit(p.id, data);
+  }
   const unit = (id) => E.unitInfo(id);
   const skillName = (uid, sid) => (unit(uid).skills.find((s) => s.id === sid) || {}).name || sid;
   function dur(sec) {
@@ -3092,8 +4045,9 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       </section>`;
     })() : "";
 
-    const cards = units().slice().sort((a, b) => a.order - b.order).map((u) => {
-      const live = u.status === "live" && M1.units[u.id];
+    const cards = ordered().map((u) => {
+      const live = isLive(u) && isOpen(u);
+      const locked = isLive(u) && !live;
       const st = main.units[u.id];
       const hist = main.history.filter((h) => h.unitId === u.id);
       const last = hist[hist.length - 1];
@@ -3117,12 +4071,14 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
           <button type="button" class="btn quiet" data-act="start" data-unit="${u.id}">Keep practising</button>`;
         else action = `<button type="button" class="btn primary" data-act="start" data-unit="${u.id}" ${cur ? "disabled title=\"Finish the set in progress first\"" : ""}>${!st || !st.sets ? "Start first set" : `Start set ${st.sets + 1}`}</button>`;
       }
-      return `<article class="unit-card${live ? "" : " planned"}${st && st.mastered ? " mastered" : ""}">
-        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${st && st.mastered ? `<span class="pill ach">Mastered</span>` : live ? "" : `<span class="pill">Coming next</span>`}</div>
+      const pill = st && st.mastered ? `<span class="pill ach">Mastered</span>` : locked ? `<span class="pill lock">🔒 Locked</span>` : live ? (finishedUnit(u.id) ? `<span class="pill done">Finished</span>` : "") : `<span class="pill">Coming next</span>`;
+      const lockNote = locked ? `<div class="unit-stats lock-note">Finish one full set in Unit ${prevUnit(u).order} to open this unit. Any score counts.</div>` : "";
+      return `<article class="unit-card${live ? "" : " planned"}${locked ? " locked" : ""}${st && st.mastered ? " mastered" : ""}">
+        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${pill}</div>
         <h3>${esc(u.title)}</h3>
         <div class="unit-meta">${u.lessons.length} lessons · ${u.skills.length} skills${u.order !== u.book ? ` · Book unit ${u.book}` : ""}</div>
         ${meter}${checklist}
-        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : ""}
+        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : lockNote}
         <div class="unit-actions">${action}</div>
       </article>`;
     }).join("");
@@ -3132,7 +4088,7 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
         ${resume}
         <section class="intro">
           <h1>Pick a unit</h1>
-          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed.</p>
+          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit.</p>
         </section>
         <section class="unit-grid">${cards}</section>
         ${historyTable(main.history.slice(-8).reverse(), "Recent sets")}
@@ -3157,7 +4113,10 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     if (main.current) return setView("set");
     const st = unitState(uid);
     const seen = await store.loadSeen(uid);
-    const set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0));
+    let set;
+    try { set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0)); }
+    catch (e) { console.error(e); return alertBox("Something went wrong building that set. Please try again."); }
+    if (!set.questions.length) return alertBox("No questions are ready for this unit yet.");
     store.saveSeen(uid, seen.concat(set.questions.map((q) => q.fp)));
     main.current = { set, answers: set.questions.map(() => null), qTimes: set.questions.map(() => 0), hints: set.questions.map(() => false), idx: 0, startedAt: new Date().toISOString(), activeSec: 0 };
     save();
@@ -3229,19 +4188,19 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     card.innerHTML = `
       <div class="qmeta">
         <span class="qnum">Question ${cur.idx + 1} of ${cur.set.questions.length}</span>
-        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>
+        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>${q.think ? `<span class="pill think">Thinking</span>` : ""}
         <span class="pill ${q.calc ? "calc-ok" : "calc-no"}">${q.calc ? "Calculator allowed" : "No calculator"}</span>
       </div>
       <div class="qskill">${esc(skillName(cur.set.unitId, q.skill))} · ${TYPE_LABEL[q.type]}</div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
-      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> Sequence A <span class="lg-s"></span> Sequence B</div>` : ""}` : ""}
+      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> ${esc(q.graph.names ? q.graph.names[0] : "Sequence A")} <span class="lg-s"></span> ${esc(q.graph.names ? q.graph.names[1] : "Sequence B")}</div>` : ""}` : ""}
       ${input}`;
 
-    if (q.graph) M1.tools.GraphGrid($("#qgraph"), { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
+    if (q.graph) M1.tools.GraphGrid($("#qgraph"), Object.assign({}, q.graph));
     if (q.type === "plot") {
       const upd = (pts) => { $("#plot-count").textContent = `${pts.length} point${pts.length === 1 ? "" : "s"} placed`; };
-      const grid = M1.tools.GraphGrid($("#plot-host"), { window: q.plot.window, points: a || [], interactive: true,
+      const grid = M1.tools.GraphGrid($("#plot-host"), { ...q.plot, points: a || [], interactive: true,
         onChange: (pts) => { cur.answers[cur.idx] = pts; upd(pts); afterAnswer(); } });
       upd(a || []);
       $('[data-act="plot-clear"]').onclick = () => grid.clear();
@@ -3308,6 +4267,8 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     const grade = E.gradeSet(set, cur.answers);
     const prev = unitState(set.unitId);
     const { state, events } = E.updateState(prev, set, grade);
+    const next = ordered()[ordered().findIndex((u) => u.id === set.unitId) + 1];
+    if (next && !finishedUnit(set.unitId) && !main.openAll) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
     main.units[set.unitId] = state;
     const finishedAt = new Date().toISOString();
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
@@ -3338,6 +4299,8 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     if (q.type === "mcq" || q.type === "graph-mcq") return `${LETTERS[q.answer]}. ${R(q.choices[q.answer])}`;
     if (q.type === "multi") return q.answer.map((k) => `${LETTERS[k]}. ${R(q.choices[k])}`).join("<br>");
     if (q.type === "plot") return q.answer.map((p) => `(${M1.qlib.fmt(p[0])}, ${M1.qlib.fmt(p[1])})`).join(", ");
+    if (q.accept && q.accept.in) return "Any of: " + q.accept.in.map((v) => R("$" + M1.qlib.tex(v) + "$")).join(", ");
+    if (q.accept) return "Any value that works, for example " + R("$" + M1.qlib.tex(q.answer) + "$");
     return R("$" + M1.qlib.tex(q.answer) + "$");
   }
 
@@ -3383,8 +4346,8 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
     rec.questions.forEach((q, i) => {
       const host = document.getElementById("rg-" + i);
       if (!host) return;
-      if (q.graph) M1.tools.GraphGrid(host, { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
-      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { window: q.plot.window, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
+      if (q.graph) M1.tools.GraphGrid(host, Object.assign({}, q.graph));
+      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { ...q.plot, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
     });
   }
 
@@ -3402,7 +4365,71 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       <div><div class="lbl">Correct answer</div><div>${correctText(q)}</div></div></div>
       ${why}
       <details ${ok ? "" : "open"}><summary>Worked solution</summary><div class="solution">${R(q.solution)}</div></details>
+      ${viewing && viewing.studentName ? "" : `<button type="button" class="btn-link flag${isFlagged(q.id) ? " on" : ""}" data-act="flag" data-i="${i}">${isFlagged(q.id) ? "Flagged for a grown-up to check" : "This question looks wrong"}</button>`}
     </li>`;
+  }
+
+  const isFlagged = (qid) => (main.flags || []).some((f) => f.qid === qid);
+  function toggleFlag(i) {
+    const rec = viewing.rec, q = rec.questions[i];
+    main.flags = main.flags || [];
+    const k = main.flags.findIndex((f) => f.qid === q.id);
+    if (k >= 0) main.flags.splice(k, 1);
+    else main.flags.push({ qid: q.id, unitId: rec.unitId, setId: rec.id, skill: q.skill, level: q.level, prompt: q.prompt, date: new Date().toISOString() });
+    save();
+    const b = document.querySelector(`[data-act="flag"][data-i="${i}"]`);
+    if (b) { b.classList.toggle("on", k < 0); b.textContent = k < 0 ? "Flagged for a grown-up to check" : "This question looks wrong"; }
+  }
+
+  // Backup: everything this app keeps in the browser, as one file.
+  function exportProgress() {
+    const keys = {};
+    try { for (let k = 0; k < localStorage.length; k++) { const key = localStorage.key(k); if (key.startsWith("m1:")) keys[key] = localStorage.getItem(key); } } catch (e) {}
+    keys["m1:main"] = JSON.stringify(main);
+    const blob = new Blob([JSON.stringify({ app: "math1-practice", version: 1, exported: new Date().toISOString(), keys })], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `math1-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function importProgress(file) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      try {
+        const data = JSON.parse(fr.result);
+        if (!data || data.app !== "math1-practice" || !data.keys || !data.keys["m1:main"]) throw new Error("not a progress file");
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:")) { try { localStorage.setItem(k, v); } catch (e) {} }
+        main = migrate(JSON.parse(data.keys["m1:main"]));
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:seen:")) store.saveSeen(k.slice(8), JSON.parse(v));
+        save();
+        alertBox("Progress loaded.");
+        setView("progress");
+      } catch (e) { alertBox("That file isn't a Math 1 progress file."); }
+    };
+    fr.readAsText(file);
+  }
+  function migrate(m) {
+    m = Object.assign(M1.store.emptyMain(), m || {});
+    m.flags = m.flags || [];
+    m.openAll = !!m.openAll;
+    m.history = (m.history || []).filter((h) => h && h.unitId && units().some((u) => u.id === h.unitId));
+    for (const uid of Object.keys(m.units || {})) if (!units().some((u) => u.id === uid)) delete m.units[uid];
+    if (m.current && !(m.current.set && units().some((u) => u.id === m.current.set.unitId))) m.current = null;
+    return m;
+  }
+
+  function parentPanel(data, shown) {
+    if (shown) return "";
+    const flags = (data.flags || []).slice().reverse();
+    return `<section class="panel parents"><h2>For grown-ups</h2>
+      <label class="check big-check"><input type="checkbox" id="open-all" ${data.openAll ? "checked" : ""}> Open all units (skip the finish-one-set rule)</label>
+      <p class="muted">Normally a unit opens once the student finishes one full set in the unit before it, at any score.</p>
+      <div class="row"><button type="button" class="btn" data-act="export">Download progress backup</button>
+        <label class="btn file-btn">Load a backup<input type="file" id="import-file" accept="application/json,.json" hidden></label></div>
+      <p class="muted">Progress is kept in this browser. Clearing browser data erases it, so download a backup now and then.</p>
+      ${flags.length ? `<h3>Questions flagged by the student</h3><ul class="flags">${flags.map((f) => `<li><span class="muted">${dateStr(f.date)} · Unit ${unit(f.unitId).order} · ${esc(skillName(f.unitId, f.skill))} · ${LEVEL_LABEL[f.level]}</span><div>${R(f.prompt)}</div><button type="button" class="btn-link" data-act="review" data-set="${esc(f.setId)}">Open the set</button></li>`).join("")}</ul>` : ""}
+    </section>`;
   }
 
   // ───────────── Progress (and parent view) ─────────────
@@ -3439,7 +4466,12 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
       <section class="intro"><h1>Progress</h1><p>Each skill climbs from Basic to Intermediate to Hard. Two sets in a row at 80% or better move it up a level. Three hard questions in a row, all right, mark it achieved.</p></section>
       ${unitBlocks || `<section class="panel"><p class="muted">No units started yet.</p></section>`}
       ${historyTable(data.history.slice().reverse(), "All sets and times", shown ? shown.id : "")}
+      ${parentPanel(data, shown)}
     </main>`;
+    const oa = $("#open-all");
+    if (oa) oa.onchange = () => { main.openAll = oa.checked; save(); alertBox(oa.checked ? "All units are open." : "Units open one at a time again."); };
+    const imp = $("#import-file");
+    if (imp) imp.onchange = () => imp.files[0] && importProgress(imp.files[0]);
     const pick = $("#stu-pick");
     if (pick) pick.onchange = () => { viewing = { studentPick: pick.value || null }; renderProgress(root); };
   }
@@ -3502,6 +4534,8 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
         if (!confirmArmed) { confirmArmed = true; return updateNav(); }
         return submit();
       case "review": return openReview(t.dataset.set, t.dataset.student);
+      case "flag": return toggleFlag(Number(t.dataset.i));
+      case "export": return exportProgress();
     }
   });
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && main) save(); });
@@ -3509,7 +4543,7 @@ M1.buildInfo = {"built":"2026-10-22T18:25:00.320Z"};
   async function boot() {
     $("#app").innerHTML = `<div class="loading">Loading your progress…</div>`;
     store = await M1.store.init();
-    main = await store.loadMain();
+    main = migrate(await store.loadMain());
     store.onModeChange = () => { alertBox("Couldn't save to your account. Progress is saving in this browser."); if (view !== "set") render(); };
     setView(main.current ? "home" : "home");
   }
