@@ -70,6 +70,8 @@ math { font-size: 1.08em; }
 .pill.calc-ok { color: var(--good); border-color: currentColor; background: transparent; }
 .pill.calc-no { color: var(--bad); border-color: currentColor; background: transparent; }
 .pill.think { color: var(--accent); border-color: currentColor; background: var(--accent-soft); }
+.pill.review { color: var(--muted); border-style: dashed; display: inline-block; width: auto; }
+.review-score { margin-top: .35rem; font-size: .9rem; }
 .pill.done { color: var(--good); border-color: currentColor; background: transparent; }
 .pill.lock { color: var(--muted); }
 .lock-note { color: var(--muted); }

@@ -13,6 +13,7 @@
     secureAt: 0.8,                 // accuracy that counts toward securing a tier
     secureStreak: 2,               // sets in a row needed to secure a tier
     achieveRun: 3,                 // hard/challenge answers in a row, all correct
+    reviewCount: 3,                // spaced-review questions from earlier finished units, scored separately
   }, M1.config || {}));
 
   const LEVELS = ["basic", "intermediate", "hard", "challenge"];
@@ -119,6 +120,25 @@
       diagnostic, createdAt: new Date().toISOString(), questions: ordered };
   }
 
+  // Spaced review: a few questions from units the student already finished, added after the 25.
+  // They are marked review and never count toward the unit's score, levels or mastery.
+  function reviewQuestions(unitIds, seenList, seed, n = CONFIG.reviewCount) {
+    const r = Q.rng(seed >>> 0);
+    const seen = new Set(seenList || []);
+    const pool = unitIds.filter((id) => ((M1.units[id] || {}).generators || []).length);
+    const out = [];
+    for (let k = 0; k < n * 4 && out.length < n && pool.length; k++) {
+      const uid = pool[(k + r.int(0, pool.length - 1)) % pool.length];
+      const gens = M1.units[uid].generators.filter((g) => g.level !== "basic");
+      const g = r.pick(gens);
+      let q;
+      try { q = instantiate(g, r.int(1, 2e9)); } catch (e) { continue; }
+      if (seen.has(q.fp) || out.some((x) => x.fp === q.fp || x.gen === q.gen)) continue;
+      out.push(Object.assign(q, { review: true, reviewUnit: uid }));
+    }
+    return out;
+  }
+
   function pickQuestion(slot, gens, bank, r, seen, inSet, typeCount) {
     const levelsToTry = [slot.level].concat(nearby(slot.level));
     for (const level of levelsToTry) {
@@ -184,14 +204,17 @@
   function gradeSet(set, answers) {
     const results = set.questions.map((q, i) => isCorrect(q, answers[i]));
     const bySkill = {};
+    const review = { right: 0, total: 0 };
     set.questions.forEach((q, i) => {
+      if (q.review) { review.total++; if (results[i]) review.right++; return; }
       const s = (bySkill[q.skill] = bySkill[q.skill] || { right: 0, total: 0, tiers: [[0, 0], [0, 0], [0, 0]] });
       const t = tierOf(q.level);
       s.total++; s.tiers[t][1]++;
       if (results[i]) { s.right++; s.tiers[t][0]++; }
     });
-    const right = results.filter(Boolean).length;
-    return { results, right, total: results.length, percent: Math.round((100 * right) / results.length), bySkill };
+    const main = set.questions.map((q, i) => (q.review ? null : results[i])).filter((x) => x !== null);
+    const right = main.filter(Boolean).length;
+    return { results, right, total: main.length, percent: Math.round((100 * right) / main.length), bySkill, review };
   }
 
   // ───────────── Moving levels ─────────────
@@ -233,7 +256,7 @@
     // Achieved: a run of hard/challenge answers, all correct, while at the Hard tier.
     set.questions.forEach((q, i) => {
       const sk = st.skills[q.skill];
-      if (!sk || tierOf(q.level) < 2) return;
+      if (!sk || q.review || tierOf(q.level) < 2) return;
       sk.hardRun = grade.results[i] ? sk.hardRun + 1 : 0;
     });
     for (const [id, sk] of Object.entries(st.skills)) {
@@ -250,5 +273,5 @@
     return { state: st, events };
   }
 
-  M1.engine = { accepts, LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
+  M1.engine = { accepts, reviewQuestions, LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
 })(typeof window !== "undefined" ? window : globalThis);

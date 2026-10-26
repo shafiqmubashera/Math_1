@@ -127,7 +127,7 @@
         ${resume}
         <section class="intro">
           <h1>Pick a unit</h1>
-          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit.</p>
+          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit. Once you have finished earlier units, each set ends with 3 review questions from them; they are scored on their own and do not change the unit score.</p>
         </section>
         <section class="unit-grid">${cards}</section>
         ${historyTable(main.history.slice(-8).reverse(), "Recent sets")}
@@ -157,6 +157,16 @@
     catch (e) { console.error(e); return alertBox("Something went wrong building that set. Please try again."); }
     if (!set.questions.length) return alertBox("No questions are ready for this unit yet.");
     store.saveSeen(uid, seen.concat(set.questions.map((q) => q.fp)));
+    // Spaced review: a few questions from units finished earlier, scored separately.
+    const list = ordered(), before = list.slice(0, list.findIndex((x) => x.id === uid)).filter((x) => isLive(x) && finishedUnit(x.id)).map((x) => x.id);
+    if (before.length) {
+      const seenBy = {};
+      for (const id of before) seenBy[id] = await store.loadSeen(id);
+      let rev = [];
+      try { rev = E.reviewQuestions(before, [].concat(...Object.values(seenBy)), (Date.now() % 2e9) ^ 0x5bd1e995); } catch (e) { console.error(e); }
+      for (const q of rev) store.saveSeen(q.reviewUnit, (seenBy[q.reviewUnit] = seenBy[q.reviewUnit].concat([q.fp])));
+      set.questions = set.questions.concat(rev);
+    }
     main.current = { set, answers: set.questions.map(() => null), qTimes: set.questions.map(() => 0), hints: set.questions.map(() => false), idx: 0, startedAt: new Date().toISOString(), activeSec: 0 };
     save();
     setView("set");
@@ -230,7 +240,7 @@
         <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>${q.think ? `<span class="pill think">Thinking</span>` : ""}
         <span class="pill ${q.calc ? "calc-ok" : "calc-no"}">${q.calc ? "Calculator allowed" : "No calculator"}</span>
       </div>
-      <div class="qskill">${esc(skillName(cur.set.unitId, q.skill))} · ${TYPE_LABEL[q.type]}</div>
+      <div class="qskill">${q.review ? `<span class="pill review">Review · Unit ${unit(q.reviewUnit).order}</span> ` : ""}${esc(skillName(q.reviewUnit || cur.set.unitId, q.skill))} · ${TYPE_LABEL[q.type]}</div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
       ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> ${esc(q.graph.names ? q.graph.names[0] : "Sequence A")} <span class="lg-s"></span> ${esc(q.graph.names ? q.graph.names[1] : "Sequence B")}</div>` : ""}` : ""}
@@ -313,6 +323,7 @@
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
       date: finishedAt, startedAt: cur.startedAt, right: grade.right, total: grade.total, percent: grade.percent,
       activeSec: cur.activeSec, wallSec: Math.round((Date.parse(finishedAt) - Date.parse(cur.startedAt)) / 1000),
+      review: grade.review.total ? grade.review : undefined,
       hintsUsed: cur.hints.filter(Boolean).length, events: events.map((e) => e.text),
       bySkill: Object.fromEntries(Object.entries(grade.bySkill).map(([k, v]) => [k, [v.right, v.total]])) };
     main.history.push(summary);
@@ -363,6 +374,7 @@
           <div>
             <div class="eyebrow">Unit ${u.order}: ${esc(u.title)} · Set ${rec.setNumber}${rec.diagnostic ? " · first check" : ""}</div>
             <div class="big-score"><span>${rec.right}</span>/${rec.total}<small>${rec.percent}%</small></div>
+            ${rec.review ? `<div class="muted review-score">Review from earlier units: ${rec.review.right}/${rec.review.total} (not counted in the unit score)</div>` : ""}
           </div>
           <dl class="time-stats">
             <div><dt>Active time</dt><dd>${dur(rec.activeSec)}</dd></div>
@@ -395,7 +407,7 @@
     const why = !ok && (q.type === "mcq" || q.type === "graph-mcq") && a != null && q.why && q.why[a] ? `<div class="why"><strong>Why ${LETTERS[a]} is wrong:</strong> ${R(q.why[a])}</div>` : "";
     return `<li class="ritem ${ok ? "ok" : "bad"}" data-ok="${ok}">
       <div class="rhead"><span class="mark" aria-label="${ok ? "Correct" : "Incorrect"}">${ok ? "✓" : "✗"}</span><span>Question ${i + 1}</span>
-        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span><span class="muted">${esc(skillName(rec.unitId, q.skill))} · ${dur(rec.qTimes ? rec.qTimes[i] : 0)}</span></div>
+        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>${q.review ? `<span class="pill review">Review · Unit ${unit(q.reviewUnit).order}</span>` : ""}<span class="muted">${esc(skillName(q.reviewUnit || rec.unitId, q.skill))} · ${dur(rec.qTimes ? rec.qTimes[i] : 0)}</span></div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
       ${q.graph || q.type === "plot" ? `<div class="qgraph small" id="rg-${i}"></div>${q.type === "plot" ? `<div class="legend"><span class="lg-c"></span> Your points <span class="lg-ring"></span> Correct points</div>` : ""}` : ""}

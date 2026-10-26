@@ -235,5 +235,19 @@ for (const u of units) {
   }
   console.log(`${u.id}: ${content.generators.length} generators, 40 sets built, seen ${seen.length} unique questions`);
 }
+// Spaced review: questions come from the earlier units and never change the unit score.
+{
+  const st = M1.engine.newUnitState("u3");
+  const set = M1.engine.buildSet("u3", st, [], 77);
+  const rev = M1.engine.reviewQuestions(["u1", "u2"], [], 78);
+  if (rev.length !== 3) fail("review", `expected 3 review questions, got ${rev.length}`);
+  for (const q of rev) { if (!q.review || !["u1", "u2"].includes(q.reviewUnit)) fail("review", "review question not marked"); checkQuestion(q, "review:" + q.gen); }
+  set.questions = set.questions.concat(rev);
+  const answers = set.questions.map((q) => (q.review ? null : q.type === "numeric" ? M1.qlib.fmt(q.answer) : q.answer));
+  const g = M1.engine.gradeSet(set, answers);
+  if (g.total !== 25 || g.percent !== 100 || g.review.total !== 3 || g.review.right !== 0) fail("review", `review changed the unit score: ${JSON.stringify([g.right, g.total, g.percent, g.review])}`);
+  const up = M1.engine.updateState(st, set, g).state;
+  if (Object.keys(up.skills).some((k) => !k.startsWith("u3."))) fail("review", "review questions leaked into unit skills");
+}
 console.log(`\nChecked ${checked} questions. ${fails ? fails + " FAILURES" : "All passed."}`);
 process.exit(fails ? 1 : 0);

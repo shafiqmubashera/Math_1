@@ -26,6 +26,8 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
   - A level is secured after two sets in a row at 80% or better on that skill and level.
   - Weak skills get more questions. Most of a skill's questions are at its focus level, a few one level up.
   - A skill is **achieved** when it scores 100% on its hard/challenge questions (at least 3 in one set). Achieved skills stop appearing.
+- **Unlocking:** finishing one full set in a unit, at any score, opens the next unit in teaching order. A parent can open every unit from the Progress page.
+- **Spaced review:** after the 25 questions, a set adds 3 non-basic questions from earlier units the student has finished. They are scored separately and never change the unit score, levels or mastery.
 - A set scored 100% marks the unit **mastered**. The student can then restart the unit with fresh questions, and the assessment starts again from a new diagnostic.
 
 ## Question types
