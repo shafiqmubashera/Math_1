@@ -11,6 +11,16 @@
 
   // ───────────── helpers ─────────────
   const units = () => M1.curriculum.units;
+  const ordered = () => units().slice().sort((a, b) => a.order - b.order);
+  const isLive = (u) => u.status === "live" && !!M1.units[u.id];
+  // A unit is finished once one full set in it has been submitted, whatever the score.
+  const finishedUnit = (uid, data = main) => data.history.some((h) => h.unitId === uid);
+  function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
+  function isOpen(u, data = main) {
+    if (data.openAll) return true;
+    const p = prevUnit(u);
+    return !p || finishedUnit(p.id, data);
+  }
   const unit = (id) => E.unitInfo(id);
   const skillName = (uid, sid) => (unit(uid).skills.find((s) => s.id === sid) || {}).name || sid;
   function dur(sec) {
@@ -74,8 +84,9 @@
       </section>`;
     })() : "";
 
-    const cards = units().slice().sort((a, b) => a.order - b.order).map((u) => {
-      const live = u.status === "live" && M1.units[u.id];
+    const cards = ordered().map((u) => {
+      const live = isLive(u) && isOpen(u);
+      const locked = isLive(u) && !live;
       const st = main.units[u.id];
       const hist = main.history.filter((h) => h.unitId === u.id);
       const last = hist[hist.length - 1];
@@ -99,12 +110,14 @@
           <button type="button" class="btn quiet" data-act="start" data-unit="${u.id}">Keep practising</button>`;
         else action = `<button type="button" class="btn primary" data-act="start" data-unit="${u.id}" ${cur ? "disabled title=\"Finish the set in progress first\"" : ""}>${!st || !st.sets ? "Start first set" : `Start set ${st.sets + 1}`}</button>`;
       }
-      return `<article class="unit-card${live ? "" : " planned"}${st && st.mastered ? " mastered" : ""}">
-        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${st && st.mastered ? `<span class="pill ach">Mastered</span>` : live ? "" : `<span class="pill">Coming next</span>`}</div>
+      const pill = st && st.mastered ? `<span class="pill ach">Mastered</span>` : locked ? `<span class="pill lock">🔒 Locked</span>` : live ? (finishedUnit(u.id) ? `<span class="pill done">Finished</span>` : "") : `<span class="pill">Coming next</span>`;
+      const lockNote = locked ? `<div class="unit-stats lock-note">Finish one full set in Unit ${prevUnit(u).order} to open this unit. Any score counts.</div>` : "";
+      return `<article class="unit-card${live ? "" : " planned"}${locked ? " locked" : ""}${st && st.mastered ? " mastered" : ""}">
+        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${pill}</div>
         <h3>${esc(u.title)}</h3>
         <div class="unit-meta">${u.lessons.length} lessons · ${u.skills.length} skills${u.order !== u.book ? ` · Book unit ${u.book}` : ""}</div>
         ${meter}${checklist}
-        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : ""}
+        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : lockNote}
         <div class="unit-actions">${action}</div>
       </article>`;
     }).join("");
@@ -114,7 +127,7 @@
         ${resume}
         <section class="intro">
           <h1>Pick a unit</h1>
-          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed.</p>
+          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit.</p>
         </section>
         <section class="unit-grid">${cards}</section>
         ${historyTable(main.history.slice(-8).reverse(), "Recent sets")}
@@ -139,7 +152,10 @@
     if (main.current) return setView("set");
     const st = unitState(uid);
     const seen = await store.loadSeen(uid);
-    const set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0));
+    let set;
+    try { set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0)); }
+    catch (e) { console.error(e); return alertBox("Something went wrong building that set. Please try again."); }
+    if (!set.questions.length) return alertBox("No questions are ready for this unit yet.");
     store.saveSeen(uid, seen.concat(set.questions.map((q) => q.fp)));
     main.current = { set, answers: set.questions.map(() => null), qTimes: set.questions.map(() => 0), hints: set.questions.map(() => false), idx: 0, startedAt: new Date().toISOString(), activeSec: 0 };
     save();
@@ -211,19 +227,19 @@
     card.innerHTML = `
       <div class="qmeta">
         <span class="qnum">Question ${cur.idx + 1} of ${cur.set.questions.length}</span>
-        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>
+        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>${q.think ? `<span class="pill think">Thinking</span>` : ""}
         <span class="pill ${q.calc ? "calc-ok" : "calc-no"}">${q.calc ? "Calculator allowed" : "No calculator"}</span>
       </div>
       <div class="qskill">${esc(skillName(cur.set.unitId, q.skill))} · ${TYPE_LABEL[q.type]}</div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
-      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> Sequence A <span class="lg-s"></span> Sequence B</div>` : ""}` : ""}
+      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> ${esc(q.graph.names ? q.graph.names[0] : "Sequence A")} <span class="lg-s"></span> ${esc(q.graph.names ? q.graph.names[1] : "Sequence B")}</div>` : ""}` : ""}
       ${input}`;
 
-    if (q.graph) M1.tools.GraphGrid($("#qgraph"), { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
+    if (q.graph) M1.tools.GraphGrid($("#qgraph"), Object.assign({}, q.graph));
     if (q.type === "plot") {
       const upd = (pts) => { $("#plot-count").textContent = `${pts.length} point${pts.length === 1 ? "" : "s"} placed`; };
-      const grid = M1.tools.GraphGrid($("#plot-host"), { window: q.plot.window, points: a || [], interactive: true,
+      const grid = M1.tools.GraphGrid($("#plot-host"), { ...q.plot, points: a || [], interactive: true,
         onChange: (pts) => { cur.answers[cur.idx] = pts; upd(pts); afterAnswer(); } });
       upd(a || []);
       $('[data-act="plot-clear"]').onclick = () => grid.clear();
@@ -290,6 +306,8 @@
     const grade = E.gradeSet(set, cur.answers);
     const prev = unitState(set.unitId);
     const { state, events } = E.updateState(prev, set, grade);
+    const next = ordered()[ordered().findIndex((u) => u.id === set.unitId) + 1];
+    if (next && !finishedUnit(set.unitId) && !main.openAll) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
     main.units[set.unitId] = state;
     const finishedAt = new Date().toISOString();
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
@@ -365,8 +383,8 @@
     rec.questions.forEach((q, i) => {
       const host = document.getElementById("rg-" + i);
       if (!host) return;
-      if (q.graph) M1.tools.GraphGrid(host, { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
-      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { window: q.plot.window, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
+      if (q.graph) M1.tools.GraphGrid(host, Object.assign({}, q.graph));
+      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { ...q.plot, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
     });
   }
 
@@ -384,7 +402,71 @@
       <div><div class="lbl">Correct answer</div><div>${correctText(q)}</div></div></div>
       ${why}
       <details ${ok ? "" : "open"}><summary>Worked solution</summary><div class="solution">${R(q.solution)}</div></details>
+      ${viewing && viewing.studentName ? "" : `<button type="button" class="btn-link flag${isFlagged(q.id) ? " on" : ""}" data-act="flag" data-i="${i}">${isFlagged(q.id) ? "Flagged for a grown-up to check" : "This question looks wrong"}</button>`}
     </li>`;
+  }
+
+  const isFlagged = (qid) => (main.flags || []).some((f) => f.qid === qid);
+  function toggleFlag(i) {
+    const rec = viewing.rec, q = rec.questions[i];
+    main.flags = main.flags || [];
+    const k = main.flags.findIndex((f) => f.qid === q.id);
+    if (k >= 0) main.flags.splice(k, 1);
+    else main.flags.push({ qid: q.id, unitId: rec.unitId, setId: rec.id, skill: q.skill, level: q.level, prompt: q.prompt, date: new Date().toISOString() });
+    save();
+    const b = document.querySelector(`[data-act="flag"][data-i="${i}"]`);
+    if (b) { b.classList.toggle("on", k < 0); b.textContent = k < 0 ? "Flagged for a grown-up to check" : "This question looks wrong"; }
+  }
+
+  // Backup: everything this app keeps in the browser, as one file.
+  function exportProgress() {
+    const keys = {};
+    try { for (let k = 0; k < localStorage.length; k++) { const key = localStorage.key(k); if (key.startsWith("m1:")) keys[key] = localStorage.getItem(key); } } catch (e) {}
+    keys["m1:main"] = JSON.stringify(main);
+    const blob = new Blob([JSON.stringify({ app: "math1-practice", version: 1, exported: new Date().toISOString(), keys })], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `math1-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function importProgress(file) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      try {
+        const data = JSON.parse(fr.result);
+        if (!data || data.app !== "math1-practice" || !data.keys || !data.keys["m1:main"]) throw new Error("not a progress file");
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:")) { try { localStorage.setItem(k, v); } catch (e) {} }
+        main = migrate(JSON.parse(data.keys["m1:main"]));
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:seen:")) store.saveSeen(k.slice(8), JSON.parse(v));
+        save();
+        alertBox("Progress loaded.");
+        setView("progress");
+      } catch (e) { alertBox("That file isn't a Math 1 progress file."); }
+    };
+    fr.readAsText(file);
+  }
+  function migrate(m) {
+    m = Object.assign(M1.store.emptyMain(), m || {});
+    m.flags = m.flags || [];
+    m.openAll = !!m.openAll;
+    m.history = (m.history || []).filter((h) => h && h.unitId && units().some((u) => u.id === h.unitId));
+    for (const uid of Object.keys(m.units || {})) if (!units().some((u) => u.id === uid)) delete m.units[uid];
+    if (m.current && !(m.current.set && units().some((u) => u.id === m.current.set.unitId))) m.current = null;
+    return m;
+  }
+
+  function parentPanel(data, shown) {
+    if (shown) return "";
+    const flags = (data.flags || []).slice().reverse();
+    return `<section class="panel parents"><h2>For grown-ups</h2>
+      <label class="check big-check"><input type="checkbox" id="open-all" ${data.openAll ? "checked" : ""}> Open all units (skip the finish-one-set rule)</label>
+      <p class="muted">Normally a unit opens once the student finishes one full set in the unit before it, at any score.</p>
+      <div class="row"><button type="button" class="btn" data-act="export">Download progress backup</button>
+        <label class="btn file-btn">Load a backup<input type="file" id="import-file" accept="application/json,.json" hidden></label></div>
+      <p class="muted">Progress is kept in this browser. Clearing browser data erases it, so download a backup now and then.</p>
+      ${flags.length ? `<h3>Questions flagged by the student</h3><ul class="flags">${flags.map((f) => `<li><span class="muted">${dateStr(f.date)} · Unit ${unit(f.unitId).order} · ${esc(skillName(f.unitId, f.skill))} · ${LEVEL_LABEL[f.level]}</span><div>${R(f.prompt)}</div><button type="button" class="btn-link" data-act="review" data-set="${esc(f.setId)}">Open the set</button></li>`).join("")}</ul>` : ""}
+    </section>`;
   }
 
   // ───────────── Progress (and parent view) ─────────────
@@ -421,7 +503,12 @@
       <section class="intro"><h1>Progress</h1><p>Each skill climbs from Basic to Intermediate to Hard. Two sets in a row at 80% or better move it up a level. Three hard questions in a row, all right, mark it achieved.</p></section>
       ${unitBlocks || `<section class="panel"><p class="muted">No units started yet.</p></section>`}
       ${historyTable(data.history.slice().reverse(), "All sets and times", shown ? shown.id : "")}
+      ${parentPanel(data, shown)}
     </main>`;
+    const oa = $("#open-all");
+    if (oa) oa.onchange = () => { main.openAll = oa.checked; save(); alertBox(oa.checked ? "All units are open." : "Units open one at a time again."); };
+    const imp = $("#import-file");
+    if (imp) imp.onchange = () => imp.files[0] && importProgress(imp.files[0]);
     const pick = $("#stu-pick");
     if (pick) pick.onchange = () => { viewing = { studentPick: pick.value || null }; renderProgress(root); };
   }
@@ -484,6 +571,8 @@
         if (!confirmArmed) { confirmArmed = true; return updateNav(); }
         return submit();
       case "review": return openReview(t.dataset.set, t.dataset.student);
+      case "flag": return toggleFlag(Number(t.dataset.i));
+      case "export": return exportProgress();
     }
   });
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && main) save(); });
@@ -491,7 +580,7 @@
   async function boot() {
     $("#app").innerHTML = `<div class="loading">Loading your progress…</div>`;
     store = await M1.store.init();
-    main = await store.loadMain();
+    main = migrate(await store.loadMain());
     store.onModeChange = () => { alertBox("Couldn't save to your account. Progress is saving in this browser."); if (view !== "set") render(); };
     setView(main.current ? "home" : "home");
   }

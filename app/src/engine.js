@@ -157,6 +157,7 @@
       case "numeric": {
         const v = Q.parseNum(resp);
         if (!Number.isFinite(v)) return false;
+        if (q.accept) return accepts(q.accept, v); // "make it true" items: any value in the allowed set
         const tol = q.tol != null ? q.tol : 1e-6 * Math.max(1, Math.abs(q.answer));
         return Math.abs(v - q.answer) <= tol;
       }
@@ -167,6 +168,16 @@
       }
     }
     return false;
+  }
+
+  // accept: { lo, hi, loOpen, hiOpen, int, not: [values] }. Missing bounds are unbounded.
+  function accepts(a, v) {
+    const eps = 1e-9;
+    if (a.lo != null && (a.loOpen ? v <= a.lo + eps : v < a.lo - eps)) return false;
+    if (a.hi != null && (a.hiOpen ? v >= a.hi - eps : v > a.hi + eps)) return false;
+    if (a.int && Math.abs(v - Math.round(v)) > eps) return false;
+    if ((a.not || []).some((x) => Math.abs(x - v) < eps)) return false;
+    return true;
   }
 
   function gradeSet(set, answers) {
@@ -238,5 +249,5 @@
     return { state: st, events };
   }
 
-  M1.engine = { LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
+  M1.engine = { accepts, LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
 })(typeof window !== "undefined" ? window : globalThis);

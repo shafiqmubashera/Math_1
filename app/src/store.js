@@ -9,7 +9,7 @@
     get(k) { try { const v = G.localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
     set(k, v) { try { G.localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
   };
-  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [] });
+  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [], flags: [], openAll: false });
 
   async function init() {
     let db = null, user = null, uid = null, owner = false;

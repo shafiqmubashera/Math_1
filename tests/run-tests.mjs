@@ -88,13 +88,16 @@ function checkQuestion(q, where) {
     if (new Set(q.choices.map(M1.qlib.norm)).size !== q.choices.length) fail(where, "duplicate choices " + q.choices.join(" | "));
   }
   if (q.type === "numeric" && !Number.isFinite(q.answer)) fail(where, "numeric answer not finite");
+  if (q.accept && q.type !== "numeric") fail(where, "accept only works on numeric questions");
+  if (q.graph && !q.graph.window) fail(where, "graph without a window");
+  for (const P of (q.graph && q.graph.paths) || []) if (!P.pts.length || P.pts.some((p) => !p.every(Number.isFinite))) fail(where, "bad path points");
   if (q.type === "numeric" && Math.abs(q.answer) > 1e7) fail(where, "answer too large " + q.answer);
   if (q.type === "plot") {
     const w = q.plot.window;
     for (const [x, y] of q.answer) if (x < w.xmin || x > w.xmax || y < w.ymin || y > w.ymax) fail(where, `point (${x},${y}) off grid`);
     for (const [x, y] of q.answer) if (Math.abs(((y - w.ymin) / w.ystep) - Math.round((y - w.ymin) / w.ystep)) > 1e-9 && Math.abs(y * 2 - Math.round(y * 2)) > 1e-9) fail(where, `point (${x},${y}) not on a grid line`);
   }
-  if (q.graph) for (const [x, y] of q.graph.points.concat(q.graph.points2 || [])) {
+  if (q.graph) for (const [x, y] of (q.graph.points || []).concat(q.graph.points2 || [])) {
     const w = q.graph.window;
     if (x < w.xmin || x > w.xmax || y < w.ymin || y > w.ymax) fail(where, `graph point (${x},${y}) off window`);
   }

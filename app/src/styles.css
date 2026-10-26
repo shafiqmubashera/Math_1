@@ -69,6 +69,17 @@ math { font-size: 1.08em; }
 .pill.lvl-challenge { color: var(--on-accent); background: var(--t2); border-color: var(--t2); }
 .pill.calc-ok { color: var(--good); border-color: currentColor; background: transparent; }
 .pill.calc-no { color: var(--bad); border-color: currentColor; background: transparent; }
+.pill.think { color: var(--accent); border-color: currentColor; background: var(--accent-soft); }
+.pill.done { color: var(--good); border-color: currentColor; background: transparent; }
+.pill.lock { color: var(--muted); }
+.lock-note { color: var(--muted); }
+.parents .row { margin: 10px 0; }
+.big-check { font-size: 1rem; margin: 8px 0; }
+.file-btn { cursor: pointer; }
+.flags { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
+.flags li { border-top: 1px solid var(--line); padding-top: 8px; }
+.btn-link.flag { margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+.btn-link.flag.on { color: var(--bad); font-weight: 700; }
 
 /* Header */
 .top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
@@ -210,6 +221,13 @@ body[data-view="set"] { background-image: none; }
 .grid-svg .pt-hover { fill: var(--accent); opacity: 0.3; pointer-events: none; }
 .grid-svg .pt-answer { fill: none; stroke: var(--good); stroke-width: 2.5; }
 .grid-svg .user-line { stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
+.grid-svg .curve.alt { stroke: var(--t0); }
+.grid-svg .curve.dashed { stroke-dasharray: 7 5; }
+.grid-svg .shade { fill: var(--accent); opacity: 0.16; }
+.grid-svg .end-closed { fill: var(--accent); }
+.grid-svg .end-open { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve-label { fill: var(--ink, currentColor); font: 600 12px var(--font-body); }
 
 /* Calculator */
 .calc-blocked { padding: 18px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-weight: 700; text-align: center; }

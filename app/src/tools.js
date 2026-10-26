@@ -13,7 +13,8 @@
   }
 
   // ───────────── Coordinate grid ─────────────
-  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode }
+  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode,
+  //         paths:[{pts, dashed, label}], shade:[[x,y]...polygon...], open:[[x,y]], closed:[[x,y]], labels:[{at:[x,y], text}] }
   function GraphGrid(container, opts) {
     const W = 360, H = 300, pad = { l: 40, r: 14, t: 14, b: 30 };
     const w = Object.assign({ xstep: 1, ystep: 1 }, opts.window);
@@ -37,6 +38,17 @@
     }
     if (opts.xlabel) el("text", { x: W - pad.r, y: H - 4, class: "axis-label", "text-anchor": "end" }, svg).textContent = opts.xlabel;
 
+    const clip = "gc" + Math.random().toString(36).slice(2, 8);
+    const cp = el("clipPath", { id: clip }, el("defs", {}, svg));
+    el("rect", { x: pad.l, y: pad.t, width: W - pad.l - pad.r, height: H - pad.t - pad.b }, cp);
+    const gFixed = el("g", { "clip-path": `url(#${clip})` }, svg);
+    for (const poly of opts.shade || []) el("polygon", { points: poly.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "shade" }, gFixed);
+    for (const P of opts.paths || []) {
+      el("polyline", { points: P.pts.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "curve" + (P.dashed ? " dashed" : "") + (P.alt ? " alt" : "") }, gFixed);
+    }
+    for (const p of opts.closed || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-closed" }, gFixed);
+    for (const p of opts.open || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-open" }, gFixed);
+    for (const L of opts.labels || []) el("text", { x: sx(L.at[0]) + 6, y: sy(L.at[1]) - 6, class: "curve-label" }, svg).textContent = L.text;
     const gLines = el("g", {}, svg);
     const gPts = el("g", {}, svg);
     let pts = (opts.points || []).map((p) => p.slice());

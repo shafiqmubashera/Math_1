@@ -75,6 +75,17 @@ math { font-size: 1.08em; }
 .pill.lvl-challenge { color: var(--on-accent); background: var(--t2); border-color: var(--t2); }
 .pill.calc-ok { color: var(--good); border-color: currentColor; background: transparent; }
 .pill.calc-no { color: var(--bad); border-color: currentColor; background: transparent; }
+.pill.think { color: var(--accent); border-color: currentColor; background: var(--accent-soft); }
+.pill.done { color: var(--good); border-color: currentColor; background: transparent; }
+.pill.lock { color: var(--muted); }
+.lock-note { color: var(--muted); }
+.parents .row { margin: 10px 0; }
+.big-check { font-size: 1rem; margin: 8px 0; }
+.file-btn { cursor: pointer; }
+.flags { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
+.flags li { border-top: 1px solid var(--line); padding-top: 8px; }
+.btn-link.flag { margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+.btn-link.flag.on { color: var(--bad); font-weight: 700; }
 
 /* Header */
 .top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
@@ -216,6 +227,13 @@ body[data-view="set"] { background-image: none; }
 .grid-svg .pt-hover { fill: var(--accent); opacity: 0.3; pointer-events: none; }
 .grid-svg .pt-answer { fill: none; stroke: var(--good); stroke-width: 2.5; }
 .grid-svg .user-line { stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
+.grid-svg .curve.alt { stroke: var(--t0); }
+.grid-svg .curve.dashed { stroke-dasharray: 7 5; }
+.grid-svg .shade { fill: var(--accent); opacity: 0.16; }
+.grid-svg .end-closed { fill: var(--accent); }
+.grid-svg .end-open { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.grid-svg .curve-label { fill: var(--ink, currentColor); font: 600 12px var(--font-body); }
 
 /* Calculator */
 .calc-blocked { padding: 18px; border-radius: 8px; background: var(--bad-soft); color: var(--bad); font-weight: 700; text-align: center; }
@@ -523,7 +541,7 @@ details summary { color: var(--pen); }
 <script>
 window.M1 = window.M1 || {};
 M1.curriculum = {"course":"NC Math 1 (WCPSS)","order":"WCPSS teaching order","units":[{"id":"u1","book":1,"order":1,"title":"Sequences","status":"live","lessons":[{"n":1,"focus":"Use variables to describe ways of seeing a pattern."},{"n":2,"focus":"Describe a growing pattern with tables, graphs, and equations."},{"n":3,"focus":"Model a sequence of figures using tables, graphs, and equations."},{"n":4,"focus":"Model a sequence using a table, graph, and explicit and recursive equations."},{"n":5,"focus":"Represent a story context using tables, graphs, and equations; use function notation to write explicit and recursive equations."},{"n":6,"focus":"Understand the characteristics that make sequences decrease; compare decreasing arithmetic and geometric sequences."},{"n":7,"focus":"Determine if a sequence is geometric, arithmetic, or neither; write recursive and explicit equations."},{"n":8,"focus":"Find missing terms in an arithmetic sequence."},{"n":9,"focus":"Apply understanding of geometric sequences to find missing terms."},{"n":10,"focus":"Identify the type of sequence given any representation; move efficiently between representations."}],"skills":[{"id":"u1.patterns","name":"Growing patterns and expressions","lessons":[1,2,3],"standards":["NC.M1.A-SSE.1a","NC.M1.F-IF.3"]},{"id":"u1.arith","name":"Arithmetic sequences: common difference and terms","lessons":[2,4,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.geom","name":"Geometric sequences: common ratio and terms","lessons":[3,5,7],"standards":["NC.M1.F-IF.3","NC.M1.F-BF.1a"]},{"id":"u1.forms","name":"Explicit and recursive equations","lessons":[4,5,7],"standards":["NC.M1.F-BF.2","NC.M1.F-IF.2"]},{"id":"u1.classify","name":"Arithmetic, geometric or neither","lessons":[7,10],"standards":["NC.M1.F-LE.1"]},{"id":"u1.graphs","name":"Sequences in tables and graphs","lessons":[2,3,4,10],"standards":["NC.M1.F-IF.3","NC.M1.F-IF.7"]},{"id":"u1.decrease","name":"Decreasing sequences","lessons":[6],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.1"]},{"id":"u1.missing","name":"Missing terms from two known terms","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-BF.2"]},{"id":"u1.context","name":"Sequences in real situations","lessons":[4,5,6,10],"standards":["NC.M1.F-BF.2","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-1/family.html"},{"id":"u2","book":2,"order":2,"title":"Linear & Exponential Functions","status":"live","lessons":[{"n":1,"focus":"Represent situations with different types of growth; compare models over time."},{"n":2,"focus":"Model with linear and exponential functions; discrete vs continuous models."},{"n":3,"focus":"Determine if a function is discrete or continuous; determine the domain."},{"n":4,"focus":"Relate exponential key features to negative exponents; rewrite expressions with negative exponents."},{"n":5,"focus":"Change the form of algebraic expressions using properties of exponents."},{"n":6,"focus":"Make and interpret modeling decisions; which type of function grows faster."},{"n":7,"focus":"Find the average rate of change of a function over an interval."},{"n":8,"focus":"Find patterns for writing equations of linear functions."},{"n":9,"focus":"Use different forms of linear and exponential functions to write and graph equations."}],"skills":[{"id":"u2.discrete","name":"Discrete vs continuous, domain","lessons":[2,3],"standards":["NC.M1.F-IF.5","NC.M1.F-IF.3"]},{"id":"u2.linexp","name":"Linear vs exponential models","lessons":[1,2,6],"standards":["NC.M1.F-LE.1","NC.M1.F-LE.3"]},{"id":"u2.exponents","name":"Properties of exponents","lessons":[4,5],"standards":["NC.M1.N-RN.2"]},{"id":"u2.roc","name":"Average rate of change","lessons":[7],"standards":["NC.M1.F-IF.6"]},{"id":"u2.writeline","name":"Writing linear equations","lessons":[8,9],"standards":["NC.M1.F-BF.1a","NC.M1.A-CED.2"]},{"id":"u2.writeexp","name":"Writing exponential equations","lessons":[2,9],"standards":["NC.M1.F-BF.1a","NC.M1.F-LE.5"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-2/family.html"},{"id":"u3","book":3,"order":3,"title":"Features of Functions","status":"planned","lessons":[{"n":1,"focus":"Graph a function to model a situation; identify key features."},{"n":2,"focus":"Use key features to analyze tables and graphs; interval notation."},{"n":3,"focus":"Identify key features efficiently; domain, range, increase/decrease notation."},{"n":4,"focus":"Interpret and write equations of functions; combine two linear functions."},{"n":5,"focus":"Interpret function notation to match a function with its features."}],"skills":[{"id":"u3.features","name":"Key features from graphs and tables","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u3.domain","name":"Domain, range and interval notation","standards":["NC.M1.F-IF.5"]},{"id":"u3.notation","name":"Function notation","standards":["NC.M1.F-IF.1","NC.M1.F-IF.2"]},{"id":"u3.combine","name":"Combining functions","standards":["NC.M1.F-BF.1b"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-3/family.html"},{"id":"u4","book":4,"order":4,"title":"Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve multi-step linear equations using inverse operations."},{"n":2,"focus":"Solve literal equations (formulas) for a variable; use units."},{"n":3,"focus":"Compare strategies for solving linear and literal equations."},{"n":4,"focus":"Reason about inequalities; justify properties; inequality notation."},{"n":5,"focus":"Write and solve inequalities; set builder and interval notation."},{"n":6,"focus":"Similarities and differences in solving equations and inequalities; common errors."}],"skills":[{"id":"u4.linear","name":"Multi-step linear equations","standards":["NC.M1.A-REI.1","NC.M1.A-REI.3"]},{"id":"u4.literal","name":"Literal equations and formulas","standards":["NC.M1.A-CED.4"]},{"id":"u4.ineq","name":"Solving inequalities","standards":["NC.M1.A-REI.3"]},{"id":"u4.model","name":"Writing equations and inequalities from context","standards":["NC.M1.A-CED.1"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-4/family.html"},{"id":"u8","book":8,"order":5,"title":"Connecting Algebra & Geometry","status":"planned","lessons":[{"n":1,"focus":"Distance between two points; perimeter on the coordinate plane."},{"n":2,"focus":"Midpoint and points that divide a segment in a ratio."},{"n":3,"focus":"Parallel and perpendicular lines; write their equations."},{"n":4,"focus":"Classify quadrilaterals with coordinates; perimeter and area."}],"skills":[{"id":"u8.distance","name":"Distance and perimeter","standards":["NC.M1.G-GPE.4"]},{"id":"u8.midpoint","name":"Midpoint and partitioning","standards":["NC.M1.G-GPE.6"]},{"id":"u8.slopes","name":"Parallel and perpendicular lines","standards":["NC.M1.G-GPE.5"]},{"id":"u8.polygons","name":"Classifying polygons with coordinates","standards":["NC.M1.G-GPE.4"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-8/family.html"},{"id":"u5","book":5,"order":6,"title":"Systems of Equations & Inequalities","status":"planned","lessons":[{"n":1,"focus":"Solve systems of linear equations in context."},{"n":2,"focus":"Represent linear constraints."},{"n":3,"focus":"Graph solution sets of two-variable linear inequalities."},{"n":4,"focus":"Graph linear equations in standard form."},{"n":5,"focus":"Represent constraints symbolically and graphically."},{"n":6,"focus":"Solution sets of systems of linear inequalities."},{"n":7,"focus":"Solve systems of linear inequalities."},{"n":8,"focus":"Intuitive strategies for systems in standard form."},{"n":9,"focus":"Solve systems by elimination."},{"n":10,"focus":"Systems with no solution or infinitely many solutions."}],"skills":[{"id":"u5.solve","name":"Solving linear systems","standards":["NC.M1.A-REI.6","NC.M1.A-REI.5"]},{"id":"u5.standard","name":"Standard form and intercepts","standards":["NC.M1.A-CED.2","NC.M1.A-REI.10"]},{"id":"u5.ineq2","name":"Graphing inequalities and systems","standards":["NC.M1.A-REI.12"]},{"id":"u5.model","name":"Modeling with constraints","standards":["NC.M1.A-CED.3"]},{"id":"u5.count","name":"Number of solutions","standards":["NC.M1.A-REI.6"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-5/family.html"},{"id":"u6","book":6,"order":7,"title":"Quadratic Functions","status":"planned","lessons":[{"n":1,"focus":"Model a growing pattern; analyze the type of growth."},{"n":2,"focus":"Compare linear and quadratic functions."},{"n":3,"focus":"Model quadratics with tables, graphs, equations; first and second differences."},{"n":4,"focus":"Model a story context; features from a graph."},{"n":5,"focus":"Compare quadratic and exponential growth."},{"n":6,"focus":"Linear, exponential, quadratic or other; key features."}],"skills":[{"id":"u6.model","name":"Modeling quadratic patterns","standards":["NC.M1.A-CED.2","NC.M1.F-BF.1a"]},{"id":"u6.diffs","name":"First and second differences","standards":["NC.M1.F-LE.1"]},{"id":"u6.features","name":"Quadratic key features","standards":["NC.M1.F-IF.4","NC.M1.F-IF.7"]},{"id":"u6.compare","name":"Comparing growth","standards":["NC.M1.F-LE.3","NC.M1.F-IF.9"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-6/family.html"},{"id":"u7","book":7,"order":8,"title":"Structures of Quadratic Expressions","status":"planned","lessons":[{"n":1,"focus":"Patterns in equations and graphs of quadratics."},{"n":2,"focus":"Add and subtract linear and quadratic functions."},{"n":3,"focus":"Multiply binomials and factor trinomials with diagrams."},{"n":4,"focus":"Sign patterns; difference of squares."},{"n":5,"focus":"Factor when the leading coefficient is not 1."},{"n":6,"focus":"Graph from factored form."},{"n":7,"focus":"Solve quadratic equations graphically and algebraically."},{"n":8,"focus":"Solve quadratics efficiently; read graph information from equations."}],"skills":[{"id":"u7.polyops","name":"Adding, subtracting, multiplying","standards":["NC.M1.A-APR.1"]},{"id":"u7.factor","name":"Factoring","standards":["NC.M1.A-SSE.3"]},{"id":"u7.factoredform","name":"Graphing from factored form","standards":["NC.M1.A-APR.3","NC.M1.F-IF.8a"]},{"id":"u7.solve","name":"Solving quadratic equations","standards":["NC.M1.A-REI.4","NC.M1.A-REI.11"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-7/family.html"},{"id":"u9","book":9,"order":9,"title":"Modeling Data","status":"planned","lessons":[{"n":1,"focus":"Scatterplots, correlation coefficient, correlation vs causation."},{"n":2,"focus":"Model data with a linear function."},{"n":3,"focus":"Interpret data using linear models."},{"n":4,"focus":"Understand and interpret residuals."},{"n":5,"focus":"Residuals vs correlation coefficients."},{"n":6,"focus":"Box plots, dot plots, histograms."},{"n":7,"focus":"Standard deviation."},{"n":8,"focus":"Compare data sets by center, spread and shape."}],"skills":[{"id":"u9.correlation","name":"Correlation and causation","standards":["NC.M1.S-ID.8","NC.M1.S-ID.9"]},{"id":"u9.linefit","name":"Lines of best fit","standards":["NC.M1.S-ID.6a","NC.M1.S-ID.7"]},{"id":"u9.residuals","name":"Residuals","standards":["NC.M1.S-ID.6b"]},{"id":"u9.onevar","name":"One-variable data displays","standards":["NC.M1.S-ID.1"]},{"id":"u9.spread","name":"Center, spread and outliers","standards":["NC.M1.S-ID.2","NC.M1.S-ID.3"]}],"familyPage":"https://access.openupresources.org/curricula/our-hs-math-nc/en/nc/math-1/unit-9/family.html"}]};
-M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
+M1.buildInfo = {"built":"2026-10-26T22:12:00.081Z"};
 </script>
 <script>/* app/src/qlib.js */
 /* Question-building helpers shared by every unit's generators.
@@ -687,7 +705,46 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     return 10 * p;
   }
 
-  M1.qlib = { clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
+  // ── Shared by the later units ──
+  // Linear expression mx + b in KaTeX (handles m = ±1, b = 0, fractions).
+  function lin(m, b, v = "x") {
+    if (m === 0) return tex(b);
+    const mt = m === 1 ? "" : m === -1 ? "-" : tex(m);
+    return `${mt}${v}${b === 0 ? "" : " " + signed(b)}`;
+  }
+  // a/b reduced, as KaTeX.
+  function frac(n, d) {
+    const g = gcd(n, d), s = (n < 0) !== (d < 0) && n !== 0 ? "-" : "";
+    const N = Math.abs(n) / g, D = Math.abs(d) / g;
+    return D === 1 ? `${s}${N}` : `${s}\\frac{${N}}{${D}}`;
+  }
+  const pt = (p) => `(${fmt(p[0])}, ${fmt(p[1])})`;
+  // Sample y = f(x) on [x0, x1] as a polyline, cut where it leaves [ylo, yhi] by a margin.
+  function sample(f, x0, x1, n = 80) {
+    const out = [];
+    for (let i = 0; i <= n; i++) { const x = x0 + ((x1 - x0) * i) / n, y = f(x); if (Number.isFinite(y)) out.push([clean(x), clean(y)]); }
+    return out;
+  }
+  // A square-ish window around the origin.
+  const box = (lo, hi, step = 1, ylo = lo, yhi = hi, ystep = step) => ({ xmin: lo, xmax: hi, ymin: ylo, ymax: yhi, xstep: step, ystep });
+  // Format ax + by = c style coefficients: "3x - 2y".
+  function terms2(a, b, x = "x", y = "y") {
+    const t1 = a === 0 ? "" : `${a === 1 ? "" : a === -1 ? "-" : a}${x}`;
+    if (b === 0) return t1 || "0";
+    const bb = Math.abs(b) === 1 ? "" : Math.abs(b);
+    return t1 ? `${t1} ${b < 0 ? "-" : "+"} ${bb}${y}` : `${b < 0 ? "-" : ""}${bb}${y}`;
+  }
+  // Quadratic ax^2 + bx + c in KaTeX.
+  function quad(a, b, c, v = "x") {
+    let s = a === 1 ? `${v}^2` : a === -1 ? `-${v}^2` : `${tex(a)}${v}^2`;
+    if (b) s += ` ${b < 0 ? "-" : "+"} ${Math.abs(b) === 1 ? "" : tex(Math.abs(b))}${v}`;
+    if (c) s += ` ${signed(c)}`;
+    return s;
+  }
+  // (x - p) with sign handled: x - 3, x + 2, x.
+  const fac = (p, v = "x") => (p === 0 ? v : `${v} ${p > 0 ? "-" : "+"} ${Math.abs(p)}`);
+
+  M1.qlib = { lin, frac, pt, sample, box, terms2, quad, fac, clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
     eqArithExplicit, eqGeomExplicit, eqArithRecursive, eqGeomRecursive, paren, windowFor, niceStep, norm };
   M1.units = M1.units || {};
 })(typeof window !== "undefined" ? window : globalThis);
@@ -2663,6 +2720,7 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
       case "numeric": {
         const v = Q.parseNum(resp);
         if (!Number.isFinite(v)) return false;
+        if (q.accept) return accepts(q.accept, v); // "make it true" items: any value in the allowed set
         const tol = q.tol != null ? q.tol : 1e-6 * Math.max(1, Math.abs(q.answer));
         return Math.abs(v - q.answer) <= tol;
       }
@@ -2673,6 +2731,16 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
       }
     }
     return false;
+  }
+
+  // accept: { lo, hi, loOpen, hiOpen, int, not: [values] }. Missing bounds are unbounded.
+  function accepts(a, v) {
+    const eps = 1e-9;
+    if (a.lo != null && (a.loOpen ? v <= a.lo + eps : v < a.lo - eps)) return false;
+    if (a.hi != null && (a.hiOpen ? v >= a.hi - eps : v > a.hi + eps)) return false;
+    if (a.int && Math.abs(v - Math.round(v)) > eps) return false;
+    if ((a.not || []).some((x) => Math.abs(x - v) < eps)) return false;
+    return true;
   }
 
   function gradeSet(set, answers) {
@@ -2744,7 +2812,7 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     return { state: st, events };
   }
 
-  M1.engine = { LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
+  M1.engine = { accepts, LEVELS, TIER_NAMES, tierOf, instantiate, newUnitState, buildSet, isCorrect, gradeSet, updateState, unitInfo, hash };
 })(typeof window !== "undefined" ? window : globalThis);
 
 </script>
@@ -2820,7 +2888,8 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
   }
 
   // ───────────── Coordinate grid ─────────────
-  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode }
+  // opts: { window:{xmin,xmax,ymin,ymax,xstep,ystep}, points, points2, interactive, onChange, lines, mode,
+  //         paths:[{pts, dashed, label}], shade:[[x,y]...polygon...], open:[[x,y]], closed:[[x,y]], labels:[{at:[x,y], text}] }
   function GraphGrid(container, opts) {
     const W = 360, H = 300, pad = { l: 40, r: 14, t: 14, b: 30 };
     const w = Object.assign({ xstep: 1, ystep: 1 }, opts.window);
@@ -2844,6 +2913,17 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     }
     if (opts.xlabel) el("text", { x: W - pad.r, y: H - 4, class: "axis-label", "text-anchor": "end" }, svg).textContent = opts.xlabel;
 
+    const clip = "gc" + Math.random().toString(36).slice(2, 8);
+    const cp = el("clipPath", { id: clip }, el("defs", {}, svg));
+    el("rect", { x: pad.l, y: pad.t, width: W - pad.l - pad.r, height: H - pad.t - pad.b }, cp);
+    const gFixed = el("g", { "clip-path": `url(#${clip})` }, svg);
+    for (const poly of opts.shade || []) el("polygon", { points: poly.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "shade" }, gFixed);
+    for (const P of opts.paths || []) {
+      el("polyline", { points: P.pts.map((p) => `${sx(p[0])},${sy(p[1])}`).join(" "), class: "curve" + (P.dashed ? " dashed" : "") + (P.alt ? " alt" : "") }, gFixed);
+    }
+    for (const p of opts.closed || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-closed" }, gFixed);
+    for (const p of opts.open || []) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4.5, class: "end-open" }, gFixed);
+    for (const L of opts.labels || []) el("text", { x: sx(L.at[0]) + 6, y: sy(L.at[1]) - 6, class: "curve-label" }, svg).textContent = L.text;
     const gLines = el("g", {}, svg);
     const gPts = el("g", {}, svg);
     let pts = (opts.points || []).map((p) => p.slice());
@@ -3089,7 +3169,7 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     get(k) { try { const v = G.localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
     set(k, v) { try { G.localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
   };
-  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [] });
+  const emptyMain = () => ({ version: 1, units: {}, current: null, history: [], flags: [], openAll: false });
 
   async function init() {
     let db = null, user = null, uid = null, owner = false;
@@ -3203,6 +3283,16 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
 
   // ───────────── helpers ─────────────
   const units = () => M1.curriculum.units;
+  const ordered = () => units().slice().sort((a, b) => a.order - b.order);
+  const isLive = (u) => u.status === "live" && !!M1.units[u.id];
+  // A unit is finished once one full set in it has been submitted, whatever the score.
+  const finishedUnit = (uid, data = main) => data.history.some((h) => h.unitId === uid);
+  function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
+  function isOpen(u, data = main) {
+    if (data.openAll) return true;
+    const p = prevUnit(u);
+    return !p || finishedUnit(p.id, data);
+  }
   const unit = (id) => E.unitInfo(id);
   const skillName = (uid, sid) => (unit(uid).skills.find((s) => s.id === sid) || {}).name || sid;
   function dur(sec) {
@@ -3266,8 +3356,9 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
       </section>`;
     })() : "";
 
-    const cards = units().slice().sort((a, b) => a.order - b.order).map((u) => {
-      const live = u.status === "live" && M1.units[u.id];
+    const cards = ordered().map((u) => {
+      const live = isLive(u) && isOpen(u);
+      const locked = isLive(u) && !live;
       const st = main.units[u.id];
       const hist = main.history.filter((h) => h.unitId === u.id);
       const last = hist[hist.length - 1];
@@ -3291,12 +3382,14 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
           <button type="button" class="btn quiet" data-act="start" data-unit="${u.id}">Keep practising</button>`;
         else action = `<button type="button" class="btn primary" data-act="start" data-unit="${u.id}" ${cur ? "disabled title=\"Finish the set in progress first\"" : ""}>${!st || !st.sets ? "Start first set" : `Start set ${st.sets + 1}`}</button>`;
       }
-      return `<article class="unit-card${live ? "" : " planned"}${st && st.mastered ? " mastered" : ""}">
-        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${st && st.mastered ? `<span class="pill ach">Mastered</span>` : live ? "" : `<span class="pill">Coming next</span>`}</div>
+      const pill = st && st.mastered ? `<span class="pill ach">Mastered</span>` : locked ? `<span class="pill lock">🔒 Locked</span>` : live ? (finishedUnit(u.id) ? `<span class="pill done">Finished</span>` : "") : `<span class="pill">Coming next</span>`;
+      const lockNote = locked ? `<div class="unit-stats lock-note">Finish one full set in Unit ${prevUnit(u).order} to open this unit. Any score counts.</div>` : "";
+      return `<article class="unit-card${live ? "" : " planned"}${locked ? " locked" : ""}${st && st.mastered ? " mastered" : ""}">
+        <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${pill}</div>
         <h3>${esc(u.title)}</h3>
         <div class="unit-meta">${u.lessons.length} lessons · ${u.skills.length} skills${u.order !== u.book ? ` · Book unit ${u.book}` : ""}</div>
         ${meter}${checklist}
-        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : ""}
+        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : lockNote}
         <div class="unit-actions">${action}</div>
       </article>`;
     }).join("");
@@ -3306,7 +3399,7 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
         ${resume}
         <section class="intro">
           <h1>Pick a unit</h1>
-          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed.</p>
+          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit.</p>
         </section>
         <section class="unit-grid">${cards}</section>
         ${historyTable(main.history.slice(-8).reverse(), "Recent sets")}
@@ -3331,7 +3424,10 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     if (main.current) return setView("set");
     const st = unitState(uid);
     const seen = await store.loadSeen(uid);
-    const set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0));
+    let set;
+    try { set = E.buildSet(uid, st, seen, (Date.now() % 2e9) ^ ((Math.random() * 1e9) | 0)); }
+    catch (e) { console.error(e); return alertBox("Something went wrong building that set. Please try again."); }
+    if (!set.questions.length) return alertBox("No questions are ready for this unit yet.");
     store.saveSeen(uid, seen.concat(set.questions.map((q) => q.fp)));
     main.current = { set, answers: set.questions.map(() => null), qTimes: set.questions.map(() => 0), hints: set.questions.map(() => false), idx: 0, startedAt: new Date().toISOString(), activeSec: 0 };
     save();
@@ -3403,19 +3499,19 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     card.innerHTML = `
       <div class="qmeta">
         <span class="qnum">Question ${cur.idx + 1} of ${cur.set.questions.length}</span>
-        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>
+        <span class="pill lvl-${q.level}">${LEVEL_LABEL[q.level]}</span>${q.think ? `<span class="pill think">Thinking</span>` : ""}
         <span class="pill ${q.calc ? "calc-ok" : "calc-no"}">${q.calc ? "Calculator allowed" : "No calculator"}</span>
       </div>
       <div class="qskill">${esc(skillName(cur.set.unitId, q.skill))} · ${TYPE_LABEL[q.type]}</div>
       <div class="prompt">${R(q.prompt)}</div>
       ${q.table ? tableHtml(q.table) : ""}
-      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> Sequence A <span class="lg-s"></span> Sequence B</div>` : ""}` : ""}
+      ${q.graph ? `<div class="qgraph" id="qgraph"></div>${q.graph.points2 ? `<div class="legend"><span class="lg-c"></span> ${esc(q.graph.names ? q.graph.names[0] : "Sequence A")} <span class="lg-s"></span> ${esc(q.graph.names ? q.graph.names[1] : "Sequence B")}</div>` : ""}` : ""}
       ${input}`;
 
-    if (q.graph) M1.tools.GraphGrid($("#qgraph"), { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
+    if (q.graph) M1.tools.GraphGrid($("#qgraph"), Object.assign({}, q.graph));
     if (q.type === "plot") {
       const upd = (pts) => { $("#plot-count").textContent = `${pts.length} point${pts.length === 1 ? "" : "s"} placed`; };
-      const grid = M1.tools.GraphGrid($("#plot-host"), { window: q.plot.window, points: a || [], interactive: true,
+      const grid = M1.tools.GraphGrid($("#plot-host"), { ...q.plot, points: a || [], interactive: true,
         onChange: (pts) => { cur.answers[cur.idx] = pts; upd(pts); afterAnswer(); } });
       upd(a || []);
       $('[data-act="plot-clear"]').onclick = () => grid.clear();
@@ -3482,6 +3578,8 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     const grade = E.gradeSet(set, cur.answers);
     const prev = unitState(set.unitId);
     const { state, events } = E.updateState(prev, set, grade);
+    const next = ordered()[ordered().findIndex((u) => u.id === set.unitId) + 1];
+    if (next && !finishedUnit(set.unitId) && !main.openAll) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
     main.units[set.unitId] = state;
     const finishedAt = new Date().toISOString();
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
@@ -3557,8 +3655,8 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
     rec.questions.forEach((q, i) => {
       const host = document.getElementById("rg-" + i);
       if (!host) return;
-      if (q.graph) M1.tools.GraphGrid(host, { window: q.graph.window, points: q.graph.points, points2: q.graph.points2 });
-      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { window: q.plot.window, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
+      if (q.graph) M1.tools.GraphGrid(host, Object.assign({}, q.graph));
+      if (q.type === "plot") { const g = M1.tools.GraphGrid(host, { ...q.plot, points: rec.answers[i] || [] }); g.showAnswer(q.answer); }
     });
   }
 
@@ -3576,7 +3674,71 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
       <div><div class="lbl">Correct answer</div><div>${correctText(q)}</div></div></div>
       ${why}
       <details ${ok ? "" : "open"}><summary>Worked solution</summary><div class="solution">${R(q.solution)}</div></details>
+      ${viewing && viewing.studentName ? "" : `<button type="button" class="btn-link flag${isFlagged(q.id) ? " on" : ""}" data-act="flag" data-i="${i}">${isFlagged(q.id) ? "Flagged for a grown-up to check" : "This question looks wrong"}</button>`}
     </li>`;
+  }
+
+  const isFlagged = (qid) => (main.flags || []).some((f) => f.qid === qid);
+  function toggleFlag(i) {
+    const rec = viewing.rec, q = rec.questions[i];
+    main.flags = main.flags || [];
+    const k = main.flags.findIndex((f) => f.qid === q.id);
+    if (k >= 0) main.flags.splice(k, 1);
+    else main.flags.push({ qid: q.id, unitId: rec.unitId, setId: rec.id, skill: q.skill, level: q.level, prompt: q.prompt, date: new Date().toISOString() });
+    save();
+    const b = document.querySelector(`[data-act="flag"][data-i="${i}"]`);
+    if (b) { b.classList.toggle("on", k < 0); b.textContent = k < 0 ? "Flagged for a grown-up to check" : "This question looks wrong"; }
+  }
+
+  // Backup: everything this app keeps in the browser, as one file.
+  function exportProgress() {
+    const keys = {};
+    try { for (let k = 0; k < localStorage.length; k++) { const key = localStorage.key(k); if (key.startsWith("m1:")) keys[key] = localStorage.getItem(key); } } catch (e) {}
+    keys["m1:main"] = JSON.stringify(main);
+    const blob = new Blob([JSON.stringify({ app: "math1-practice", version: 1, exported: new Date().toISOString(), keys })], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `math1-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function importProgress(file) {
+    const fr = new FileReader();
+    fr.onload = () => {
+      try {
+        const data = JSON.parse(fr.result);
+        if (!data || data.app !== "math1-practice" || !data.keys || !data.keys["m1:main"]) throw new Error("not a progress file");
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:")) { try { localStorage.setItem(k, v); } catch (e) {} }
+        main = migrate(JSON.parse(data.keys["m1:main"]));
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:seen:")) store.saveSeen(k.slice(8), JSON.parse(v));
+        save();
+        alertBox("Progress loaded.");
+        setView("progress");
+      } catch (e) { alertBox("That file isn't a Math 1 progress file."); }
+    };
+    fr.readAsText(file);
+  }
+  function migrate(m) {
+    m = Object.assign(M1.store.emptyMain(), m || {});
+    m.flags = m.flags || [];
+    m.openAll = !!m.openAll;
+    m.history = (m.history || []).filter((h) => h && h.unitId && units().some((u) => u.id === h.unitId));
+    for (const uid of Object.keys(m.units || {})) if (!units().some((u) => u.id === uid)) delete m.units[uid];
+    if (m.current && !(m.current.set && units().some((u) => u.id === m.current.set.unitId))) m.current = null;
+    return m;
+  }
+
+  function parentPanel(data, shown) {
+    if (shown) return "";
+    const flags = (data.flags || []).slice().reverse();
+    return `<section class="panel parents"><h2>For grown-ups</h2>
+      <label class="check big-check"><input type="checkbox" id="open-all" ${data.openAll ? "checked" : ""}> Open all units (skip the finish-one-set rule)</label>
+      <p class="muted">Normally a unit opens once the student finishes one full set in the unit before it, at any score.</p>
+      <div class="row"><button type="button" class="btn" data-act="export">Download progress backup</button>
+        <label class="btn file-btn">Load a backup<input type="file" id="import-file" accept="application/json,.json" hidden></label></div>
+      <p class="muted">Progress is kept in this browser. Clearing browser data erases it, so download a backup now and then.</p>
+      ${flags.length ? `<h3>Questions flagged by the student</h3><ul class="flags">${flags.map((f) => `<li><span class="muted">${dateStr(f.date)} · Unit ${unit(f.unitId).order} · ${esc(skillName(f.unitId, f.skill))} · ${LEVEL_LABEL[f.level]}</span><div>${R(f.prompt)}</div><button type="button" class="btn-link" data-act="review" data-set="${esc(f.setId)}">Open the set</button></li>`).join("")}</ul>` : ""}
+    </section>`;
   }
 
   // ───────────── Progress (and parent view) ─────────────
@@ -3613,7 +3775,12 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
       <section class="intro"><h1>Progress</h1><p>Each skill climbs from Basic to Intermediate to Hard. Two sets in a row at 80% or better move it up a level. Three hard questions in a row, all right, mark it achieved.</p></section>
       ${unitBlocks || `<section class="panel"><p class="muted">No units started yet.</p></section>`}
       ${historyTable(data.history.slice().reverse(), "All sets and times", shown ? shown.id : "")}
+      ${parentPanel(data, shown)}
     </main>`;
+    const oa = $("#open-all");
+    if (oa) oa.onchange = () => { main.openAll = oa.checked; save(); alertBox(oa.checked ? "All units are open." : "Units open one at a time again."); };
+    const imp = $("#import-file");
+    if (imp) imp.onchange = () => imp.files[0] && importProgress(imp.files[0]);
     const pick = $("#stu-pick");
     if (pick) pick.onchange = () => { viewing = { studentPick: pick.value || null }; renderProgress(root); };
   }
@@ -3676,6 +3843,8 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
         if (!confirmArmed) { confirmArmed = true; return updateNav(); }
         return submit();
       case "review": return openReview(t.dataset.set, t.dataset.student);
+      case "flag": return toggleFlag(Number(t.dataset.i));
+      case "export": return exportProgress();
     }
   });
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && main) save(); });
@@ -3683,7 +3852,7 @@ M1.buildInfo = {"built":"2026-10-22T18:24:59.694Z"};
   async function boot() {
     $("#app").innerHTML = `<div class="loading">Loading your progress…</div>`;
     store = await M1.store.init();
-    main = await store.loadMain();
+    main = migrate(await store.loadMain());
     store.onModeChange = () => { alertBox("Couldn't save to your account. Progress is saving in this browser."); if (view !== "set") render(); };
     setView(main.current ? "home" : "home");
   }

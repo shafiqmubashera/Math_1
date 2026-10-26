@@ -159,7 +159,46 @@
     return 10 * p;
   }
 
-  M1.qlib = { clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
+  // ── Shared by the later units ──
+  // Linear expression mx + b in KaTeX (handles m = ±1, b = 0, fractions).
+  function lin(m, b, v = "x") {
+    if (m === 0) return tex(b);
+    const mt = m === 1 ? "" : m === -1 ? "-" : tex(m);
+    return `${mt}${v}${b === 0 ? "" : " " + signed(b)}`;
+  }
+  // a/b reduced, as KaTeX.
+  function frac(n, d) {
+    const g = gcd(n, d), s = (n < 0) !== (d < 0) && n !== 0 ? "-" : "";
+    const N = Math.abs(n) / g, D = Math.abs(d) / g;
+    return D === 1 ? `${s}${N}` : `${s}\\frac{${N}}{${D}}`;
+  }
+  const pt = (p) => `(${fmt(p[0])}, ${fmt(p[1])})`;
+  // Sample y = f(x) on [x0, x1] as a polyline, cut where it leaves [ylo, yhi] by a margin.
+  function sample(f, x0, x1, n = 80) {
+    const out = [];
+    for (let i = 0; i <= n; i++) { const x = x0 + ((x1 - x0) * i) / n, y = f(x); if (Number.isFinite(y)) out.push([clean(x), clean(y)]); }
+    return out;
+  }
+  // A square-ish window around the origin.
+  const box = (lo, hi, step = 1, ylo = lo, yhi = hi, ystep = step) => ({ xmin: lo, xmax: hi, ymin: ylo, ymax: yhi, xstep: step, ystep });
+  // Format ax + by = c style coefficients: "3x - 2y".
+  function terms2(a, b, x = "x", y = "y") {
+    const t1 = a === 0 ? "" : `${a === 1 ? "" : a === -1 ? "-" : a}${x}`;
+    if (b === 0) return t1 || "0";
+    const bb = Math.abs(b) === 1 ? "" : Math.abs(b);
+    return t1 ? `${t1} ${b < 0 ? "-" : "+"} ${bb}${y}` : `${b < 0 ? "-" : ""}${bb}${y}`;
+  }
+  // Quadratic ax^2 + bx + c in KaTeX.
+  function quad(a, b, c, v = "x") {
+    let s = a === 1 ? `${v}^2` : a === -1 ? `-${v}^2` : `${tex(a)}${v}^2`;
+    if (b) s += ` ${b < 0 ? "-" : "+"} ${Math.abs(b) === 1 ? "" : tex(Math.abs(b))}${v}`;
+    if (c) s += ` ${signed(c)}`;
+    return s;
+  }
+  // (x - p) with sign handled: x - 3, x + 2, x.
+  const fac = (p, v = "x") => (p === 0 ? v : `${v} ${p > 0 ? "-" : "+"} ${Math.abs(p)}`);
+
+  M1.qlib = { lin, frac, pt, sample, box, terms2, quad, fac, clean, rng, gcd, fmt, tex, signed, mcq, multi, parseNum, arith, geom, terms, list, texList,
     eqArithExplicit, eqGeomExplicit, eqArithRecursive, eqGeomRecursive, paren, windowFor, niceStep, norm };
   M1.units = M1.units || {};
 })(typeof window !== "undefined" ? window : globalThis);
