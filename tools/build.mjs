@@ -28,7 +28,14 @@ for (const d of fs.readdirSync(path.join(ROOT, "content")).sort()) {
 const scripts = ["app/src/qlib.js", ...contentFiles, "app/src/engine.js", "app/src/math.js", "app/src/tools.js", "app/src/store.js", "app/src/app.js"];
 const safe = (s) => s.replace(/<\/script/gi, "<\\/script");
 
-const html = `<title>Math 1 Practice</title>
+// Full document head: without the doctype and viewport a phone renders a shrunken 980px desktop page,
+// and "light only" keeps phone dark mode from recoloring anything.
+const html = `<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Math 1 Practice</title>
 <meta name="description" content="Adaptive NC Math 1 practice sets for an 8th grader, built on the WCPSS units.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -16,12 +16,8 @@
   --font-body: "Courier Prime", "Courier New", ui-monospace, monospace;
   --font-mono: "Courier Prime", "Courier New", ui-monospace, monospace;
   --radius: 3px;
-  color-scheme: light;
+  color-scheme: light only;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #1E3E34; --surface: #F6F1E4; --surface-2: #ECE6D6; --shadow: 0 8px 16px rgba(0, 0, 0, 0.5); color-scheme: light; }
-}
-:root[data-theme="dark"] { --bg: #1E3E34; --surface: #F6F1E4; --surface-2: #ECE6D6; --shadow: 0 8px 16px rgba(0, 0, 0, 0.5); color-scheme: light; }
 
 /* The mat: a fine and a coarse grid, and a ruler along the top edge */
 body { font-size: 18px; line-height: 1.5; background-color: var(--bg); background-attachment: scroll;
@@ -69,6 +65,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing:
 .pill.calc-ok { color: var(--good); border-color: var(--good); }
 .pill.calc-no { color: #4A4D55; border-color: #4A4D55; }
 .pill.ach { background: var(--surface); color: var(--pen); border-color: var(--pen); font-family: var(--font-display); }
+.pill.done { background: var(--surface); color: var(--good); border-color: var(--good); }
 
 /* Paper */
 .panel, .score-hero, .tools .tool-pane[data-pane="draw"] { background: var(--surface); border: 0; border-radius: 0; box-shadow: var(--shadow); }

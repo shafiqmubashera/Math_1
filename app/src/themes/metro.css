@@ -13,22 +13,6 @@
   --font-mono: "Overpass Mono", ui-monospace, Menlo, Consolas, monospace;
   --radius: 14px;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0c0e1c; --surface: #161a2e; --surface-2: #1f2440; --ink: #f1f2f8; --muted: #a9aecb;
-    --line: #2f3556; --grid: #1a1e35; --accent: #8f93ff; --accent-soft: #262b5c; --on-accent: #0c0e1c;
-    --mark: #ffcc33; --good: #4fd18b; --good-soft: #123222; --bad: #ff7a8a; --bad-soft: #3d1820;
-    --t0: #ffa24d; --t1: #5fb4ff; --t2: #b794ff; --ach: #4fd18b;
-    --sign: #05060d; --on-sign: #ffffff; --track: #353b5e; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0c0e1c; --surface: #161a2e; --surface-2: #1f2440; --ink: #f1f2f8; --muted: #a9aecb;
-  --line: #2f3556; --grid: #1a1e35; --accent: #8f93ff; --accent-soft: #262b5c; --on-accent: #0c0e1c;
-  --mark: #ffcc33; --good: #4fd18b; --good-soft: #123222; --bad: #ff7a8a; --bad-soft: #3d1820;
-  --t0: #ffa24d; --t1: #5fb4ff; --t2: #b794ff; --ach: #4fd18b;
-  --sign: #05060d; --on-sign: #ffffff; --track: #353b5e; color-scheme: dark;
-}
 
 /* Base: bigger, calmer, no background pattern */
 body { font-size: 18px; line-height: 1.6; background-image: none; }

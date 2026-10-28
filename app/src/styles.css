@@ -10,24 +10,12 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --radius: 10px;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0e1319; --surface: #151c24; --surface-2: #1b2430; --ink: #e5ebf1; --muted: #9aa6b4;
-    --line: #2a3542; --grid: #212b36; --accent: #7ea4ff; --accent-soft: #1d2a45; --on-accent: #0e1319;
-    --mark: #f2c230; --good: #5cc795; --good-soft: #15302a; --bad: #f08473; --bad-soft: #3a1f1c;
-    --t0: #f0a050; --t1: #6fb2ec; --t2: #a891f2; --ach: #5cc795; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0e1319; --surface: #151c24; --surface-2: #1b2430; --ink: #e5ebf1; --muted: #9aa6b4;
-  --line: #2a3542; --grid: #212b36; --accent: #7ea4ff; --accent-soft: #1d2a45; --on-accent: #0e1319;
-  --mark: #f2c230; --good: #5cc795; --good-soft: #15302a; --bad: #f08473; --bad-soft: #3a1f1c;
-  --t0: #f0a050; --t1: #6fb2ec; --t2: #a891f2; --ach: #5cc795; color-scheme: dark;
-}
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
+/* Look the same whatever the phone is set to: no dark mode recoloring, no automatic text resizing. */
+html { color-scheme: light only; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   background-color: var(--bg); color: var(--ink); font: 16px/1.55 var(--font-body);
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);

@@ -21,8 +21,8 @@ let browser, lastPage = null;
 async function offline(p) {
   await p.route("**/*", (r) => (r.request().url().startsWith("file:") ? r.continue() : r.abort()));
 }
-async function open(state, { viewport, file, keys } = {}) {
-  const ctx = await browser.newContext({ viewport: viewport || { width: 1200, height: 900 }, acceptDownloads: true });
+async function open(state, { viewport, file, keys, colorScheme } = {}) {
+  const ctx = await browser.newContext({ viewport: viewport || { width: 1200, height: 900 }, acceptDownloads: true, colorScheme: colorScheme || "light" });
   const p = await ctx.newPage();
   lastPage = p;
   p.errs = [];
@@ -769,6 +769,43 @@ test("RS-09", "The app works with no internet: the only outside request is optio
   const other = asked.filter((u) => !u.startsWith("https://fonts.googleapis.com/"));
   expect(other.length === 0, "requested: " + other.join(", "));
   return p;
+});
+
+// Every visible piece of text against the background behind it (first opaque ancestor background).
+// 3:1 is the WCAG floor for large text; anything under it is what students see as "white on white".
+async function lowContrast(p) {
+  return p.evaluate(() => {
+    const rgb = (c) => { const m = c.match(/[\d.]+/g); if (!m) return null; const v = m.map(Number); return c.startsWith("color(") ? [v[0] * 255, v[1] * 255, v[2] * 255, v[3]] : v; };
+    const lum = ([r, g, b]) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+    const bgOf = (el) => { for (let e = el; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c && (c[3] === undefined || c[3] > 0.5)) return c; } return [255, 255, 255]; };
+    const bad = [];
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n; (n = walk.nextNode());) {
+      const el = n.parentElement, t = n.textContent.trim();
+      if (!t || !el || el.closest("svg, .katex-mathml, [hidden]") || !el.getClientRects().length) continue;
+      const cs = getComputedStyle(el);
+      if (cs.visibility === "hidden" || +cs.opacity < 0.3) continue;
+      const a = lum(rgb(cs.color)), b = lum(bgOf(el));
+      const ratio = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+      if (ratio < 3) bad.push(`"${t.slice(0, 30)}" ${cs.color} on ${getComputedStyle(el).backgroundColor} (${ratio.toFixed(1)}:1)`);
+    }
+    return [...new Set(bad)];
+  });
+}
+
+test("RS-10", "Text is readable in phone dark mode and light mode, in all four designs, on home, question and results screens", async () => {
+  for (const colorScheme of ["dark", "light"]) {
+    for (const file of ["index.html", "preview-quilt.html", "preview-metro.html", "preview-studio.html"]) {
+      const p = await open(empty({ history: [finished("u1")] }), { file, colorScheme, viewport: { width: 390, height: 844 } });
+      const check = async (where) => { const bad = await lowContrast(p); expect(bad.length === 0, `${file} ${colorScheme} ${where}: ` + bad.slice(0, 5).join("; ")); };
+      await check("home");
+      await startUnit(p, "u2");
+      await check("question");
+      await playSet(p, (q, i) => i % 2 === 0);
+      await check("results");
+      await p.context().close();
+    }
+  }
 });
 
 test("CT-05", "Math shows as formatted math, even with no internet, on every question of a first set in every unit (no raw code, no stray $)", async () => {
