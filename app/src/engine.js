@@ -7,7 +7,7 @@
   const CONFIG = (M1.config = Object.assign({
     setSize: 25,
     diagnostic: { basic: 3, intermediate: 7, hard: 8, challenge: 7 }, // 10% / 30% / 60%
-    tierWeight: [3, 2, 1.5],       // basic-focus skills get the most questions
+    tierWeight: [4, 2, 1],         // basic-focus skills get the most questions
     minSlots: [2, 2, 3],           // per skill, by focus tier
     upShare: 0.3,                  // share of a skill's questions one tier above its focus
     secureAt: 0.8,                 // accuracy that counts toward securing a tier
@@ -243,7 +243,8 @@
         // Placement: start at the lowest tier the student hasn't shown.
         const a0 = acc(0), a1 = acc(1);
         if (a0 !== null && a0 < CONFIG.secureAt) sk.focus = 0;
-        else if (a1 !== null && a1 < CONFIG.secureAt) sk.focus = 1;
+        // No basic question for this skill and under half the intermediate ones right: start at Basic.
+        else if (a1 !== null && a1 < CONFIG.secureAt) sk.focus = a0 === null && a1 < 0.5 ? 0 : 1;
         else if (a1 === null) sk.focus = a0 === null ? 0 : 1;
         else sk.focus = 2;
         sk.streak = 0;

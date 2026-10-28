@@ -28,7 +28,11 @@ jobs:
         with:
           node-version: 20
       - run: node tests/run-tests.mjs
+      - run: node tests/engine-tests.mjs
       - run: node tools/build.mjs
+      # Browser tests (docs/test-cases.md): drive the built app in Chromium before anything is published.
+      - run: npm install --no-save --no-package-lock playwright@1.48.2 && npx playwright install --with-deps chromium
+      - run: node tests/app-tests.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

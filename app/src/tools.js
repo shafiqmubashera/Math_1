@@ -72,8 +72,11 @@
       svg.classList.add("interactive");
       const hover = el("circle", { r: 5, class: "pt-hover", cx: -10, cy: -10 }, svg);
       const snap = (evt) => {
-        const r = svg.getBoundingClientRect();
-        const px = ((evt.clientX - r.left) / r.width) * W, py = ((evt.clientY - r.top) / r.height) * H;
+        // Map the tap into grid units through the SVG's own transform, so it stays exact when a design tilts or scales the card.
+        let px, py;
+        const m = svg.getScreenCTM && svg.getScreenCTM();
+        if (m) { const q = new DOMPoint(evt.clientX, evt.clientY).matrixTransform(m.inverse()); px = q.x; py = q.y; }
+        else { const r = svg.getBoundingClientRect(); px = ((evt.clientX - r.left) / r.width) * W; py = ((evt.clientY - r.top) / r.height) * H; }
         const x = Math.round(ix(px) / w.xstep) * w.xstep, y = Math.round(iy(py) / w.ystep) * w.ystep;
         if (x < w.xmin || x > w.xmax || y < w.ymin || y > w.ymax) return null;
         return [Math.round(x * 1e6) / 1e6, Math.round(y * 1e6) / 1e6];

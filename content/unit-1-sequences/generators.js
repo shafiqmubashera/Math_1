@@ -402,7 +402,7 @@
       const ymax = Math.max(...pts.map((p) => p[1]));
       return { key: [a, rr],
         prompt: `Plot the first 4 terms of $${eqGeomRecursive(a, rr)}$ as points $(n, f(n))$.`,
-        plot: { window: { xmin: 0, xmax: 6, ymin: 0, ymax: ymax + 2, xstep: 1, ystep: ymax > 20 ? 2 : 1 } },
+        plot: { window: { xmin: 0, xmax: 6, ymin: 0, ymax: ymax + 2, xstep: 1, ystep: 1 } },
         answer: pts,
         hint: "Start at f(1) and multiply by the ratio to get each next term.",
         solution: `Points: ${pts.map((p) => `(${p[0]}, ${fmt(p[1])})`).join(", ")}` };

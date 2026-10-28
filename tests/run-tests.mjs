@@ -174,7 +174,9 @@ function checkQuestion(q, where) {
   if (q.type === "plot") {
     const w = q.plot.window;
     for (const [x, y] of q.answer) if (x < w.xmin || x > w.xmax || y < w.ymin || y > w.ymax) fail(where, `point (${x},${y}) off grid`);
-    for (const [x, y] of q.answer) if (Math.abs(((y - w.ymin) / w.ystep) - Math.round((y - w.ymin) / w.ystep)) > 1e-9 && Math.abs(y * 2 - Math.round(y * 2)) > 1e-9) fail(where, `point (${x},${y}) not on a grid line`);
+    // The grid snaps a tap to the nearest multiple of its step, so every answer point must be one of those spots.
+    const on = (v, step) => Math.abs(Math.round(v / step) * step - v) < 1e-6;
+    for (const [x, y] of q.answer) if (!on(x, w.xstep || 1) || !on(y, w.ystep || 1)) fail(where, `point (${x},${y}) can't be placed: the grid snaps to steps of ${w.xstep || 1} and ${w.ystep || 1}`);
   }
   if (q.graph) for (const [x, y] of (q.graph.points || []).concat(q.graph.points2 || [])) {
     const w = q.graph.window;

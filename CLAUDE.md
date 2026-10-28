@@ -36,7 +36,7 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
 ## How to add content
 - Number-based questions: add a generator to `content/<unit>/generators.js` (see the `build-unit-bank` skill).
 - Word problems and SAT-style items: add to `content/<unit>/bank.json`, then run the `answer-checker` agent.
-- Run `node tests/run-tests.mjs` before every build. Then run `node tools/build.mjs` to produce `dist/index.html`.
+- Run `node tests/run-tests.mjs` and `node tests/engine-tests.mjs` before every build. Then run `node tools/build.mjs` to produce `dist/index.html`, and `node tests/app-tests.mjs` to drive it in a browser. Case list: `docs/test-cases.md`.
 
 ## Keeping GitHub current
 - The code lives at github.com/shafiqmubashera/Math_1 (branch `main`). After every change: run the tests, build, commit and push to `origin main`.

@@ -18,6 +18,8 @@
   function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
   function isOpen(u, data = main) {
     if (data.openAll) return true;
+    // Once a unit has been opened and worked in, it stays open, even if the open-all switch is turned off later.
+    if (finishedUnit(u.id, data) || (data.current && data.current.set.unitId === u.id)) return true;
     const p = prevUnit(u);
     return !p || finishedUnit(p.id, data);
   }
@@ -598,5 +600,5 @@
     store.onModeChange = () => { alertBox("Couldn't save to your account. Progress is saving in this browser."); if (view !== "set") render(); };
     setView(main.current ? "home" : "home");
   }
-  M1.app = { boot };
+  M1.app = { boot, state: () => main }; // state() lets the browser tests read what is on screen
 })(window);

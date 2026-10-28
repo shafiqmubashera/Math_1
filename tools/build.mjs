@@ -38,7 +38,8 @@ ${read("app/src/styles.css")}
 ${themeCss}
 </style>
 <div id="app"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>/* KaTeX 0.16.9, MIT licence (vendor/KATEX-LICENSE), bundled so math works offline and on filtered school networks */
+${read("vendor/katex-0.16.9.min.js").replace(/<\/script/gi, "<\\/script")}</script>
 <script>
 window.M1 = window.M1 || {};
 M1.curriculum = ${JSON.stringify(units)};
