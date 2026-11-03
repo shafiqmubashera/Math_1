@@ -9,6 +9,9 @@
     get(k) { try { const v = G.localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
     set(k, v) { try { G.localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
   };
+  // The testing copy keeps its own progress under another prefix, so it never mixes with a student's.
+  const TESTING = !!(M1.buildInfo && M1.buildInfo.testing);
+  const P = TESTING ? "m1test:" : "m1:";
   const emptyMain = () => ({ version: 1, units: {}, current: null, history: [], flags: [], openAll: false });
 
   async function init() {
@@ -55,38 +58,38 @@
         if (mode === "account") {
           try { const s = await db.doc(base()).get(); if (s.exists) return Object.assign(emptyMain(), JSON.parse(JSON.stringify(s.data()))); }
           catch (e) { fallback(e); }
-          const local = LS.get("m1:main");
+          const local = LS.get(P + "main");
           return local || emptyMain();
         }
-        return LS.get("m1:main") || emptyMain();
+        return LS.get(P + "main") || emptyMain();
       },
       saveMain(main) {
-        LS.set("m1:main", main); // always keep a browser copy as a backup
+        LS.set(P + "main", main); // always keep a browser copy as a backup
         if (mode === "account") write(base(), main);
       },
       async loadSeen(unitId) {
-        const local = LS.get("m1:seen:" + unitId) || [];
+        const local = LS.get(P + "seen:" + unitId) || [];
         if (mode !== "account") return local;
         try { const s = await db.doc(base() + "/seen/" + unitId).get(); const remote = s.exists ? s.data().fps || [] : []; return Array.from(new Set(remote.concat(local))); }
         catch (e) { return local; }
       },
       saveSeen(unitId, fps) {
         const trimmed = fps.slice(-4000); // ~160 sets of history; older questions may come back eventually
-        LS.set("m1:seen:" + unitId, trimmed);
+        LS.set(P + "seen:" + unitId, trimmed);
         if (mode === "account") write(base() + "/seen/" + unitId, { fps: trimmed });
       },
       saveSet(rec) {
-        const ids = LS.get("m1:setids") || [];
+        const ids = LS.get(P + "setids") || [];
         ids.push(rec.id);
-        while (ids.length > 30) { const old = ids.shift(); try { G.localStorage.removeItem("m1:set:" + old); } catch (e) {} }
-        LS.set("m1:setids", ids); LS.set("m1:set:" + rec.id, rec);
+        while (ids.length > 30) { const old = ids.shift(); try { G.localStorage.removeItem(P + "set:" + old); } catch (e) {} }
+        LS.set(P + "setids", ids); LS.set(P + "set:" + rec.id, rec);
         if (mode === "account") write(base() + "/sets/" + rec.id, rec);
       },
       async loadSet(studentId, setId) {
         if (mode === "account") {
           try { const s = await db.doc("students/" + (studentId || uid) + "/sets/" + setId).get(); if (s.exists) return s.data(); } catch (e) {}
         }
-        return LS.get("m1:set:" + setId);
+        return LS.get(P + "set:" + setId);
       },
       // Parent view: the owner can read every student's main document.
       async listStudents() {
@@ -105,5 +108,5 @@
     return api;
   }
 
-  M1.store = { init, emptyMain };
+  M1.store = { init, emptyMain, prefix: P, testing: TESTING };
 })(typeof window !== "undefined" ? window : globalThis);

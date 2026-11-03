@@ -1,5 +1,6 @@
 // Bundles the app into one page: dist/index.html. Run: node tools/build.mjs
 // The app ships with the "desk" (Study Desk) design (app/src/themes/desk.css). Older designs kept as alternatives: quilt, metro, studio.
+// Testing copy with every unit open and its own saved progress: node tools/build.mjs --testing  (writes dist/test/index.html)
 // Preview another design: node tools/build.mjs --theme quilt  (writes dist/preview-quilt.html); --theme none = base styles only
 import fs from "node:fs";
 import path from "node:path";
@@ -13,7 +14,8 @@ const theme = themeArg > -1 ? process.argv[themeArg + 1] : DEFAULT_THEME;
 const themeCss = theme && theme !== "none" ? read(`app/src/themes/${theme}.css`) : "";
 const defaultFonts = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600;700&display=swap";
 const fonts = themeCss.match(/^\/\* fonts: (\S+) \*\//)?.[1] || defaultFonts;
-const outFile = themeArg > -1 ? `dist/preview-${theme}.html` : "dist/index.html";
+const testing = process.argv.includes("--testing");
+const outFile = testing ? "dist/test/index.html" : themeArg > -1 ? `dist/preview-${theme}.html` : "dist/index.html";
 const units = JSON.parse(read("curriculum/units.json"));
 
 // Only the units marked "live" ship their questions.
@@ -35,7 +37,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
-<title>Math 1 Practice</title>
+<title>Math 1 Practice${testing ? " (testing)" : ""}</title>
 <meta name="description" content="Adaptive NC Math 1 practice sets for an 8th grader, built on the WCPSS units.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,11 +52,11 @@ ${read("vendor/katex-0.16.9.min.js").replace(/<\/script/gi, "<\\/script")}</scri
 <script>
 window.M1 = window.M1 || {};
 M1.curriculum = ${JSON.stringify(units)};
-M1.buildInfo = ${JSON.stringify({ built: new Date().toISOString() })};
+M1.buildInfo = ${JSON.stringify({ built: new Date().toISOString(), testing })};
 </script>
 ${scripts.map((s) => `<script>/* ${s} */\n${safe(read(s))}\n</script>`).join("\n")}
 <script>M1.app.boot();</script>
 `;
-fs.mkdirSync(path.join(ROOT, "dist"), { recursive: true });
+fs.mkdirSync(path.dirname(path.join(ROOT, outFile)), { recursive: true });
 fs.writeFileSync(path.join(ROOT, outFile), html);
 console.log(`${outFile} written (${(html.length / 1024).toFixed(0)} KB, ${scripts.length} scripts)`);

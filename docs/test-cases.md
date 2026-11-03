@@ -58,6 +58,7 @@ All three run on every push to main before the app is published (.github/workflo
 | RS-08 | Seen-question memory is capped so storage can't fill up after months of use | browser |
 | RS-09 | The app works with no internet: the only outside request is optional web fonts, and blocking it changes nothing | browser |
 | RS-10 | Text is readable in phone dark mode and light mode, in all four designs, on home, question and results screens | browser |
+| TC-01 | Testing copy (test/index.html): every unit is open from the start, and its progress never touches the student app's saved data | browser |
 | RV-01 | The review lists every question with the student's answer, the correct answer and a worked solution | browser |
 | RV-02 | A wrong multiple-choice answer shows why that choice is wrong | browser |
 | RV-03 | 'Missed only' hides the questions answered right; 'All' brings them back | browser |

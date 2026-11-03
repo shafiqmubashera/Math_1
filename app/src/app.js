@@ -17,7 +17,7 @@
   const finishedUnit = (uid, data = main) => data.history.some((h) => h.unitId === uid);
   function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
   function isOpen(u, data = main) {
-    if (data.openAll) return true;
+    if (data.openAll || M1.store.testing) return true;
     // Once a unit has been opened and worked in, it stays open, even if the open-all switch is turned off later.
     if (finishedUnit(u.id, data) || (data.current && data.current.set.unitId === u.id)) return true;
     const p = prevUnit(u);
@@ -58,7 +58,8 @@
   }
 
   function header(active) {
-    const modeText = store.mode === "account" ? "Progress saves to your account" : "Progress saves in this browser only";
+    const modeText = M1.store.testing ? "Testing copy: every unit is open. Progress here is kept apart from the student app."
+      : store.mode === "account" ? "Progress saves to your account" : "Progress saves in this browser only";
     return `
       <header class="top">
         <div class="brand">
@@ -319,7 +320,7 @@
     const prev = unitState(set.unitId);
     const { state, events } = E.updateState(prev, set, grade);
     const next = ordered()[ordered().findIndex((u) => u.id === set.unitId) + 1];
-    if (next && !finishedUnit(set.unitId) && !main.openAll) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
+    if (next && !finishedUnit(set.unitId) && !main.openAll && !M1.store.testing) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
     main.units[set.unitId] = state;
     const finishedAt = new Date().toISOString();
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
@@ -437,8 +438,8 @@
   // Backup: everything this app keeps in the browser, as one file.
   function exportProgress() {
     const keys = {};
-    try { for (let k = 0; k < localStorage.length; k++) { const key = localStorage.key(k); if (key.startsWith("m1:")) keys[key] = localStorage.getItem(key); } } catch (e) {}
-    keys["m1:main"] = JSON.stringify(main);
+    try { for (let k = 0; k < localStorage.length; k++) { const key = localStorage.key(k); if (key.startsWith(M1.store.prefix)) keys[key] = localStorage.getItem(key); } } catch (e) {}
+    keys[M1.store.prefix + "main"] = JSON.stringify(main);
     const blob = new Blob([JSON.stringify({ app: "math1-practice", version: 1, exported: new Date().toISOString(), keys })], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -451,10 +452,10 @@
     fr.onload = () => {
       try {
         const data = JSON.parse(fr.result);
-        if (!data || data.app !== "math1-practice" || !data.keys || !data.keys["m1:main"]) throw new Error("not a progress file");
-        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:")) { try { localStorage.setItem(k, v); } catch (e) {} }
-        main = migrate(JSON.parse(data.keys["m1:main"]));
-        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("m1:seen:")) store.saveSeen(k.slice(8), JSON.parse(v));
+        if (!data || data.app !== "math1-practice" || !data.keys || !data.keys[M1.store.prefix + "main"]) throw new Error("not a progress file");
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith(M1.store.prefix)) { try { localStorage.setItem(k, v); } catch (e) {} }
+        main = migrate(JSON.parse(data.keys[M1.store.prefix + "main"]));
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith(M1.store.prefix + "seen:")) store.saveSeen(k.slice((M1.store.prefix + "seen:").length), JSON.parse(v));
         save();
         alertBox("Progress loaded.");
         setView("progress");

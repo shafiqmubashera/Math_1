@@ -46,7 +46,7 @@ async function seed(p, keys) {
   await ready(p);
 }
 const ready = (p) => p.waitForSelector("#app main, #app .set-bar", { timeout: 10000 });
-const main = (p) => p.evaluate(() => JSON.parse(localStorage.getItem("m1:main")));
+const main = (p) => p.evaluate(() => JSON.parse(localStorage.getItem(M1.store.prefix + "main")));
 const has = async (p, sel) => (await p.locator(sel).count()) > 0;
 const startBtn = (uid) => `[data-act="start"][data-unit="${uid}"]`;
 const isOpenCard = (p, uid) => has(p, startBtn(uid));
@@ -806,6 +806,19 @@ test("RS-10", "Text is readable in phone dark mode and light mode, in all four d
       await p.context().close();
     }
   }
+});
+
+test("TC-01", "Testing copy (test/index.html): every unit is open from the start, and its progress never touches the student app's saved data", async () => {
+  const p = await open(undefined, { file: "test/index.html" });
+  for (const uid of ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9"]) expect(await isOpenCard(p, uid), uid + " is not open");
+  await startUnit(p, "u6");
+  await playSet(p);
+  const keys = await p.evaluate(() => Object.keys(localStorage));
+  expect(keys.some((k) => k.startsWith("m1test:")), "testing copy saved nothing");
+  expect(!keys.some((k) => k.startsWith("m1:")), "testing copy wrote student keys: " + keys.filter((k) => k.startsWith("m1:")).join(", "));
+  await p.goto(PAGE()); await ready(p);
+  expect(await isOpenCard(p, "u1") && !(await isOpenCard(p, "u2")), "student app does not start fresh with only Unit 1 open");
+  return p;
 });
 
 test("CT-05", "Math shows as formatted math, even with no internet, on every question of a first set in every unit (no raw code, no stray $)", async () => {
