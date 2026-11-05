@@ -1,0 +1,7 @@
+// Cloudflare settings: publish the student app (built into dist/ by tools/build.mjs) as static files.
+// Cloudflare build command: rm -rf dist && node tools/build.mjs   Deploy command: npx wrangler deploy
+{
+  "name": "math-1",
+  "compatibility_date": "2025-11-01",
+  "assets": { "directory": "./dist" }
+}
