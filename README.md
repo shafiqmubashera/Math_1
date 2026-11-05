@@ -9,8 +9,8 @@ Testers need an up-to-date browser and internet only, with nothing to install an
 ### Host it on Cloudflare Pages (optional, free)
 The same app can also be published by Cloudflare. Nothing in the code changes; Cloudflare just builds from this repo.
 1. Sign in at dash.cloudflare.com, then **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and allow access to this repo.
-2. Production branch: `main`. Framework preset: **None**. Build command: `node tools/build.mjs && node tools/build.mjs --testing`. Build output directory: `dist`.
-3. Click **Save and Deploy**. The app is then at `https://<project-name>.pages.dev/` (testing copy at `/test/`), and every push to `main` republishes it.
+2. Production branch: `main`. Framework preset: **None**. Build command: `rm -rf dist && node tools/build.mjs` (this publishes only the student app: no `/test/` copy and no design previews). Build output directory: `dist`.
+3. Click **Save and Deploy**. The app is then at `https://<project-name>.pages.dev/`, and every push to `main` republishes it.
 A custom domain can be added later under the project's **Custom domains** tab.
 
 ### Install it like an app (iPad, iPhone, PC)
