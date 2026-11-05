@@ -8,8 +8,8 @@ Testers need an up-to-date browser and internet only, with nothing to install an
 
 ### Host it on Cloudflare Pages (optional, free)
 The same app can also be published by Cloudflare. Nothing in the code changes; Cloudflare just builds from this repo.
-1. Sign in at dash.cloudflare.com, then **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and allow access to this repo.
-2. Production branch: `main`. Framework preset: **None**. Build command: `rm -rf dist && node tools/build.mjs` (this publishes only the student app: no `/test/` copy and no design previews). Build output directory: `dist`.
+1. Sign in at dash.cloudflare.com, then **Workers & Pages** → **Create** → import this GitHub repo. `wrangler.jsonc` tells Cloudflare to publish the `dist` folder.
+2. Project name: `math-1`. Build command: `rm -rf dist && node tools/build.mjs` (this publishes only the student app: no `/test/` copy and no design previews). Deploy command: `npx wrangler deploy` (the default).
 3. Click **Save and Deploy**. The app is then at `https://<project-name>.pages.dev/`, and every push to `main` republishes it.
 A custom domain can be added later under the project's **Custom domains** tab.
 
