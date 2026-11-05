@@ -6,6 +6,13 @@ A web app that gives the student 25-question practice sets for NC Math 1, adapts
 Public test link: https://shafiqmubashera.github.io/Math_1/ (anyone can open it; it updates on every push to `main`).
 Testers need an up-to-date browser and internet only, with nothing to install and no account. Progress saves in that browser on that device.
 
+### Host it on Cloudflare Pages (optional, free)
+The same app can also be published by Cloudflare. Nothing in the code changes; Cloudflare just builds from this repo.
+1. Sign in at dash.cloudflare.com, then **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, and allow access to this repo.
+2. Production branch: `main`. Framework preset: **None**. Build command: `node tools/build.mjs && node tools/build.mjs --testing`. Build output directory: `dist`.
+3. Click **Save and Deploy**. The app is then at `https://<project-name>.pages.dev/` (testing copy at `/test/`), and every push to `main` republishes it.
+A custom domain can be added later under the project's **Custom domains** tab.
+
 ### Install it like an app (iPad, iPhone, PC)
 The student app (not the `/test/` copy) can be installed from that link. It then gets its own icon, opens full screen without browser bars, and works offline after the first visit. The colours stay the same in light and dark mode.
 - **iPad / iPhone:** open the link in **Safari**, tap **Share** (square with an arrow), then **Add to Home Screen**, then **Add**.
