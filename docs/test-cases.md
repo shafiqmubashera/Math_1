@@ -93,3 +93,4 @@ All three run on every push to main before the app is published (.github/workflo
 
 - RV-04: the review draws your points and the correct points on plot questions.
 - A school Chromebook, a phone and an iPad in Safari: finish one set by tapping.
+- Install: on the published site, add to Home Screen on an iPad/iPhone and install from Chrome or Edge on a PC; the icon shows, the app opens without browser bars, and it opens offline after one online visit.
