@@ -3,5 +3,7 @@
 {
   "name": "math-1",
   "compatibility_date": "2025-11-01",
-  "assets": { "directory": "./dist" }
+  "assets": { "directory": "./dist" },
+  // Lets Cloudflare build a preview copy of each pull request (npx wrangler preview).
+  "previews": {}
 }

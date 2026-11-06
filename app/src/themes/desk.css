@@ -95,8 +95,8 @@ thead th { letter-spacing: 0.04em; }
 .unit-actions { padding-top: 14px; }
 
 .skill-list { display: flex; flex-direction: column; list-style: none; margin: 8px 0 0; padding: 0; }
-.sk { display: flex; align-items: center; gap: 14px; min-height: 34px; }
-.sk-box { flex: none; width: 24px; height: 24px; border: 2px solid #3B3E45; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--pen); }
+.sk { display: flex; align-items: baseline; gap: 8px; min-height: 30px; }
+.sk-dash { flex: none; width: 14px; color: var(--muted); }
 .sk-name { flex: 1; }
 .sk-note { font-family: var(--font-display); color: var(--pen); font-size: 1.1rem; white-space: nowrap; }
 
@@ -128,6 +128,7 @@ body[data-view="set"] .player { grid-area: player; }
 body[data-view="set"] .set-foot { grid-area: foot; }
 .set-bar { position: static; background: transparent; border: 0; padding: 16px 24px 4px; color: var(--on-mat); flex-wrap: wrap; }
 .set-bar .btn.quiet { color: var(--on-mat); padding: 0 6px; min-height: 44px; }
+.set-bar .cancel-set.armed { background: var(--bad); color: #FFFFFF; padding: 0 12px; }
 .set-title { margin-right: auto; }
 .set-title .muted { color: var(--on-mat); }
 .set-title strong { display: inline-block; align-self: flex-start; padding: 2px 18px 0; background: #EFE6CF; color: var(--ink); transform: rotate(-1.5deg); box-shadow: var(--shadow); font-family: var(--font-display); font-size: 1.35rem; }
@@ -249,6 +250,4 @@ details summary { color: var(--pen); }
 .events li::marker { color: var(--pen); }
 .pill.sm { display: inline-flex; align-items: center; height: auto; text-decoration: none; background: var(--surface); border: 1.5px solid #3B3E45; border-radius: 4px; padding: 1px 6px; font-size: 11px; line-height: 1.4; vertical-align: middle; }
 .rung.now::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pen); }
-.sk.going .sk-box { font-size: 0; }
-.sk.going .sk-box::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pen); }
 .set-foot [data-act="next"]:hover:not(:disabled) { background: #000000; color: #FFFFFF; border-color: #FFFFFF; }

@@ -140,6 +140,8 @@ body[data-view="set"] { background-image: none; }
 .set-title { display: flex; flex-direction: column; line-height: 1.25; margin-right: auto; min-width: 0; }
 .set-title .muted { font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .timer { font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.cancel-set { margin-left: auto; }
+.cancel-set.armed { background: var(--bad); color: #FFFFFF; border-color: var(--bad); }
 .timer-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mark); animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.35; } }
 @media (prefers-reduced-motion: reduce) { .timer-dot { animation: none; } }

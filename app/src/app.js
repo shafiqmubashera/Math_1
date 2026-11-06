@@ -7,7 +7,7 @@
   const TYPE_LABEL = { mcq: "Multiple choice", "graph-mcq": "Read the graph", multi: "Select all that apply", numeric: "Type your answer", plot: "Plot points" };
   const LETTERS = "ABCDEFGH";
 
-  let store, main, view = "home", timer = null, tick = 0, toolsApi = {}, confirmArmed = false, viewing = null;
+  let store, main, view = "home", timer = null, tick = 0, toolsApi = {}, confirmArmed = false, cancelArmed = false, viewing = null;
 
   // ───────────── helpers ─────────────
   const units = () => M1.curriculum.units;
@@ -42,7 +42,7 @@
   }
 
   function setView(v) {
-    view = v; confirmArmed = false;
+    view = v; confirmArmed = false; cancelArmed = false;
     document.body.dataset.view = v;
     render();
     window.scrollTo(0, 0);
@@ -104,7 +104,7 @@
         const ss = st && st.skills[s.id];
         const state = !ss || !st.sets ? "todo" : ss.achieved ? "done" : "going";
         const note = state === "done" ? "got it" : state === "going" ? `working at ${E.TIER_NAMES[ss.focus]}` : "";
-        return `<li class="sk ${state}"><span class="sk-box" aria-hidden="true">${state === "done" ? "✓" : state === "going" ? "•" : ""}</span><span class="sk-name">${esc(s.name)}</span><span class="sk-note">${note}</span></li>`;
+        return `<li class="sk ${state}"><span class="sk-dash" aria-hidden="true">–</span><span class="sk-name">${esc(s.name)}</span><span class="sk-note">${note}</span></li>`;
       }).join("")}</ul>` : "";
       let action = "";
       if (live) {
@@ -185,6 +185,7 @@
         <button type="button" class="btn quiet" data-act="exit" aria-label="Save and go back to units">← Units</button>
         <div class="set-title"><span class="muted">Unit ${u.order}: ${esc(u.title)}</span><strong>Set ${cur.set.setNumber}${cur.set.diagnostic ? " · first check" : ""}</strong></div>
         <div class="timer" aria-label="Time on this set"><span class="timer-dot"></span><span id="timer">${clock(cur.activeSec)}</span></div>
+        <button type="button" class="btn quiet cancel-set" data-act="cancel" id="cancel-btn">Cancel set</button>
       </header>
       <nav class="dots" aria-label="Questions">${cur.set.questions.map((q, i) => `<button type="button" class="dot" data-q="${i}" aria-label="Question ${i + 1}">${i + 1}</button>`).join("")}</nav>
       <div class="player">
@@ -214,7 +215,7 @@
   }
 
   function showQuestion(i) {
-    const cur = main.current;
+    const cur = main.current; cancelArmed = false;
     cur.idx = Math.max(0, Math.min(cur.set.questions.length - 1, i));
     const q = cur.set.questions[cur.idx];
     const a = cur.answers[cur.idx];
@@ -278,7 +279,7 @@
   }
 
   function afterAnswer(quiet) {
-    confirmArmed = false;
+    confirmArmed = false; cancelArmed = false;
     updateNav();
     if (!quiet) save();
     else { clearTimeout(afterAnswer.t); afterAnswer.t = setTimeout(save, 800); }
@@ -296,6 +297,8 @@
     const btn = $("#submit-btn");
     btn.disabled = left > 0;
     btn.textContent = confirmArmed ? "Tap again to submit" : "Submit set";
+    const cb = $("#cancel-btn");
+    if (cb) { cb.textContent = cancelArmed ? "Tap again to cancel (answers are lost)" : "Cancel set"; cb.classList.toggle("armed", cancelArmed); }
     $("#foot-mid").textContent = left ? `${left} question${left === 1 ? "" : "s"} left to answer` : "All answered. You can still change answers.";
     $('[data-act="prev"]').disabled = cur.idx === 0;
     $('[data-act="next"]').disabled = cur.idx === cur.set.questions.length - 1;
@@ -311,6 +314,14 @@
       const t = $("#timer"); if (t) t.textContent = clock(cur.activeSec);
       if (++tick % 15 === 0) save();
     }, 1000);
+  }
+
+  // Cancel: throw the set away. Nothing is scored or added to history; the next set in this unit gets fresh questions.
+  function cancelSet() {
+    main.current = null;
+    save();
+    clearInterval(timer);
+    setView("home");
   }
 
   function submit() {
@@ -581,6 +592,9 @@
         return startSet(uid);
       }
       case "exit": save(); clearInterval(timer); return setView("home");
+      case "cancel":
+        if (!cancelArmed) { cancelArmed = true; confirmArmed = false; return updateNav(); }
+        return cancelSet();
       case "prev": return showQuestion(cur.idx - 1);
       case "next": return showQuestion(cur.idx + 1);
       case "hint": cur.hints[cur.idx] = true; showQuestion(cur.idx); return save();
