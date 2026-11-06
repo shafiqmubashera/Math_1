@@ -216,6 +216,20 @@ test("UN-07", "Only one set at a time: other units can't start while a set is in
   return p;
 });
 
+test("UN-10", "Cancel set: first tap asks to confirm, second tap throws the set away with nothing scored", async () => {
+  const p = await open(empty({ openAll: true }));
+  await startUnit(p, "u2");
+  await p.locator('[data-act="cancel"]').click();
+  expect(/Tap again/.test(await p.locator('[data-act="cancel"]').innerText()), "no confirm step");
+  expect(await p.evaluate(() => !!M1.app.state().current), "set cancelled on the first tap");
+  await p.locator('[data-act="cancel"]').click();
+  const st = await p.evaluate(() => ({ cur: M1.app.state().current, hist: M1.app.state().history.length }));
+  expect(!st.cur && st.hist === 0, "set still in progress or added to history: " + JSON.stringify(st));
+  expect(!(await has(p, "section.resume")), "Continue banner still shows");
+  expect(!(await p.locator(startBtn("u3")).isDisabled()), "other units still blocked");
+  return p;
+});
+
 test("UN-08", "The unlock message shows only after the first finished set in a unit", async () => {
   const p = await open(empty({ history: [finished("u1")] }));
   await startUnit(p, "u1");

@@ -87,6 +87,7 @@ All three run on every push to main before the app is published (.github/workflo
 | UN-07 | Only one set at a time: other units can't start while a set is in progress, and a Continue banner shows | browser |
 | UN-08 | The unlock message shows only after the first finished set in a unit | browser |
 | UN-09 | Finishing the last unit (Unit 9) works with no unlock message and no errors | browser |
+| UN-10 | Cancel set: first tap asks to confirm, second tap throws the set away with nothing scored | browser |
 | CT-01..CT-04 | Every generator built 300 times; written problems re-solved; shuffled choices; plot answers placeable | content |
 
 ## Checked by hand
