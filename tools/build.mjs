@@ -115,6 +115,7 @@ self.addEventListener("fetch", (e) => {
   const sameSite = url.origin === location.origin, fonts = /^fonts\\.(googleapis|gstatic)\\.com$/.test(url.hostname);
   if (!sameSite && !fonts) return;
   if (url.href.startsWith(new URL("test/", self.registration.scope).href)) return; // leave the testing copy alone
+  if (sameSite && /^\\/(api|inbox)(\\/|$)/.test(url.pathname)) return; // never keep the private feedback inbox or the form endpoint
   e.respondWith(fetch(req).then((res) => {
     if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
     return res;

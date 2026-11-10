@@ -488,7 +488,7 @@
   }
 
   // ───────────── Feedback ─────────────
-  // The form posts to /api/feedback (worker/index.js on Cloudflare), which emails it to the teacher.
+  // The form posts to /api/feedback (worker/index.js on Cloudflare), which saves it for the teacher to read at /inbox.
   // Offline, it waits in this browser and goes out the next time the app is online.
   const feedbackUrl = () => M1.feedbackUrl || "/api/feedback";
   const FB_QUEUE = () => M1.store.prefix + "feedbackQueue";

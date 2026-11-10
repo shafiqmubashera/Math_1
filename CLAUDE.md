@@ -31,8 +31,9 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
 - A set scored 100% marks the unit **mastered**. The student can then restart the unit with fresh questions, and the assessment starts again from a new diagnostic.
 
 ## Feedback
-- The **Feedback** tab sends a form (name and reply email optional, unit and topics found hard, tricky questions, remarks, flagged questions) to `/api/feedback`.
-- On Cloudflare, `worker/index.js` emails it through Email Routing to the `FEEDBACK_TO` secret. Offline, the app keeps it and sends it later.
+- The **Feedback** tab sends a form (name and reply email optional, unit and topics found hard, tricky questions, remarks, flagged questions) to `/api/feedback`. Offline, the app keeps it and sends it later.
+- On Cloudflare, `worker/index.js` saves it in the Worker's own storage (a SQLite Durable Object). Nothing leaves Cloudflare and no email is sent.
+- The teacher reads it at `/inbox` (e.g. https://math-1.infralynxsystems.com/inbox), signing in with the `INBOX_PASSWORD` secret.
 
 ## Question types
 `mcq` (4 options), `multi` (choose all that apply), `numeric` (number entry, fractions allowed), `plot` (place points on a coordinate grid), `graph-mcq` (read a graph, choose an answer).

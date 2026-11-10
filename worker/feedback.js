@@ -1,4 +1,4 @@
-// Turns a feedback form from the app into a plain-text email. No Cloudflare imports here, so tests can run it in Node.
+// Checks and cleans a feedback form sent by the app. No Cloudflare imports here, so tests can run it in Node.
 const LIMIT = { name: 80, email: 120, unit: 160, topic: 160, tricky: 2000, remarks: 2000, flagged: 30, prompt: 400 };
 const clean = (v, max) => String(v == null ? "" : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, max);
 const oneLine = (v, max) => clean(v, max).replace(/[\r\n]+/g, " ");
@@ -23,45 +23,4 @@ export function validate(body) {
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return { ok: false, error: "That email address doesn't look right. Fix it or leave it empty." };
   if (!data.unit && !data.tricky && !data.remarks && !data.flagged.length) return { ok: false, error: "Please choose a unit or write something before sending." };
   return { ok: true, data };
-}
-
-export function subjectOf(d) {
-  return `${d.app.testing ? "[testing] " : ""}Math 1 feedback${d.name ? " from " + d.name : ""}${d.unit ? " · " + d.unit.split(":")[0] : ""}`;
-}
-
-export function textOf(d) {
-  const sections = [
-    ["New feedback from the Math 1 Practice app.", `Name: ${d.name || "(not given)"}`, `Reply email: ${d.email || "(not given)"}`, `Sent: ${d.sentAt || new Date().toISOString()}`],
-    [`Unit found hard: ${d.unit || "(none chosen)"}`, d.topics.length ? "Topics found hard:\n" + d.topics.map((t) => "  - " + t).join("\n") : "Topics found hard: (none ticked)"],
-    ["Questions found tricky:", d.tricky || "(nothing written)"],
-    ["Remarks, questions or problems:", d.remarks || "(nothing written)"],
-    d.flagged.length ? [`Questions the student flagged (${d.flagged.length}):`, d.flagged.map((f) => `  - ${f.unit} · ${f.skill} · ${f.level}: ${f.prompt}`).join("\n")] : null,
-    [`App: ${d.app.url || "?"} (built ${d.app.built || "?"})`],
-  ];
-  return sections.filter(Boolean).map((lines) => lines.join("\n")).join("\n\n") + "\n";
-}
-
-const b64 = (s) => {
-  const bytes = new TextEncoder().encode(s);
-  let bin = ""; for (const b of bytes) bin += String.fromCharCode(b);
-  return btoa(bin);
-};
-const encodeHeader = (s) => (/^[\x20-\x7E]*$/.test(s) ? s : `=?UTF-8?B?${b64(s)}?=`);
-
-// A complete MIME message (text/plain, UTF-8) for Cloudflare's send_email binding.
-export function mimeOf(d, { from, to, now = new Date(), id = crypto.randomUUID() }) {
-  const domain = from.split("@")[1];
-  const headers = [
-    `From: Math 1 Practice <${from}>`,
-    `To: <${to}>`,
-    d.email ? `Reply-To: ${encodeHeader(d.name || d.email)} <${d.email}>` : "",
-    `Subject: ${encodeHeader(subjectOf(d))}`,
-    `Date: ${now.toUTCString().replace("GMT", "+0000")}`,
-    `Message-ID: <${id}@${domain}>`,
-    "MIME-Version: 1.0",
-    "Content-Type: text/plain; charset=UTF-8",
-    "Content-Transfer-Encoding: base64",
-  ].filter(Boolean);
-  const body = b64(textOf(d)).replace(/.{1,76}/g, "$&\r\n");
-  return headers.join("\r\n") + "\r\n\r\n" + body;
 }

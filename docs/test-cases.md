@@ -83,7 +83,7 @@ All three run on every push to main before the app is published (.github/workflo
 | UN-07 | Only one set at a time: other units can't start while a set is in progress, and a Continue banner shows | browser |
 | UN-09 | Finishing the last unit (Unit 9) works with no unlock message and no errors | browser |
 | UN-10 | Cancel set: first tap asks to confirm, second tap throws the set away with nothing scored | browser |
-| FB-01..FB-10 | Feedback email: form checks, spam field, header safety, subject, body text and MIME encoding (`node tests/worker-tests.mjs`) | worker |
+| FB-01..FB-10, FB-14 | Feedback server: form checks, spam field, inbox page shows every field safely, new-message marks, delete buttons, password check (`node tests/worker-tests.mjs`) | worker |
 | FB-11 | Feedback form: picking a unit lists its topics, an empty form is refused, and a filled form is sent with every field | browser |
 | FB-12 | Feedback sent while offline is saved and goes out once the app is back online | browser |
 | FB-13 | A copy of the app with no feedback server says so instead of pretending it sent | browser |
@@ -94,3 +94,4 @@ All three run on every push to main before the app is published (.github/workflo
 - RV-04: the review draws your points and the correct points on plot questions.
 - A school Chromebook, a phone and an iPad in Safari: finish one set by tapping.
 - Install: on the published site, add to Home Screen on an iPad/iPhone and install from Chrome or Edge on a PC; the icon shows, the app opens without browser bars, and it opens offline after one online visit.
+- Feedback end to end: `npx wrangler dev` with `INBOX_PASSWORD` in `.dev.vars`; send a form from the app, then open `/inbox`, sign in, see it, delete it.

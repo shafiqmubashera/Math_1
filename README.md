@@ -13,13 +13,12 @@ The same app can also be published by Cloudflare. Nothing in the code changes; C
 3. Click **Deploy**. The app is then at `https://math-1.<your-account>.workers.dev/`, and every push to `main` republishes it.
 A custom domain can be added later under the project's **Custom domains** tab.
 
-### Feedback emails (Cloudflare)
-The **Feedback** tab emails each form to the teacher through `worker/index.js`. One-time setup in the Cloudflare dashboard:
-1. **Email Routing on:** open the `infralynxsystems.com` domain → **Email** → **Email Routing** and turn it on (accept the DNS records it adds).
-2. **Destination verified:** under **Destination addresses**, add the teacher's address and click the link in Cloudflare's email until it shows **Verified**.
-3. **Where to send:** open **Workers & Pages** → **math-1** → **Settings** → **Variables and Secrets** → **Add**, type **Secret**, name `FEEDBACK_TO`, value = that verified address. Save and deploy.
-4. Optional: a variable `FEEDBACK_FROM` for the sender (default `feedback@infralynxsystems.com`; it must be on a domain with Email Routing on).
-Until this is done, forms wait in the student's browser and are sent once it works. The GitHub Pages copy has no server, so its form says to use the Cloudflare app.
+### Feedback inbox (Cloudflare)
+The **Feedback** tab saves each form inside the Cloudflare Worker (`worker/index.js`, a small SQLite database). Nothing is emailed or sent to another company.
+- Read it at **https://math-1.infralynxsystems.com/inbox**. Sign in with any user name and the inbox password.
+- One-time setup: Cloudflare dashboard → **Workers & Pages** → **math-1** → **Settings** → **Variables and Secrets** → **Add** → type **Secret**, name `INBOX_PASSWORD`, value = a strong password. Save and deploy.
+- New messages are marked **New** the first time you open the inbox. Each one has a **Delete** button.
+- Forms sent offline wait in the student's browser and go out when it is back online. The GitHub Pages copy has no server, so its form says to use the Cloudflare app.
 
 ### Install it like an app (iPad, iPhone, PC)
 The student app (not the `/test/` copy) can be installed from that link. It then gets its own icon, opens full screen without browser bars, and works offline after the first visit. The colours stay the same in light and dark mode.
