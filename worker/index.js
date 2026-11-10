@@ -1,10 +1,15 @@
 // Cloudflare Worker for the Math 1 Practice app. The app's files are served straight from dist/ (see wrangler.jsonc);
 // requests that match no file come here. POST /api/feedback emails the student's feedback form to the teacher.
 // Settings (Cloudflare dashboard > math-1 > Settings > Variables and Secrets):
-//   FEEDBACK_TO    secret: the address feedback goes to (must be a verified Email Routing destination)
-//   FEEDBACK_FROM  optional: sender address on a domain with Email Routing on (default feedback@infralynxsystems.com)
+//   FEEDBACK_TO     secret: the address feedback goes to
+//   RESEND_API_KEY  secret: when set, mail goes out through Resend (resend.com), whose domain records sit on a
+//                   subdomain, so the domain's own mailbox (e.g. Hostinger) is untouched. FEEDBACK_FROM must be on the
+//                   domain verified in Resend.
+//   Without it, mail goes through Cloudflare Email Routing (FEEDBACK_TO must then be a verified destination and
+//   FEEDBACK_FROM on a domain with Email Routing on).
+//   FEEDBACK_FROM   optional sender (default feedback@infralynxsystems.com)
 import { EmailMessage } from "cloudflare:email";
-import { validate, mimeOf } from "./feedback.js";
+import { validate, mimeOf, subjectOf, textOf } from "./feedback.js";
 
 const json = (status, obj) => new Response(JSON.stringify(obj), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
@@ -23,9 +28,19 @@ export default {
     if (!v.ok) return json(400, { error: v.error });
     if (v.spam) return json(200, { ok: true });
     const to = env.FEEDBACK_TO, from = env.FEEDBACK_FROM || "feedback@infralynxsystems.com";
-    if (!to || !env.FEEDBACK_EMAIL) return json(503, { error: "Feedback email is not set up yet." });
+    if (!to || !(env.RESEND_API_KEY || env.FEEDBACK_EMAIL)) return json(503, { error: "Feedback email is not set up yet." });
     try {
-      await env.FEEDBACK_EMAIL.send(new EmailMessage(from, to, mimeOf(v.data, { from, to })));
+      if (env.RESEND_API_KEY) {
+        const d = v.data;
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+          body: JSON.stringify({ from: `Math 1 Practice <${from}>`, to: [to], subject: subjectOf(d), text: textOf(d), ...(d.email ? { reply_to: d.email } : {}) }),
+        });
+        if (!res.ok) throw new Error(`Resend ${res.status}: ${(await res.text()).slice(0, 200)}`);
+      } else {
+        await env.FEEDBACK_EMAIL.send(new EmailMessage(from, to, mimeOf(v.data, { from, to })));
+      }
     } catch (e) {
       console.error("feedback email failed:", e && e.message);
       return json(502, { error: "The email could not be sent. It will be tried again later." });
