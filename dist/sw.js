@@ -1,5 +1,5 @@
-// Math 1 Practice service worker, built 2026-11-06T15:07:03.905Z
-const CACHE = "m1-2026-11-06T15:07:03.905Z";
+// Math 1 Practice service worker, built 2026-11-10T03:33:41.074Z
+const CACHE = "m1-2026-11-10T03:33:41.074Z";
 const CORE = ["./", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => {

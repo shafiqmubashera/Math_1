@@ -15,14 +15,8 @@
   const isLive = (u) => u.status === "live" && !!M1.units[u.id];
   // A unit is finished once one full set in it has been submitted, whatever the score.
   const finishedUnit = (uid, data = main) => data.history.some((h) => h.unitId === uid);
-  function prevUnit(u) { const list = ordered(), i = list.findIndex((x) => x.id === u.id); return i > 0 ? list[i - 1] : null; }
-  function isOpen(u, data = main) {
-    if (data.openAll || M1.store.testing) return true;
-    // Once a unit has been opened and worked in, it stays open, even if the open-all switch is turned off later.
-    if (finishedUnit(u.id, data) || (data.current && data.current.set.unitId === u.id)) return true;
-    const p = prevUnit(u);
-    return !p || finishedUnit(p.id, data);
-  }
+  // Every unit is open from the start: a student can practise any topic at any time.
+  const isOpen = () => true;
   const unit = (id) => E.unitInfo(id);
   const skillName = (uid, sid) => (unit(uid).skills.find((s) => s.id === sid) || {}).name || sid;
   function dur(sec) {
@@ -54,11 +48,12 @@
     if (view === "set") return renderSet(root);
     if (view === "results") return renderResults(root);
     if (view === "progress") return renderProgress(root);
+    if (view === "feedback") return renderFeedback(root);
     return renderHome(root);
   }
 
   function header(active) {
-    const modeText = M1.store.testing ? "Testing copy: every unit is open. Progress here is kept apart from the student app."
+    const modeText = M1.store.testing ? "Testing copy. Progress here is kept apart from the student app."
       : store.mode === "account" ? "Progress saves to your account" : "Progress saves in this browser only";
     return `
       <header class="top">
@@ -69,6 +64,7 @@
         <nav class="tabs" aria-label="Sections">
           <button type="button" class="tab${active === "home" ? " on" : ""}" data-go="home">Units</button>
           <button type="button" class="tab${active === "progress" ? " on" : ""}" data-go="progress">Progress</button>
+          <button type="button" class="tab${active === "feedback" ? " on" : ""}" data-go="feedback">Feedback</button>
         </nav>
         <div class="save-chip ${store.mode}" title="${modeText}">${modeText}</div>
       </header>`;
@@ -89,7 +85,6 @@
 
     const cards = ordered().map((u) => {
       const live = isLive(u) && isOpen(u);
-      const locked = isLive(u) && !live;
       const st = main.units[u.id];
       const hist = main.history.filter((h) => h.unitId === u.id);
       const last = hist[hist.length - 1];
@@ -113,14 +108,13 @@
           <button type="button" class="btn quiet" data-act="start" data-unit="${u.id}">Keep practising</button>`;
         else action = `<button type="button" class="btn primary" data-act="start" data-unit="${u.id}" ${cur ? "disabled title=\"Finish the set in progress first\"" : ""}>${!st || !st.sets ? "Start first set" : `Start set ${st.sets + 1}`}</button>`;
       }
-      const pill = st && st.mastered ? `<span class="pill ach">Mastered</span>` : locked ? `<span class="pill lock">🔒 Locked</span>` : live ? (finishedUnit(u.id) ? `<span class="pill done">Finished</span>` : "") : `<span class="pill">Coming next</span>`;
-      const lockNote = locked ? `<div class="unit-stats lock-note">Finish one full set in Unit ${prevUnit(u).order} to open this unit. Any score counts.</div>` : "";
-      return `<article class="unit-card${live ? "" : " planned"}${locked ? " locked" : ""}${st && st.mastered ? " mastered" : ""}">
+      const pill = st && st.mastered ? `<span class="pill ach">Mastered</span>` : live ? (finishedUnit(u.id) ? `<span class="pill done">Finished</span>` : "") : `<span class="pill">Coming next</span>`;
+      return `<article class="unit-card${live ? "" : " planned"}${st && st.mastered ? " mastered" : ""}">
         <div class="unit-head"><span class="unit-num">Unit ${u.order}</span>${pill}</div>
         <h3>${esc(u.title)}</h3>
         <div class="unit-meta">${u.lessons.length} lessons · ${u.skills.length} skills${u.order !== u.book ? ` · Book unit ${u.book}` : ""}</div>
         ${meter}${checklist}
-        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : lockNote}
+        ${live ? `<div class="unit-stats">${st && st.sets ? `${achieved}/${u.skills.length} skills achieved · last set ${last ? last.percent + "%" : "—"}` : "First set is a 25-question check of where you are."}</div>` : ""}
         <div class="unit-actions">${action}</div>
       </article>`;
     }).join("");
@@ -130,7 +124,7 @@
         ${resume}
         <section class="intro">
           <h1>Pick a unit</h1>
-          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Finishing one full set in a unit, at any score, opens the next unit. Once you have finished earlier units, each set ends with 3 review questions from them; they are scored on their own and do not change the unit score.</p>
+          <p>Each set has 25 questions. Answer all of them, then submit to see your score, your time, and a worked solution for every question. The next set is built around what you missed. Every unit is open, so you can practise any topic at any time. Once you have finished a set in earlier units, each set ends with 3 review questions from them; they are scored on their own and do not change the unit score.</p>
         </section>
         <section class="unit-grid">${cards}</section>
         ${historyTable(main.history.slice(-8).reverse(), "Recent sets")}
@@ -330,8 +324,6 @@
     const grade = E.gradeSet(set, cur.answers);
     const prev = unitState(set.unitId);
     const { state, events } = E.updateState(prev, set, grade);
-    const next = ordered()[ordered().findIndex((u) => u.id === set.unitId) + 1];
-    if (next && !finishedUnit(set.unitId) && !main.openAll && !M1.store.testing) events.push({ kind: "unlocked", text: isLive(next) ? `Unit ${next.order}: ${next.title} is now open.` : `Unit ${unit(set.unitId).order} finished. Unit ${next.order} opens as soon as its questions are ready.` });
     main.units[set.unitId] = state;
     const finishedAt = new Date().toISOString();
     const summary = { id: set.id, unitId: set.unitId, round: set.round, setNumber: set.setNumber, diagnostic: set.diagnostic,
@@ -488,14 +480,109 @@
     if (shown) return "";
     const flags = (data.flags || []).slice().reverse();
     return `<section class="panel parents"><h2>For grown-ups</h2>
-      <label class="check big-check"><input type="checkbox" id="open-all" ${data.openAll ? "checked" : ""}> Open all units (skip the finish-one-set rule)</label>
-      <p class="muted">Normally a unit opens once the student finishes one full set in the unit before it, at any score.</p>
       <div class="row"><button type="button" class="btn" data-act="export">Download progress backup</button>
         <label class="btn file-btn">Load a backup<input type="file" id="import-file" accept="application/json,.json" hidden></label></div>
       <p class="muted">Progress is kept in this browser. Clearing browser data erases it, so download a backup now and then.</p>
       ${flags.length ? `<h3>Questions flagged by the student</h3><ul class="flags">${flags.map((f) => `<li><span class="muted">${dateStr(f.date)} · Unit ${unit(f.unitId).order} · ${esc(skillName(f.unitId, f.skill))} · ${LEVEL_LABEL[f.level]}</span><div>${R(f.prompt)}</div><button type="button" class="btn-link" data-act="review" data-set="${esc(f.setId)}">Open the set</button></li>`).join("")}</ul>` : ""}
     </section>`;
   }
+
+  // ───────────── Feedback ─────────────
+  // The form posts to /api/feedback (worker/index.js on Cloudflare), which emails it to the teacher.
+  // Offline, it waits in this browser and goes out the next time the app is online.
+  const feedbackUrl = () => M1.feedbackUrl || "/api/feedback";
+  const FB_QUEUE = () => M1.store.prefix + "feedbackQueue";
+  const fbQueue = {
+    get() { try { return JSON.parse(localStorage.getItem(FB_QUEUE())) || []; } catch (e) { return []; } },
+    set(list) { try { list.length ? localStorage.setItem(FB_QUEUE(), JSON.stringify(list)) : localStorage.removeItem(FB_QUEUE()); } catch (e) {} },
+  };
+  const plain = (t) => String(t || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+  function renderFeedback(root) {
+    const list = ordered().filter(isLive);
+    const flags = main.flags || [];
+    root.innerHTML = `${header("feedback")}<main class="page">
+      <section class="intro"><h1>Feedback</h1><p>Tell us which topics felt hard, which questions were tricky, or anything that went wrong. It goes straight to your teacher.</p></section>
+      <form class="panel fb-form" id="fb-form" novalidate>
+        <div class="fb-two">
+          <label class="field"><span>Your name <span class="muted">(optional)</span></span><input type="text" id="fb-name" maxlength="80" autocomplete="name"></label>
+          <label class="field"><span>Email for a reply <span class="muted">(optional)</span></span><input type="email" id="fb-email" maxlength="120" autocomplete="email"></label>
+        </div>
+        <label class="field">Unit you found hard<select id="fb-unit"><option value="">Choose a unit (optional)</option>${list.map((u) => `<option value="${u.id}">Unit ${u.order}: ${esc(u.title)}</option>`).join("")}</select></label>
+        <fieldset class="field fb-topics" id="fb-topics" hidden><legend>Topics you found hard <span class="muted">(tick any)</span></legend><div id="fb-topic-list"></div></fieldset>
+        <label class="field">Questions you found tricky<textarea id="fb-tricky" rows="4" maxlength="2000" placeholder="Which questions, and what made them tricky?"></textarea></label>
+        ${flags.length ? `<label class="check big-check"><input type="checkbox" id="fb-flags" checked> Also send the ${flags.length} question${flags.length === 1 ? "" : "s"} you flagged</label>` : ""}
+        <label class="field">Remarks, questions or problems with the app<textarea id="fb-remarks" rows="4" maxlength="2000"></textarea></label>
+        <label class="fb-hp" aria-hidden="true">Leave this empty<input type="text" id="fb-website" tabindex="-1" autocomplete="off"></label>
+        <div class="row"><button type="submit" class="btn primary" id="fb-send">Send feedback</button></div>
+        <p class="fb-status" id="fb-status" role="status"></p>
+      </form>
+    </main>`;
+    const unitSel = $("#fb-unit");
+    unitSel.onchange = () => {
+      const u = unitSel.value ? unit(unitSel.value) : null;
+      $("#fb-topics").hidden = !u;
+      $("#fb-topic-list").innerHTML = u ? u.skills.map((sk) => `<label class="check big-check"><input type="checkbox" name="fb-topic" value="${esc(sk.id)}"> ${esc(sk.name)}</label>`).join("") : "";
+    };
+    $("#fb-form").onsubmit = async (e) => {
+      e.preventDefault();
+      const status = $("#fb-status"), btn = $("#fb-send");
+      const u = unitSel.value ? unit(unitSel.value) : null;
+      const topics = [...document.querySelectorAll('input[name="fb-topic"]:checked')].map((c) => skillName(u.id, c.value));
+      const val = (id) => $(id).value.trim();
+      const withFlags = !!($("#fb-flags") && $("#fb-flags").checked);
+      const payload = {
+        name: val("#fb-name"), email: val("#fb-email"),
+        unit: u ? `Unit ${u.order}: ${u.title}` : "", topics, tricky: val("#fb-tricky"), remarks: val("#fb-remarks"),
+        flagged: withFlags ? flags.map((f) => ({ unit: `Unit ${unit(f.unitId).order}`, skill: skillName(f.unitId, f.skill), level: LEVEL_LABEL[f.level] || f.level, prompt: plain(f.prompt).slice(0, 400) })) : [],
+        website: val("#fb-website"),
+        app: { url: location.href.split("#")[0], built: (M1.buildInfo || {}).built || "", testing: !!M1.store.testing },
+        sentAt: new Date().toISOString(),
+      };
+      if (!payload.unit && !payload.tricky && !payload.remarks && !payload.flagged.length) {
+        status.className = "fb-status bad"; status.textContent = "Please choose a unit or write something before sending.";
+        return;
+      }
+      if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+        status.className = "fb-status bad"; status.textContent = "That email address doesn't look right. Fix it or leave it empty.";
+        return;
+      }
+      btn.disabled = true; status.className = "fb-status"; status.textContent = "Sending…";
+      const r = await postFeedback(payload);
+      btn.disabled = false;
+      if (r.kind === "sent" || r.kind === "offline") {
+        if (r.kind === "offline") fbQueue.set(fbQueue.get().concat([payload]));
+        $("#fb-form").innerHTML = `<h2>Thank you!</h2><p>${r.kind === "sent" ? "Your feedback was sent." : "You seem to be offline. Your feedback is saved and will be sent the next time the app is online."}</p>
+          <div class="row"><button type="button" class="btn" data-go="home">Back to units</button><button type="button" class="btn quiet" data-go="feedback">Send more feedback</button></div>`;
+        $("#fb-form").classList.add("fb-done");
+        return;
+      }
+      status.className = "fb-status bad";
+      status.textContent = r.kind === "unavailable" ? "Feedback can't be sent from this copy of the app. Please use the app at math-1.infralynxsystems.com." : (r.msg || "Something went wrong. Please try again.");
+    };
+  }
+
+  async function postFeedback(payload) {
+    let res;
+    try { res = await fetch(feedbackUrl(), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) }); }
+    catch (e) { return { kind: "offline" }; }
+    if (res.ok) return { kind: "sent" };
+    if (res.status === 404 || res.status === 405) return { kind: "unavailable" };
+    if (res.status >= 500 || res.status === 429) return { kind: "offline" };
+    let msg = ""; try { msg = (await res.json()).error || ""; } catch (e) {}
+    return { kind: "rejected", msg };
+  }
+  // Send anything saved while offline.
+  async function flushFeedback() {
+    const list = fbQueue.get();
+    if (!list.length || flushFeedback.busy) return;
+    flushFeedback.busy = true;
+    const keep = [];
+    for (const item of list) { const r = await postFeedback(item); if (r.kind === "offline") keep.push(item); }
+    fbQueue.set(keep);
+    flushFeedback.busy = false;
+  }
+  window.addEventListener("online", () => flushFeedback());
 
   // ───────────── Progress (and parent view) ─────────────
   async function renderProgress(root) {
@@ -533,8 +620,6 @@
       ${historyTable(data.history.slice().reverse(), "All sets and times", shown ? shown.id : "")}
       ${parentPanel(data, shown)}
     </main>`;
-    const oa = $("#open-all");
-    if (oa) oa.onchange = () => { main.openAll = oa.checked; save(); alertBox(oa.checked ? "All units are open." : "Units open one at a time again."); };
     const imp = $("#import-file");
     if (imp) imp.onchange = () => imp.files[0] && importProgress(imp.files[0]);
     const pick = $("#stu-pick");
@@ -614,6 +699,7 @@
     main = migrate(await store.loadMain());
     store.onModeChange = () => { alertBox("Couldn't save to your account. Progress is saving in this browser."); if (view !== "set") render(); };
     setView(main.current ? "home" : "home");
+    if (/^https?:$/.test(location.protocol)) flushFeedback();
   }
-  M1.app = { boot, state: () => main }; // state() lets the browser tests read what is on screen
+  M1.app = { boot, state: () => main, flushFeedback }; // state() lets the browser tests read what is on screen
 })(window);

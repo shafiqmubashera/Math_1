@@ -1,9 +1,14 @@
-// Cloudflare settings: publish the student app (built into dist/ by tools/build.mjs) as static files.
+// Cloudflare settings: publish the student app (built into dist/ by tools/build.mjs) as static files,
+// plus a small Worker (worker/index.js) that emails the Feedback form.
 // Cloudflare build command: rm -rf dist && node tools/build.mjs   Deploy command: npx wrangler deploy
 {
   "name": "math-1",
+  "main": "worker/index.js",
   "compatibility_date": "2025-11-01",
   "assets": { "directory": "./dist" },
+  // Sends feedback mail through Cloudflare Email Routing. The address it goes to is the FEEDBACK_TO secret,
+  // set in the Cloudflare dashboard, so it isn't in this public repo. It must be a verified destination address.
+  "send_email": [{ "name": "FEEDBACK_EMAIL" }],
   // Lets Cloudflare build a preview copy of each pull request (npx wrangler preview).
   "previews": {}
 }

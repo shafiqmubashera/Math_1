@@ -262,3 +262,16 @@ details summary { cursor: pointer; font-weight: 700; color: var(--accent); }
 
 /* Skill checklist: only shown by designs that style it */
 .skill-list { display: none; }
+
+/* Feedback form */
+.fb-form { max-width: 720px; }
+.fb-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 6px; font-weight: 700; border: 0; padding: 0; margin: 0; min-width: 0; }
+.field legend { padding: 0; margin-bottom: 6px; }
+.field input:not([type="checkbox"]), .field select, .field textarea { font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: #FFFFFF; color: var(--ink); width: 100%; box-sizing: border-box; }
+.field textarea { resize: vertical; min-height: 96px; }
+.fb-topics .check { font-weight: 400; justify-content: flex-start; gap: 10px; margin: 4px 0; }
+.fb-topics .check input, .fb-form > .check input { width: 20px; height: 20px; flex: none; }
+.fb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.fb-status { min-height: 1.4em; margin: 0; }
+.fb-status.bad { color: var(--bad); font-weight: 700; }

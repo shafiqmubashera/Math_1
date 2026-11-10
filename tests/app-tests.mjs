@@ -136,74 +136,27 @@ const cases = [];
 const test = (id, title, fn) => cases.push({ id, title, fn });
 const expect = (cond, msg) => { if (!cond) throw new Error(msg); };
 
-test("UN-01", "First visit: only Unit 1 is open; every other unit shows Locked and names the unit to finish", async () => {
+test("UN-01", "First visit: every unit is open, with no Locked label or lock note", async () => {
   const p = await open(empty());
-  expect(await isOpenCard(p, "u1"), "Unit 1 not open");
-  for (const uid of ["u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9"]) expect(!(await isOpenCard(p, uid)), `${uid} open on first visit`);
-  expect((await p.locator(".pill.lock").count()) === 8, "expected 8 locked units");
-  const note = await p.locator(".lock-note").first().innerText();
-  expect(/Finish one full set in Unit 1/.test(note) && /Any score counts/.test(note), "lock note text: " + note);
+  for (const uid of ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9"]) expect(await isOpenCard(p, uid), `${uid} not open on first visit`);
+  expect((await p.locator(".pill.lock").count()) === 0, "a unit shows Locked");
+  expect((await p.locator(".lock-note").count()) === 0, "a lock note shows");
   return p;
 });
 
-test("UN-02", "Finishing a Unit 1 set with every answer wrong still opens Unit 2", async () => {
+test("UN-02", "A student can start any unit first, and finishing a set shows no unlock message", async () => {
   const p = await open(empty());
-  await startUnit(p, "u1");
+  await startUnit(p, "u6");
   await playSet(p, () => false);
-  expect((await heroText(p)).startsWith("0"), "score not 0");
-  expect(/Unit 2: .* is now open/.test(await p.locator(".events").innerText()), "no unlock message");
-  await p.locator('[data-go="home"]').first().click();
-  expect(await isOpenCard(p, "u2"), "Unit 2 still locked");
-  expect(!(await isOpenCard(p, "u3")), "Unit 3 opened too early");
+  const ev = (await has(p, ".events")) ? await p.locator(".events").innerText() : "";
+  expect(!/is now open|opens as soon/.test(ev), "unlock message shown: " + ev);
   return p;
 });
 
-test("UN-03", "Going back to Unit 1 for more practice keeps Unit 2 open (during and after the new set)", async () => {
-  const p = await open(empty({ history: [finished("u1")] }));
-  await startUnit(p, "u1");
-  await p.locator('[data-act="exit"]').click();
-  expect(!(await isLockedCard(p, 2)), "Unit 2 locked while practising Unit 1");
-  await p.locator('[data-act="resume"]').first().click();
-  await playSet(p, (q, i) => i % 2 === 0);
-  await p.locator('[data-go="home"]').first().click();
-  expect(await isOpenCard(p, "u2"), "Unit 2 locked after another Unit 1 set");
-  return p;
-});
-
-test("UN-04", "Restarting a mastered Unit 1 keeps Unit 2 open", async () => {
-  const st = empty({ history: [finished("u1", { percent: 100, right: 25 })] });
-  const p = await open(st);
-  await p.evaluate(() => {}); // state below marks u1 mastered
-  const m = await main(p); m.units.u1 = (await p.evaluate(() => M1.engine.newUnitState("u1"))); m.units.u1.mastered = true; m.units.u1.sets = 3;
-  await seed(p, { "m1:main": JSON.stringify(m) });
-  await p.locator('[data-act="restart"][data-unit="u1"]').click();
-  await p.waitForSelector("#qcard .qnum");
-  const cur = (await main(p)).current.set;
-  expect(cur.diagnostic && cur.round === 2 && cur.setNumber === 1, "restart did not begin round 2 with a first check");
-  await p.locator('[data-act="exit"]').click();
-  expect(!(await isLockedCard(p, 2)), "Unit 2 locked after restart");
-  return p;
-});
-
-test("UN-05", "Units open in WCPSS teaching order 1, 2, 3, 4, 8, 5, 6, 7, 9", async () => {
+test("UN-05", "Units are listed in WCPSS teaching order 1, 2, 3, 4, 8, 5, 6, 7, 9", async () => {
   const p = await open(empty());
   const order = await p.evaluate(() => M1.curriculum.units.slice().sort((a, b) => a.order - b.order).map((u) => u.book));
   expect(JSON.stringify(order) === "[1,2,3,4,8,5,6,7,9]", "book order " + order);
-  const ids = await p.evaluate(() => M1.curriculum.units.slice().sort((a, b) => a.order - b.order).map((u) => u.id));
-  const hist = [];
-  for (let k = 0; k < ids.length; k++) {
-    await seed(p, { "m1:main": JSON.stringify(empty({ history: hist.slice() })) });
-    for (let j = 0; j < ids.length; j++) expect((await isOpenCard(p, ids[j])) === j <= k, `after finishing ${k} units, ${ids[j]} open=${!(j <= k)}`);
-    hist.push(finished(ids[k]));
-  }
-  return p;
-});
-
-test("UN-06", "A unit the student already worked in stays open even if the parent turns 'open all' off again", async () => {
-  const p = await open(empty({ openAll: false, history: [finished("u3")] }));
-  expect(await isOpenCard(p, "u3"), "worked-in Unit 3 locked");
-  expect(await isOpenCard(p, "u4"), "Unit 4 (after finished Unit 3) locked");
-  expect(!(await isOpenCard(p, "u2")), "Unit 2 open without finishing Unit 1");
   return p;
 });
 
@@ -227,15 +180,6 @@ test("UN-10", "Cancel set: first tap asks to confirm, second tap throws the set 
   expect(!st.cur && st.hist === 0, "set still in progress or added to history: " + JSON.stringify(st));
   expect(!(await has(p, "section.resume")), "Continue banner still shows");
   expect(!(await p.locator(startBtn("u3")).isDisabled()), "other units still blocked");
-  return p;
-});
-
-test("UN-08", "The unlock message shows only after the first finished set in a unit", async () => {
-  const p = await open(empty({ history: [finished("u1")] }));
-  await startUnit(p, "u1");
-  await playSet(p);
-  const ev = (await has(p, ".events")) ? await p.locator(".events").innerText() : "";
-  expect(!/is now open/.test(ev), "unlock message repeated");
   return p;
 });
 
@@ -625,19 +569,6 @@ test("PG-01", "The Progress page shows each started unit's skill ladder and ever
   return p;
 });
 
-test("PG-02", "'Open all units' opens every unit; turning it off locks unworked units again", async () => {
-  const p = await open(empty());
-  await p.locator('[data-go="progress"]').click();
-  await p.locator("#open-all").check();
-  await p.locator('[data-go="home"]').first().click();
-  for (const uid of ["u2", "u5", "u9"]) expect(await isOpenCard(p, uid), uid + " not opened");
-  await p.locator('[data-go="progress"]').click();
-  await p.locator("#open-all").uncheck();
-  await p.locator('[data-go="home"]').first().click();
-  expect(!(await isOpenCard(p, "u9")), "Unit 9 still open");
-  return p;
-});
-
 test("PG-03/04", "Download a backup, wipe the browser, load the backup: progress comes back exactly", async () => {
   const p = await open(empty());
   await startUnit(p, "u1");
@@ -822,7 +753,7 @@ test("RS-10", "Text is readable in phone dark mode and light mode, in all four d
   }
 });
 
-test("TC-01", "Testing copy (test/index.html): every unit is open from the start, and its progress never touches the student app's saved data", async () => {
+test("TC-01", "Testing copy (test/index.html): its progress never touches the student app's saved data", async () => {
   const p = await open(undefined, { file: "test/index.html" });
   for (const uid of ["u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9"]) expect(await isOpenCard(p, uid), uid + " is not open");
   await startUnit(p, "u6");
@@ -831,7 +762,7 @@ test("TC-01", "Testing copy (test/index.html): every unit is open from the start
   expect(keys.some((k) => k.startsWith("m1test:")), "testing copy saved nothing");
   expect(!keys.some((k) => k.startsWith("m1:")), "testing copy wrote student keys: " + keys.filter((k) => k.startsWith("m1:")).join(", "));
   await p.goto(PAGE()); await ready(p);
-  expect(await isOpenCard(p, "u1") && !(await isOpenCard(p, "u2")), "student app does not start fresh with only Unit 1 open");
+  expect(await has(p, "#app main") && !(await p.evaluate(() => M1.app.state().history.length)), "student app does not start fresh");
   return p;
 });
 
@@ -848,6 +779,73 @@ test("CT-05", "Math shows as formatted math, even with no internet, on every que
     }
     await seed(p, { "m1:main": JSON.stringify(empty({ openAll: true })) });
   }
+  return p;
+});
+
+// Feedback: the form posts to a test address that the browser test answers itself.
+async function feedbackPage(state, reply) {
+  const p = await open(state);
+  const sent = [];
+  await p.route("https://fb.test/**", async (r) => {
+    const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "content-type", "access-control-allow-methods": "POST" };
+    if (r.request().method() === "OPTIONS") return r.fulfill({ status: 204, headers: cors });
+    sent.push(JSON.parse(r.request().postData()));
+    const how = reply();
+    if (how === "abort") return r.abort();
+    return r.fulfill({ status: how, headers: { ...cors, "content-type": "application/json" }, body: JSON.stringify(how === 200 ? { ok: true } : { error: "nope" }) });
+  });
+  await p.evaluate(() => { M1.feedbackUrl = "https://fb.test/api/feedback"; });
+  await p.locator('[data-go="feedback"]').first().click();
+  await p.waitForSelector("#fb-form");
+  return { p, sent };
+}
+
+test("FB-11", "Feedback form: picking a unit lists its topics, an empty form is refused, and a filled form is sent with every field", async () => {
+  const flag = { qid: "q1", unitId: "u1", setId: "s1", skill: "u1.patterns", level: "hard", prompt: "Find the <b>next</b> term", date: new Date().toISOString() };
+  const { p, sent } = await feedbackPage(empty({ flags: [flag] }), () => 200);
+  await p.uncheck("#fb-flags");
+  await p.locator("#fb-send").click();
+  expect(/choose a unit or write something/.test(await p.locator("#fb-status").innerText()) && sent.length === 0, "empty form not refused");
+  expect(await p.locator("#fb-topics").isHidden(), "topics shown before a unit is picked");
+  await p.selectOption("#fb-unit", "u2");
+  const boxes = p.locator('input[name="fb-topic"]');
+  expect((await boxes.count()) > 2, "no topics listed for Unit 2");
+  await boxes.nth(1).check();
+  await p.check("#fb-flags");
+  await p.fill("#fb-name", "Sam");
+  await p.fill("#fb-tricky", "Question 7");
+  await p.fill("#fb-remarks", "The timer is nice");
+  await p.locator("#fb-send").click();
+  await p.waitForSelector(".fb-done");
+  expect(/Your feedback was sent/.test(await p.locator(".fb-done").innerText()), "no thank-you message");
+  const b = sent[0];
+  expect(b && b.name === "Sam" && /^Unit 2: /.test(b.unit) && b.topics.length === 1 && b.tricky === "Question 7" && b.remarks === "The timer is nice", "payload " + JSON.stringify(b));
+  expect(b.flagged.length === 1 && b.flagged[0].prompt === "Find the next term" && b.flagged[0].level === "Hard", "flagged " + JSON.stringify(b.flagged));
+  return p;
+});
+
+test("FB-12", "Feedback sent while offline is saved and goes out once the app is back online", async () => {
+  let mode = "abort";
+  const { p, sent } = await feedbackPage(empty(), () => mode);
+  await p.fill("#fb-remarks", "Sent from the bus");
+  await p.locator("#fb-send").click();
+  await p.waitForSelector(".fb-done");
+  expect(/saved and will be sent/.test(await p.locator(".fb-done").innerText()), "no offline message");
+  const queued = () => p.evaluate(() => JSON.parse(localStorage.getItem(M1.store.prefix + "feedbackQueue") || "[]").length);
+  expect((await queued()) === 1, "not queued");
+  mode = 200;
+  await p.evaluate(() => M1.app.flushFeedback());
+  expect((await queued()) === 0, "queue not emptied after sending");
+  expect(sent.length === 2 && sent[1].remarks === "Sent from the bus", "queued form not sent");
+  return p;
+});
+
+test("FB-13", "A copy of the app with no feedback server says so instead of pretending it sent", async () => {
+  const { p } = await feedbackPage(empty(), () => 405);
+  await p.fill("#fb-remarks", "Hello");
+  await p.locator("#fb-send").click();
+  await p.waitForFunction(() => /can't be sent from this copy/.test(document.querySelector("#fb-status").textContent));
+  expect(!(await has(p, ".fb-done")), "showed thank-you");
   return p;
 });
 
