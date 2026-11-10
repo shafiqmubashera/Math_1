@@ -1,5 +1,5 @@
-// Math 1 Practice service worker, built 2026-11-06T15:07:03.905Z
-const CACHE = "m1-2026-11-06T15:07:03.905Z";
+// Math 1 Practice service worker, built 2026-11-10T03:54:33.976Z
+const CACHE = "m1-2026-11-10T03:54:33.976Z";
 const CORE = ["./", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => {
@@ -11,6 +11,7 @@ self.addEventListener("fetch", (e) => {
   const sameSite = url.origin === location.origin, fonts = /^fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (!sameSite && !fonts) return;
   if (url.href.startsWith(new URL("test/", self.registration.scope).href)) return; // leave the testing copy alone
+  if (sameSite && /^\/(api|inbox)(\/|$)/.test(url.pathname)) return; // never keep the private feedback inbox or the form endpoint
   e.respondWith(fetch(req).then((res) => {
     if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
     return res;

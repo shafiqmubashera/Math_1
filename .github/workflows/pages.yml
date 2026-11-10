@@ -29,6 +29,7 @@ jobs:
           node-version: 20
       - run: node tests/run-tests.mjs
       - run: node tests/engine-tests.mjs
+      - run: node tests/worker-tests.mjs
       - run: node tools/build.mjs
       - run: node tools/build.mjs --testing
       # Browser tests (docs/test-cases.md): drive the built app in Chromium before anything is published.

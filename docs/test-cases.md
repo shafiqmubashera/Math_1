@@ -45,7 +45,6 @@ All three run on every push to main before the app is published (.github/workflo
 | AN-13 | Tapping a grid point places exactly that point, in every design (including tilted cards) and on a phone | browser |
 | CT-05 | Math shows as formatted math, even with no internet, on every question of a first set in every unit (no raw code, no stray $) | browser |
 | PG-01 | The Progress page shows each started unit's skill ladder and every set | browser |
-| PG-02 | 'Open all units' opens every unit; turning it off locks unworked units again | browser |
 | PG-03/04 | Download a backup, wipe the browser, load the backup: progress comes back exactly | browser |
 | PG-05 | Loading a file that isn't a backup (or is broken) shows an error and changes nothing | browser |
 | RS-01 | Leaving mid-set and coming back later resumes the same set with answers and time kept | browser |
@@ -58,7 +57,7 @@ All three run on every push to main before the app is published (.github/workflo
 | RS-08 | Seen-question memory is capped so storage can't fill up after months of use | browser |
 | RS-09 | The app works with no internet: the only outside request is optional web fonts, and blocking it changes nothing | browser |
 | RS-10 | Text is readable in phone dark mode and light mode, in all four designs, on home, question and results screens | browser |
-| TC-01 | Testing copy (test/index.html): every unit is open from the start, and its progress never touches the student app's saved data | browser |
+| TC-01 | Testing copy (test/index.html): its progress never touches the student app's saved data | browser |
 | RV-01 | The review lists every question with the student's answer, the correct answer and a worked solution | browser |
 | RV-02 | A wrong multiple-choice answer shows why that choice is wrong | browser |
 | RV-03 | 'Missed only' hides the questions answered right; 'All' brings them back | browser |
@@ -78,16 +77,16 @@ All three run on every push to main before the app is published (.github/workflo
 | SC-07 | After mastering, 'Keep practising' continues the same round without resetting | browser |
 | SC-08 | The timer runs only while the set is on screen and pauses when the student leaves | browser |
 | SC-09 | Each finished set adds a history row with date, unit, score and time | browser |
-| UN-01 | First visit: only Unit 1 is open; every other unit shows Locked and names the unit to finish | browser |
-| UN-02 | Finishing a Unit 1 set with every answer wrong still opens Unit 2 | browser |
-| UN-03 | Going back to Unit 1 for more practice keeps Unit 2 open (during and after the new set) | browser |
-| UN-04 | Restarting a mastered Unit 1 keeps Unit 2 open | browser |
-| UN-05 | Units open in WCPSS teaching order 1, 2, 3, 4, 8, 5, 6, 7, 9 | browser |
-| UN-06 | A unit the student already worked in stays open even if the parent turns 'open all' off again | browser |
+| UN-01 | First visit: every unit is open, with no Locked label or lock note | browser |
+| UN-02 | A student can start any unit first, and finishing a set shows no unlock message | browser |
+| UN-05 | Units are listed in WCPSS teaching order 1, 2, 3, 4, 8, 5, 6, 7, 9 | browser |
 | UN-07 | Only one set at a time: other units can't start while a set is in progress, and a Continue banner shows | browser |
-| UN-08 | The unlock message shows only after the first finished set in a unit | browser |
 | UN-09 | Finishing the last unit (Unit 9) works with no unlock message and no errors | browser |
 | UN-10 | Cancel set: first tap asks to confirm, second tap throws the set away with nothing scored | browser |
+| FB-01..FB-10, FB-14 | Feedback server: form checks, spam field, inbox page shows every field safely, new-message marks, delete buttons, password check (`node tests/worker-tests.mjs`) | worker |
+| FB-11 | Feedback form: picking a unit lists its topics, an empty form is refused, and a filled form is sent with every field | browser |
+| FB-12 | Feedback sent while offline is saved and goes out once the app is back online | browser |
+| FB-13 | A copy of the app with no feedback server says so instead of pretending it sent | browser |
 | CT-01..CT-04 | Every generator built 300 times; written problems re-solved; shuffled choices; plot answers placeable | content |
 
 ## Checked by hand
@@ -95,3 +94,4 @@ All three run on every push to main before the app is published (.github/workflo
 - RV-04: the review draws your points and the correct points on plot questions.
 - A school Chromebook, a phone and an iPad in Safari: finish one set by tapping.
 - Install: on the published site, add to Home Screen on an iPad/iPhone and install from Chrome or Edge on a PC; the icon shows, the app opens without browser bars, and it opens offline after one online visit.
+- Feedback end to end: `npx wrangler dev` with `INBOX_PASSWORD` in `.dev.vars`; send a form from the app, then open `/inbox`, sign in, see it, delete it.

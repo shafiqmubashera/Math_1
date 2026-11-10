@@ -26,9 +26,14 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
   - A level is secured after two sets in a row at 80% or better on that skill and level.
   - Weak skills get more questions. Most of a skill's questions are at its focus level, a few one level up.
   - A skill is **achieved** when it scores 100% on its hard/challenge questions (at least 3 in one set). Achieved skills stop appearing.
-- **Unlocking:** finishing one full set in a unit, at any score, opens the next unit in teaching order. A parent can open every unit from the Progress page.
+- **Open units:** every unit is open from the start; a student can practise any unit at any time. Units are still listed in teaching order.
 - **Spaced review:** after the 25 questions, a set adds 3 non-basic questions from earlier units the student has finished. They are scored separately and never change the unit score, levels or mastery.
 - A set scored 100% marks the unit **mastered**. The student can then restart the unit with fresh questions, and the assessment starts again from a new diagnostic.
+
+## Feedback
+- The **Feedback** tab sends a form (name and reply email optional, unit and topics found hard, tricky questions, remarks, flagged questions) to `/api/feedback`. Offline, the app keeps it and sends it later.
+- On Cloudflare, `worker/index.js` saves it in the Worker's own storage (a SQLite Durable Object). Nothing leaves Cloudflare and no email is sent.
+- The teacher reads it at `/inbox` (e.g. https://math-1.infralynxsystems.com/inbox), signing in with the `INBOX_PASSWORD` secret.
 
 ## Question types
 `mcq` (4 options), `multi` (choose all that apply), `numeric` (number entry, fractions allowed), `plot` (place points on a coordinate grid), `graph-mcq` (read a graph, choose an answer).
@@ -36,7 +41,7 @@ Read `../CLAUDE.md` first. This file adds the Math 1 rules.
 ## How to add content
 - Number-based questions: add a generator to `content/<unit>/generators.js` (see the `build-unit-bank` skill).
 - Word problems and SAT-style items: add to `content/<unit>/bank.json`, then run the `answer-checker` agent.
-- Run `node tests/run-tests.mjs` and `node tests/engine-tests.mjs` before every build. Then run `node tools/build.mjs` to produce `dist/index.html`, and `node tests/app-tests.mjs` to drive it in a browser. Case list: `docs/test-cases.md`.
+- Run `node tests/run-tests.mjs`, `node tests/engine-tests.mjs` and `node tests/worker-tests.mjs` before every build. Then run `node tools/build.mjs` to produce `dist/index.html`, and `node tests/app-tests.mjs` to drive it in a browser. Case list: `docs/test-cases.md`.
 
 ## Keeping GitHub current
 - The code lives at github.com/shafiqmubashera/Math_1 (branch `main`). After every change: run the tests, build, commit and push to `origin main`.

@@ -3,3 +3,5 @@ node_modules/
 *.log
 .claude/settings.local.json
 tests/results/
+.dev.vars
+.wrangler/
